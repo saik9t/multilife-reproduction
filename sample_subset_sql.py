@@ -1,8 +1,8 @@
 """
-sample_subset_sql.py — 从 MultiLifeQA sql/ 数据集中分层采样，
-生成 DP 评估用的小型代表性子集。
+sample_subset_sql.py — Stratified sampling from the MultiLifeQA sql/ dataset
+to create a small, representative subset for DP evaluation.
 
-用法:
+Usage:
     python sample_subset_sql.py \
         --data-root ./gen_data_processed/sql \
         --out-root ./gen_data_processed/sql_subset \
@@ -18,7 +18,7 @@ LEAF_KINDS = {"AS", "CQ", "FQ", "NC", "TA"}
 
 
 def find_jsonl_files(data_root: str):
-    """遍历 sql/ 下的 single_user/ 和 multi_user/ 目录"""
+    """Traverse single_user/ and multi_user/ directories under sql/"""
     found = []
     for root, dirs, files in os.walk(data_root):
         rel = os.path.relpath(root, data_root)
@@ -59,23 +59,23 @@ def read_all_lines(path: str):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="从 sql/ 数据集中分层采样")
+    ap = argparse.ArgumentParser(description="Stratified sampling from the sql/ dataset")
     ap.add_argument("--data-root", type=str, required=True,
-                    help="原始 sql/ 文件夹路径")
+                    help="Path to the original sql/ folder")
     ap.add_argument("--out-root", type=str, required=True,
-                    help="输出子集的文件夹路径")
+                    help="Path to the output subset folder")
     ap.add_argument("--per-file", type=int, default=3,
-                    help="每个 JSONL 文件最多抽多少条 (默认 3)")
+                    help="Maximum samples per JSONL file (default: 3)")
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--easy-boost", type=int, default=7,
-                    help="对 single/ 下的 FQ/CQ 额外多抽几条")
+                    help="Additional samples for FQ/CQ in single/")
     args = ap.parse_args()
 
     random.seed(args.seed)
     files = find_jsonl_files(args.data_root)
 
     if not files:
-        print(f"[ERR] 在 {args.data_root} 下没有找到合法的 JSONL 文件")
+        print(f"[ERR] No valid JSONL files found in {args.data_root}")
         return
 
     total_sampled = 0
@@ -92,7 +92,7 @@ def main():
         scope = parts[0]   # single_user / multi_user
         bucket = parts[1] if len(parts) > 1 else ""
 
-        # 单维度简单题多抽，确保有成功案例
+        # 同理，单维度简单题多抽，确保有成功案例
         if bucket == "single" and kind in {"FQ", "CQ"}:
             n = min(len(items), args.per_file + args.easy_boost)
         else:
@@ -113,7 +113,7 @@ def main():
         stats_by_scope[scope] = stats_by_scope.get(scope, 0) + n
         stats_by_bucket[f"{scope}/{bucket}"] = stats_by_bucket.get(f"{scope}/{bucket}", 0) + n
 
-    print(f"\n=== 采样完成 ===")
+    print(f"\n=== 采样已经完成 ===")
     print(f"输出目录: {args.out_root}")
     print(f"总采样数: {total_sampled}")
     print(f"\n按题型:")
@@ -125,15 +125,6 @@ def main():
     print(f"\n按维度:")
     for k in sorted(stats_by_bucket):
         print(f"  {k}: {stats_by_bucket[k]}")
-
-    print(f"\n现在可以运行:")
-    print(f"  python eval_sql.py \\")
-    print(f"    --data-root {args.out_root} \\")
-    print(f"    --eval-root ./eval_sql \\")
-    print(f"    --model gpt-4o-mini \\")
-    print(f"    --sql-max-new-tokens 480 \\")
-    print(f"    --ans-max-new-tokens 48 \\")
-    print(f"    --api-key \"你的key\"")
 
 
 if __name__ == "__main__":

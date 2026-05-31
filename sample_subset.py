@@ -1,15 +1,17 @@
 """
-sample_subset.py — 从 MultiLifeQA simple/ 数据集中按题型和维度分层采样，
-生成一个小型代表性子集，供 eval_simple.py 直接使用。
+sample_subset.py — Stratified sampling from the MultiLifeQA simple/ dataset by
+question type and dimension to create a small, representative subset for
+direct use with eval_simple.py.
 
-用法:
+Usage:
     python sample_subset.py \
         --data-root ./gen_data_processed/simple \
         --out-root ./gen_data_processed/simple_subset \
         --per-file 5
 
-这会从每个 JSONL 文件中最多抽 5 条，生成的子集保持原始目录结构，
-可以直接传给 eval_simple.py --data-root ./gen_data_processed/simple_subset
+This script samples at most 5 records from each JSONL file, maintaining
+the original directory structure. The resulting subset can be passed
+directly to eval_simple.py --data-root ./gen_data_processed/simple_subset
 """
 
 import argparse
@@ -22,7 +24,6 @@ ALLOWED_BUCKETS = {"single", "M-sleep", "M-activity", "M-C2", "M-C4"}
 
 
 def find_jsonl_files(data_root: str):
-    """复用 eval_simple.py 的目录遍历逻辑"""
     found = []
     for root, dirs, files in os.walk(data_root):
         rel = os.path.relpath(root, data_root)
@@ -64,24 +65,24 @@ def read_all_lines(path: str):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="从 simple/ 数据集中分层采样")
+    ap = argparse.ArgumentParser(description="Stratified sampling from the simple/ dataset")
     ap.add_argument("--data-root", type=str, required=True,
-                    help="原始 simple/ 文件夹路径")
+                    help="Path to the original simple/ folder")
     ap.add_argument("--out-root", type=str, required=True,
-                    help="输出子集的文件夹路径")
+                    help="Path to the output subset folder")
     ap.add_argument("--per-file", type=int, default=5,
-                    help="每个 JSONL 文件最多抽多少条 (默认 5)")
+                    help="Maximum samples per JSONL file (default: 5)")
     ap.add_argument("--seed", type=int, default=42,
-                    help="随机种子，确保可复现")
+                    help="Random seed for reproducibility")
     ap.add_argument("--easy-boost", type=int, default=10,
-                    help="对 single/ (单维度) 下的 FQ 和 CQ 额外多抽几条，确保能看到成功案例")
+                    help="Additional samples for FQ and CQ in single/ (single-dimension) to ensure successful cases are captured")
     args = ap.parse_args()
 
     random.seed(args.seed)
     files = find_jsonl_files(args.data_root)
 
     if not files:
-        print(f"[ERR] 在 {args.data_root} 下没有找到合法的 JSONL 文件")
+        print(f"[ERR] No valid JSONL files found in {args.data_root}")
         return
 
     total_sampled = 0
@@ -116,7 +117,7 @@ def main():
         stats_by_bucket[bucket] = stats_by_bucket.get(bucket, 0) + n
 
     # 打印采样摘要
-    print(f"\n=== 采样完成 ===")
+    print(f"\n=== 采样已经完成 ===")
     print(f"输出目录: {args.out_root}")
     print(f"总采样数: {total_sampled}")
     print(f"\n按题型分布:")
@@ -125,15 +126,6 @@ def main():
     print(f"\n按维度分布:")
     for k in sorted(stats_by_bucket):
         print(f"  {k}: {stats_by_bucket[k]}")
-
-    print(f"\n现在可以运行:")
-    print(f"  python eval_simple.py \\")
-    print(f"    --data-root {args.out_root} \\")
-    print(f"    --eval-root ./eval \\")
-    print(f"    --model gpt-4o-mini \\")
-    print(f"    --max-new-tokens 32 \\")
-    print(f"    --api-key \"你的key\"")
-
 
 if __name__ == "__main__":
     main()
