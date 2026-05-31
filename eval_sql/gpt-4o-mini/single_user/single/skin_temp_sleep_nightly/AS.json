@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/skin_temp_sleep_nightly",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/skin_temp_sleep_nightly/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the total {baseline_relative_sample_sum} in skin_temp_sleep_nightly of A4F_98040 during sleeping within one week, starting from 2022-06-15?\n\nSchema (DDL):\n```sql\nCREATE TABLE `skin_temp_sleep_nightly` (\n  `id`                                       VARCHAR(20)  NOT NULL,\n  `start_sleep`                               DATETIME     NOT NULL,\n  `end_sleep`                                 DATETIME     NOT NULL,\n  `temperature_samples`                       INT UNSIGNED,\n  `nightly_temperature`                       DECIMAL(5,2),\n  `baseline_relative_sample_sum`              DECIMAL(10,4),\n  `baseline_relative_sample_sum_of_squares`   DECIMAL(12,4),\n  `baseline_relative_nightly_standard_deviation` DECIMAL(6,4),\n  `baseline_relative_sample_standard_deviation`  DECIMAL(6,4),\n  PRIMARY KEY (`id`,`start_sleep`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_sleep) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the total {baseline_relative_sample_sum} in skin_temp_sleep_nightly of A4F_98040 during sleeping within one week, starting from 2022-06-15?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "-583.44",
+    "GeneratedSQL": "SELECT SUM(baseline_relative_sample_sum) AS total_baseline_relative_sample_sum \nFROM skin_temp_sleep_nightly \nWHERE id = 'A4F_98040' \nAND DATE(start_sleep) >= '2022-06-15' \nAND DATE(start_sleep) < '2022-06-22';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "total_baseline_relative_sample_sum\n-583.4400",
+    "ModelOutput": "-583.44",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/single/skin_temp_sleep_nightly",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/skin_temp_sleep_nightly/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the average {baseline_relative_sample_sum} in skin_temp_sleep_nightly of A4F_65724 during sleeping within one week, starting from 2022-05-23?\n\nSchema (DDL):\n```sql\nCREATE TABLE `skin_temp_sleep_nightly` (\n  `id`                                       VARCHAR(20)  NOT NULL,\n  `start_sleep`                               DATETIME     NOT NULL,\n  `end_sleep`                                 DATETIME     NOT NULL,\n  `temperature_samples`                       INT UNSIGNED,\n  `nightly_temperature`                       DECIMAL(5,2),\n  `baseline_relative_sample_sum`              DECIMAL(10,4),\n  `baseline_relative_sample_sum_of_squares`   DECIMAL(12,4),\n  `baseline_relative_nightly_standard_deviation` DECIMAL(6,4),\n  `baseline_relative_sample_standard_deviation`  DECIMAL(6,4),\n  PRIMARY KEY (`id`,`start_sleep`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_sleep) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the average {baseline_relative_sample_sum} in skin_temp_sleep_nightly of A4F_65724 during sleeping within one week, starting from 2022-05-23?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "45.78",
+    "GeneratedSQL": "SELECT AVG(baseline_relative_sample_sum) AS average_baseline_relative_sample_sum\nFROM skin_temp_sleep_nightly\nWHERE id = 'A4F_65724' AND DATE(start_sleep) BETWEEN '2022-05-23' AND '2022-05-30';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "average_baseline_relative_sample_sum\n33.53750000",
+    "ModelOutput": "33.54",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/skin_temp_sleep_nightly",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/skin_temp_sleep_nightly/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the total {baseline_relative_sample_sum_of_squares} in skin_temp_sleep_nightly of A4F_65060 during sleeping within one week, starting from 2022-05-25?\n\nSchema (DDL):\n```sql\nCREATE TABLE `skin_temp_sleep_nightly` (\n  `id`                                       VARCHAR(20)  NOT NULL,\n  `start_sleep`                               DATETIME     NOT NULL,\n  `end_sleep`                                 DATETIME     NOT NULL,\n  `temperature_samples`                       INT UNSIGNED,\n  `nightly_temperature`                       DECIMAL(5,2),\n  `baseline_relative_sample_sum`              DECIMAL(10,4),\n  `baseline_relative_sample_sum_of_squares`   DECIMAL(12,4),\n  `baseline_relative_nightly_standard_deviation` DECIMAL(6,4),\n  `baseline_relative_sample_standard_deviation`  DECIMAL(6,4),\n  PRIMARY KEY (`id`,`start_sleep`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_sleep) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the total {baseline_relative_sample_sum_of_squares} in skin_temp_sleep_nightly of A4F_65060 during sleeping within one week, starting from 2022-05-25?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "4615.31",
+    "GeneratedSQL": "SELECT SUM(baseline_relative_sample_sum_of_squares) AS total_baseline_relative_sample_sum_of_squares \nFROM skin_temp_sleep_nightly \nWHERE id = 'A4F_65060' \nAND DATE(start_sleep) BETWEEN '2022-05-25' AND '2022-06-01';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "total_baseline_relative_sample_sum_of_squares\n5098.9800",
+    "ModelOutput": "5098.98",
+    "Correct": false
+  }
+]

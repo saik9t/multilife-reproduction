@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/pa_active_minutes",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_active_minutes/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nDid A4F_95200's {peak_minutes} in pa_active_minutes within a week, starting from 2022-06-10, increase or decrease or remain the same, compared to the previous week?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                         VARCHAR(20) NOT NULL,\n  `ts`                         DATETIME NOT NULL,\n  `fat_burn_minutes`           SMALLINT UNSIGNED,\n  `cardio_minutes`             SMALLINT UNSIGNED,\n  `peak_minutes`               SMALLINT UNSIGNED,\n  `sedentary_minutes`          SMALLINT UNSIGNED,\n  `lightly_active_minutes`     SMALLINT UNSIGNED,\n  `moderately_active_minutes`  SMALLINT UNSIGNED,\n  `very_active_minutes`        SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Did A4F_95200's {peak_minutes} in pa_active_minutes within a week, starting from 2022-06-10, increase or decrease or remain the same, compared to the previous week?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "same",
+    "GeneratedSQL": "SELECT \n    SUM(CASE WHEN DATE(ts) BETWEEN '2022-06-10' AND '2022-06-16' THEN peak_minutes ELSE 0 END) AS current_week_peak,\n    SUM(CASE WHEN DATE(ts) BETWEEN '2022-06-03' AND '2022-06-09' THEN peak_minutes ELSE 0 END) AS previous_week_peak\nFROM \n    pa_active_minutes\nWHERE \n    id = 'A4F_95200';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "current_week_peak\tprevious_week_peak\n0\t0",
+    "ModelOutput": "remain the same",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/single/pa_active_minutes",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_active_minutes/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive weeks did A4F_73455's {fat_burn_minutes} in pa_active_minutes decrease, starting from 2022-05-23?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                         VARCHAR(20) NOT NULL,\n  `ts`                         DATETIME NOT NULL,\n  `fat_burn_minutes`           SMALLINT UNSIGNED,\n  `cardio_minutes`             SMALLINT UNSIGNED,\n  `peak_minutes`               SMALLINT UNSIGNED,\n  `sedentary_minutes`          SMALLINT UNSIGNED,\n  `lightly_active_minutes`     SMALLINT UNSIGNED,\n  `moderately_active_minutes`  SMALLINT UNSIGNED,\n  `very_active_minutes`        SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive weeks did A4F_73455's {fat_burn_minutes} in pa_active_minutes decrease, starting from 2022-05-23?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "2",
+    "GeneratedSQL": "WITH weekly_data AS (\n    SELECT DATE(ts) AS week_start, \n           fat_burn_minutes,\n           ROW_NUMBER() OVER (ORDER BY DATE(ts)) AS week_num\n    FROM pa_active_minutes\n    WHERE id = 'A4F_73455' AND DATE(ts) >= '2022-05-23'\n),\ndecrease_weeks AS (\n    SELECT week_num, \n           fat_burn_minutes,\n           LAG(fat_burn_minutes) OVER (ORDER BY week_num) AS prev_fat_burn_minutes\n    FROM weekly_data\n)\nSELECT COUNT(*) AS consecutive_decrease_weeks\nFROM decrease_weeks\nWHERE fat_burn_minutes < prev_fat_burn_minutes;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_decrease_weeks\n5",
+    "ModelOutput": "5",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/pa_active_minutes",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_active_minutes/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did A4F_60983's {sedentary_minutes} in pa_active_minutes increase, starting from 2022-05-31?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                         VARCHAR(20) NOT NULL,\n  `ts`                         DATETIME NOT NULL,\n  `fat_burn_minutes`           SMALLINT UNSIGNED,\n  `cardio_minutes`             SMALLINT UNSIGNED,\n  `peak_minutes`               SMALLINT UNSIGNED,\n  `sedentary_minutes`          SMALLINT UNSIGNED,\n  `lightly_active_minutes`     SMALLINT UNSIGNED,\n  `moderately_active_minutes`  SMALLINT UNSIGNED,\n  `very_active_minutes`        SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did A4F_60983's {sedentary_minutes} in pa_active_minutes increase, starting from 2022-05-31?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "2",
+    "GeneratedSQL": "SELECT COUNT(*) AS consecutive_days\nFROM (\n    SELECT DATE(ts) AS activity_date, sedentary_minutes,\n           @prev_sedentary_minutes := IF(@prev_sedentary_minutes IS NULL, sedentary_minutes, @prev_sedentary_minutes) AS prev_sedentary_minutes,\n           @is_increasing := IF(sedentary_minutes > @prev_sedentary_minutes, 1, 0) AS is_increasing,\n           @prev_sedentary_minutes := sedentary_minutes\n    FROM pa_active_minutes\n    CROSS JOIN (SELECT @prev_sedentary_minutes := NULL, @is_increasing := 0) AS vars\n    WHERE id = 'A4F_60983' AND DATE(ts) >= '2022-05-31'\n    ORDER BY ts\n) AS subquery\nWHERE is_increasing = 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_days\n1",
+    "ModelOutput": "1",
+    "Correct": true
+  }
+]

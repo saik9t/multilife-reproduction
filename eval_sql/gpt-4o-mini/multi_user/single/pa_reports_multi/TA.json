@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/pa_reports_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_reports_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did the average duration in pa_reports across all users increase, starting from 2022-06-15?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_reports` (\n  `session_id`               BIGINT AUTO_INCREMENT PRIMARY KEY,\n  `id`                       VARCHAR(20) NOT NULL,\n  `record_ts`                DATETIME    NOT NULL,\n  `activity_name`            VARCHAR(50),\n  `average_heart_rate`       DECIMAL(5,2),\n  `duration`                 INT UNSIGNED,\n  `active_duration`          INT UNSIGNED,\n  `calories`                 DECIMAL(8,2),\n  `steps`                    INT UNSIGNED,\n  INDEX `idx_pa_reports_id_ts` (`id`,`record_ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did the average duration in pa_reports across all users increase, starting from 2022-06-15?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "2",
+    "GeneratedSQL": "WITH daily_avg AS (\n    SELECT DATE(record_ts) AS report_date, AVG(duration) AS avg_duration\n    FROM pa_reports\n    WHERE record_ts >= '2022-06-15'\n    GROUP BY report_date\n),\nconsecutive_days AS (\n    SELECT report_date, \n           @prev_avg := IF(@prev_avg IS NULL, avg_duration, @prev_avg) AS prev_avg,\n           @prev_avg := avg_duration AS current_avg,\n           @is_increasing := IF(avg_duration > @prev_avg, 1, 0) AS is_increasing,\n           @count := IF(@is_increasing = 1, @count + 1, 1) AS streak\n    FROM daily_avg, (SELECT @prev_avg := NULL, @count := 0, @is_increasing := 0) AS vars\n    ORDER BY report_date\n)\nSELECT MAX(streak) AS consecutive_increase_days\nFROM consecutive_days;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_increase_days\n1.0",
+    "ModelOutput": "1",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/pa_reports_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_reports_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did the average duration in pa_reports across all users increase, starting from 2022-06-08?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_reports` (\n  `session_id`               BIGINT AUTO_INCREMENT PRIMARY KEY,\n  `id`                       VARCHAR(20) NOT NULL,\n  `record_ts`                DATETIME    NOT NULL,\n  `activity_name`            VARCHAR(50),\n  `average_heart_rate`       DECIMAL(5,2),\n  `duration`                 INT UNSIGNED,\n  `active_duration`          INT UNSIGNED,\n  `calories`                 DECIMAL(8,2),\n  `steps`                    INT UNSIGNED,\n  INDEX `idx_pa_reports_id_ts` (`id`,`record_ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did the average duration in pa_reports across all users increase, starting from 2022-06-08?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "2",
+    "GeneratedSQL": "WITH daily_avg AS (\n    SELECT DATE(record_ts) AS report_date, AVG(duration) AS avg_duration\n    FROM pa_reports\n    WHERE record_ts >= '2022-06-08'\n    GROUP BY report_date\n),\nconsecutive_days AS (\n    SELECT report_date, \n           ROW_NUMBER() OVER (ORDER BY report_date) - \n           ROW_NUMBER() OVER (PARTITION BY (avg_duration > LAG(avg_duration) OVER (ORDER BY report_date)) ORDER BY report_date) AS grp\n    FROM daily_avg\n    WHERE avg_duration > LAG(avg_duration) OVER (ORDER BY report_date)\n)\nSELECT COUNT(*) AS consecutive_days_count\nFROM consecutive_days\nGROUP BY grp\nHAVING COUNT(*) > 0\nORDER BY COUNT(*) DESC\nLIMIT 1;",
+    "SQLStatus": "failed",
+    "SQLError": "OperationalError args=(3593, \"You cannot use the window function 'lag' in this context.'\") repr=OperationalError(3593, \"You cannot use the window function 'lag' in this context.'\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/pa_reports_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_reports_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days was A4F_70068's steps in pa_reports higher than the average across all users, starting from 2022-05-19?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_reports` (\n  `session_id`               BIGINT AUTO_INCREMENT PRIMARY KEY,\n  `id`                       VARCHAR(20) NOT NULL,\n  `record_ts`                DATETIME    NOT NULL,\n  `activity_name`            VARCHAR(50),\n  `average_heart_rate`       DECIMAL(5,2),\n  `duration`                 INT UNSIGNED,\n  `active_duration`          INT UNSIGNED,\n  `calories`                 DECIMAL(8,2),\n  `steps`                    INT UNSIGNED,\n  INDEX `idx_pa_reports_id_ts` (`id`,`record_ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days was A4F_70068's steps in pa_reports higher than the average across all users, starting from 2022-05-19?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "2",
+    "GeneratedSQL": "WITH daily_steps AS (\n    SELECT DATE(record_ts) AS report_date, AVG(steps) AS avg_steps\n    FROM pa_reports\n    GROUP BY report_date\n),\nuser_steps AS (\n    SELECT DATE(record_ts) AS report_date, steps\n    FROM pa_reports\n    WHERE id = 'A4F_70068' AND DATE(record_ts) >= '2022-05-19'\n)\nSELECT COUNT(*) AS consecutive_days\nFROM (\n    SELECT u.report_date\n    FROM user_steps u\n    JOIN daily_steps d ON u.report_date = d.report_date\n    WHERE u.steps > d.avg_steps\n    ORDER BY u.report_date\n) AS filtered_steps\nWHERE report_date = DATE_ADD(LAG(report_date) OVER (ORDER BY report_date), INTERVAL 1 DAY)\n   OR report_date = (SELECT MIN(report_date) FROM user_steps);",
+    "SQLStatus": "failed",
+    "SQLError": "OperationalError args=(3593, \"You cannot use the window function 'lag' in this context.'\") repr=OperationalError(3593, \"You cannot use the window function 'lag' in this context.'\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  }
+]

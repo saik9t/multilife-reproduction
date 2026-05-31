@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/pa_reports_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_reports_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWas the average active_duration in pa_reports significantly lower than duration in pa_reports across all users on 2022-06-19?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_reports` (\n  `session_id`               BIGINT AUTO_INCREMENT PRIMARY KEY,\n  `id`                       VARCHAR(20) NOT NULL,\n  `record_ts`                DATETIME    NOT NULL,\n  `activity_name`            VARCHAR(50),\n  `average_heart_rate`       DECIMAL(5,2),\n  `duration`                 INT UNSIGNED,\n  `active_duration`          INT UNSIGNED,\n  `calories`                 DECIMAL(8,2),\n  `steps`                    INT UNSIGNED,\n  INDEX `idx_pa_reports_id_ts` (`id`,`record_ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Was the average active_duration in pa_reports significantly lower than duration in pa_reports across all users on 2022-06-19?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "no",
+    "GeneratedSQL": "SELECT \n    AVG(active_duration) AS avg_active_duration, \n    AVG(duration) AS avg_duration \nFROM \n    pa_reports \nWHERE \n    DATE(record_ts) = '2022-06-19';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "avg_active_duration\tavg_duration\n42.5429\t43.0286",
+    "ModelOutput": "no",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/pa_reports_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_reports_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWas A4F_67598's average_heart_rate in pa_reports lower than the median across all users on 2022-05-28?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_reports` (\n  `session_id`               BIGINT AUTO_INCREMENT PRIMARY KEY,\n  `id`                       VARCHAR(20) NOT NULL,\n  `record_ts`                DATETIME    NOT NULL,\n  `activity_name`            VARCHAR(50),\n  `average_heart_rate`       DECIMAL(5,2),\n  `duration`                 INT UNSIGNED,\n  `active_duration`          INT UNSIGNED,\n  `calories`                 DECIMAL(8,2),\n  `steps`                    INT UNSIGNED,\n  INDEX `idx_pa_reports_id_ts` (`id`,`record_ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Was A4F_67598's average_heart_rate in pa_reports lower than the median across all users on 2022-05-28?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "yes",
+    "GeneratedSQL": "SELECT \n    (SELECT AVG(average_heart_rate) FROM pa_reports WHERE DATE(record_ts) = '2022-05-28') AS a4f_avg,\n    (SELECT AVG(average_heart_rate) FROM (SELECT average_heart_rate FROM pa_reports WHERE DATE(record_ts) = '2022-05-28' AND id != 'A4F_67598') AS subquery) AS median_avg\nWHERE \n    (SELECT AVG(average_heart_rate) FROM pa_reports WHERE id = 'A4F_67598' AND DATE(record_ts) = '2022-05-28') < \n    (SELECT AVG(average_heart_rate) FROM (SELECT average_heart_rate FROM pa_reports WHERE DATE(record_ts) = '2022-05-28' AND id != 'A4F_67598') AS subquery);",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "a4f_avg\tmedian_avg\n104.916667\t105.977778",
+    "ModelOutput": "yes",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/pa_reports_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_reports_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWas A4F_20573's average_heart_rate in pa_reports lower than the median across all users on 2022-06-04?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_reports` (\n  `session_id`               BIGINT AUTO_INCREMENT PRIMARY KEY,\n  `id`                       VARCHAR(20) NOT NULL,\n  `record_ts`                DATETIME    NOT NULL,\n  `activity_name`            VARCHAR(50),\n  `average_heart_rate`       DECIMAL(5,2),\n  `duration`                 INT UNSIGNED,\n  `active_duration`          INT UNSIGNED,\n  `calories`                 DECIMAL(8,2),\n  `steps`                    INT UNSIGNED,\n  INDEX `idx_pa_reports_id_ts` (`id`,`record_ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Was A4F_20573's average_heart_rate in pa_reports lower than the median across all users on 2022-06-04?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "yes",
+    "GeneratedSQL": "SELECT \n    (SELECT AVG(average_heart_rate) FROM pa_reports WHERE DATE(record_ts) = '2022-06-04' AND id = 'A4F_20573') < \n    (SELECT AVG(median) FROM (SELECT average_heart_rate AS median FROM pa_reports WHERE DATE(record_ts) = '2022-06-04') AS medians);",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "(SELECT AVG(average_heart_rate) FROM pa_reports WHERE DATE(record_ts) = '2022-06-04' AND id = 'A4F_20573') < \n    (SELECT AVG(median) FROM (SELECT average_heart_rate AS median FROM pa_reports WHERE DATE(record_ts) = '2022-06-04') AS medians)\n1",
+    "ModelOutput": "yes",
+    "Correct": true
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/stress_daily_scores",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/stress_daily_scores/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did A4F_31033's {exertion_points} in stress_daily_scores increase, starting from 2022-06-13?\n\nSchema (DDL):\n```sql\nCREATE TABLE `stress_daily_scores` (\n  `id`                     VARCHAR(20) NOT NULL,\n  `ts`                     DATETIME    NOT NULL,\n  `stress_score`           SMALLINT UNSIGNED,\n  `sleep_points`           SMALLINT,\n  `responsiveness_points`  SMALLINT,\n  `exertion_points`        SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did A4F_31033's {exertion_points} in stress_daily_scores increase, starting from 2022-06-13?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "4",
+    "GeneratedSQL": "SELECT COUNT(*) AS consecutive_days\nFROM (\n    SELECT DATE(ts) AS date, exertion_points,\n           @prev_exertion_points := @current_exertion_points,\n           @current_exertion_points := exertion_points,\n           @is_increasing := IF(@current_exertion_points > @prev_exertion_points, 1, 0) AS is_increasing\n    FROM stress_daily_scores\n    CROSS JOIN (SELECT @prev_exertion_points := NULL, @current_exertion_points := NULL, @is_increasing := 0) AS vars\n    WHERE id = 'A4F_31033' AND DATE(ts) >= '2022-06-13'\n    ORDER BY DATE(ts)\n) AS subquery\nWHERE is_increasing = 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_days\n4",
+    "ModelOutput": "4",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/single/stress_daily_scores",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/stress_daily_scores/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did A4F_79824's {stress_score} in stress_daily_scores decrease, starting from 2022-06-16?\n\nSchema (DDL):\n```sql\nCREATE TABLE `stress_daily_scores` (\n  `id`                     VARCHAR(20) NOT NULL,\n  `ts`                     DATETIME    NOT NULL,\n  `stress_score`           SMALLINT UNSIGNED,\n  `sleep_points`           SMALLINT,\n  `responsiveness_points`  SMALLINT,\n  `exertion_points`        SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did A4F_79824's {stress_score} in stress_daily_scores decrease, starting from 2022-06-16?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "3",
+    "GeneratedSQL": "SELECT COUNT(*) AS consecutive_days\nFROM (\n    SELECT DATE(ts) AS date, stress_score,\n           @prev_score := IF(@prev_date = DATE(ts) - INTERVAL 1 DAY, @prev_score, NULL) AS prev_score,\n           @prev_date := DATE(ts) AS prev_date\n    FROM stress_daily_scores, (SELECT @prev_score := NULL, @prev_date := NULL) AS vars\n    WHERE id = 'A4F_79824' AND DATE(ts) >= '2022-06-16'\n    ORDER BY DATE(ts) DESC\n) AS scores\nWHERE stress_score < prev_score;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_days\n0",
+    "ModelOutput": "0",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/stress_daily_scores",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/stress_daily_scores/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nDid A4F_43794's {sleep_points} in stress_daily_scores on 2022-05-30 increase, decrease, or remain the same compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `stress_daily_scores` (\n  `id`                     VARCHAR(20) NOT NULL,\n  `ts`                     DATETIME    NOT NULL,\n  `stress_score`           SMALLINT UNSIGNED,\n  `sleep_points`           SMALLINT,\n  `responsiveness_points`  SMALLINT,\n  `exertion_points`        SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Did A4F_43794's {sleep_points} in stress_daily_scores on 2022-05-30 increase, decrease, or remain the same compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "decrease",
+    "GeneratedSQL": "SELECT \n    CASE \n        WHEN (SELECT sleep_points FROM stress_daily_scores WHERE id = 'A4F_43794' AND DATE(ts) = '2022-05-30') > \n             (SELECT sleep_points FROM stress_daily_scores WHERE id = 'A4F_43794' AND DATE(ts) = '2022-05-29') THEN 'increase'\n        WHEN (SELECT sleep_points FROM stress_daily_scores WHERE id = 'A4F_43794' AND DATE(ts) = '2022-05-30') < \n             (SELECT sleep_points FROM stress_daily_scores WHERE id = 'A4F_43794' AND DATE(ts) = '2022-05-29') THEN 'decrease'\n        ELSE 'remain the same'\n    END AS sleep_points_comparison;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "sleep_points_comparison\ndecrease",
+    "ModelOutput": "decrease",
+    "Correct": true
+  }
+]

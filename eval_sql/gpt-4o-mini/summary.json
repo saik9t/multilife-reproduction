@@ -1,0 +1,472 @@
+{
+  "model": "gpt-4o-mini",
+  "data_root": "./gen_data_processed/sql_subset",
+  "acc": {
+    "overall": {
+      "total": 730,
+      "correct": 378,
+      "acc": 0.5178082191780822
+    },
+    "by_type": {
+      "AS": {
+        "total": 90,
+        "correct": 24,
+        "acc": 0.26666666666666666
+      },
+      "CQ": {
+        "total": 230,
+        "correct": 140,
+        "acc": 0.6086956521739131
+      },
+      "FQ": {
+        "total": 230,
+        "correct": 143,
+        "acc": 0.6217391304347826
+      },
+      "NC": {
+        "total": 90,
+        "correct": 33,
+        "acc": 0.36666666666666664
+      },
+      "TA": {
+        "total": 90,
+        "correct": 38,
+        "acc": 0.4222222222222222
+      }
+    },
+    "by_outer": {
+      "multi_user/M-C4/all_joint_multi": {
+        "total": 15,
+        "correct": 6,
+        "acc": 0.4
+      },
+      "multi_user/single/additional_sleep_multi": {
+        "total": 29,
+        "correct": 8,
+        "acc": 0.27586206896551724
+      },
+      "multi_user/single/food_meal_labels_multi": {
+        "total": 29,
+        "correct": 22,
+        "acc": 0.7586206896551724
+      },
+      "multi_user/single/heart_rate_variability_multi": {
+        "total": 29,
+        "correct": 21,
+        "acc": 0.7241379310344828
+      },
+      "multi_user/single/oxygen_sat_daily_multi": {
+        "total": 29,
+        "correct": 9,
+        "acc": 0.3103448275862069
+      },
+      "multi_user/single/pa_active_minutes_multi": {
+        "total": 29,
+        "correct": 11,
+        "acc": 0.3793103448275862
+      },
+      "multi_user/single/pa_daily_summary_multi": {
+        "total": 29,
+        "correct": 12,
+        "acc": 0.41379310344827586
+      },
+      "multi_user/single/pa_reports_multi": {
+        "total": 29,
+        "correct": 20,
+        "acc": 0.6896551724137931
+      },
+      "multi_user/single/respiratory_rate_multi": {
+        "total": 29,
+        "correct": 17,
+        "acc": 0.5862068965517241
+      },
+      "multi_user/single/skin_temp_sleep_nightly_multi": {
+        "total": 29,
+        "correct": 8,
+        "acc": 0.27586206896551724
+      },
+      "multi_user/single/stress_daily_scores_multi": {
+        "total": 29,
+        "correct": 14,
+        "acc": 0.4827586206896552
+      },
+      "single_user/M-C2/activity_food_joint": {
+        "total": 15,
+        "correct": 1,
+        "acc": 0.06666666666666667
+      },
+      "single_user/M-C2/activity_sleep_joint": {
+        "total": 15,
+        "correct": 6,
+        "acc": 0.4
+      },
+      "single_user/M-C2/emotion_food_joint": {
+        "total": 15,
+        "correct": 5,
+        "acc": 0.3333333333333333
+      },
+      "single_user/M-C2/food_sleep_joint": {
+        "total": 15,
+        "correct": 4,
+        "acc": 0.26666666666666666
+      },
+      "single_user/M-C2/pa_emotion_joint": {
+        "total": 15,
+        "correct": 6,
+        "acc": 0.4
+      },
+      "single_user/M-C2/sleep_stress_joint": {
+        "total": 15,
+        "correct": 9,
+        "acc": 0.6
+      },
+      "single_user/M-C4/all_joint": {
+        "total": 15,
+        "correct": 5,
+        "acc": 0.3333333333333333
+      },
+      "single_user/M-activity/physical_activity_joint": {
+        "total": 15,
+        "correct": 6,
+        "acc": 0.4
+      },
+      "single_user/M-sleep/sleep_joint": {
+        "total": 15,
+        "correct": 5,
+        "acc": 0.3333333333333333
+      },
+      "single_user/single/additional_sleep": {
+        "total": 29,
+        "correct": 10,
+        "acc": 0.3448275862068966
+      },
+      "single_user/single/food_meal_labels": {
+        "total": 29,
+        "correct": 18,
+        "acc": 0.6206896551724138
+      },
+      "single_user/single/heart_rate_variability": {
+        "total": 29,
+        "correct": 22,
+        "acc": 0.7586206896551724
+      },
+      "single_user/single/oxygen_sat_daily": {
+        "total": 29,
+        "correct": 16,
+        "acc": 0.5517241379310345
+      },
+      "single_user/single/pa_active_minutes": {
+        "total": 29,
+        "correct": 21,
+        "acc": 0.7241379310344828
+      },
+      "single_user/single/pa_daily_summary": {
+        "total": 29,
+        "correct": 20,
+        "acc": 0.6896551724137931
+      },
+      "single_user/single/pa_reports": {
+        "total": 29,
+        "correct": 11,
+        "acc": 0.3793103448275862
+      },
+      "single_user/single/respiratory_rate": {
+        "total": 29,
+        "correct": 22,
+        "acc": 0.7586206896551724
+      },
+      "single_user/single/skin_temp_sleep_nightly": {
+        "total": 29,
+        "correct": 21,
+        "acc": 0.7241379310344828
+      },
+      "single_user/single/stress_daily_scores": {
+        "total": 29,
+        "correct": 22,
+        "acc": 0.7586206896551724
+      }
+    },
+    "by_answer_kind": {
+      "yes_no": {
+        "total": 54,
+        "correct": 25,
+        "acc": 0.46296296296296297
+      },
+      "other": {
+        "total": 676,
+        "correct": 353,
+        "acc": 0.522189349112426
+      }
+    },
+    "by_answer_kind_on_success": {
+      "yes_no": {
+        "total": 34,
+        "correct": 25,
+        "acc": 0.7352941176470589
+      },
+      "other": {
+        "total": 606,
+        "correct": 353,
+        "acc": 0.5825082508250825
+      }
+    }
+  },
+  "sql": {
+    "overall": {
+      "attempted": 730,
+      "risky": 0,
+      "failed": 90,
+      "success": 640,
+      "success_rate": 0.8767123287671232
+    },
+    "by_type": {
+      "AS": {
+        "attempted": 90,
+        "risky": 0,
+        "failed": 11,
+        "success": 79,
+        "success_rate": 0.8777777777777778
+      },
+      "CQ": {
+        "attempted": 230,
+        "risky": 0,
+        "failed": 4,
+        "success": 226,
+        "success_rate": 0.9826086956521739
+      },
+      "FQ": {
+        "attempted": 230,
+        "risky": 0,
+        "failed": 35,
+        "success": 195,
+        "success_rate": 0.8478260869565217
+      },
+      "NC": {
+        "attempted": 90,
+        "risky": 0,
+        "failed": 18,
+        "success": 72,
+        "success_rate": 0.8
+      },
+      "TA": {
+        "attempted": 90,
+        "risky": 0,
+        "failed": 22,
+        "success": 68,
+        "success_rate": 0.7555555555555555
+      }
+    },
+    "by_outer": {
+      "multi_user/M-C4/all_joint_multi": {
+        "attempted": 15,
+        "risky": 0,
+        "failed": 5,
+        "success": 10,
+        "success_rate": 0.6666666666666666
+      },
+      "multi_user/single/additional_sleep_multi": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 10,
+        "success": 19,
+        "success_rate": 0.6551724137931034
+      },
+      "multi_user/single/food_meal_labels_multi": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 0,
+        "success": 29,
+        "success_rate": 1.0
+      },
+      "multi_user/single/heart_rate_variability_multi": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 2,
+        "success": 27,
+        "success_rate": 0.9310344827586207
+      },
+      "multi_user/single/oxygen_sat_daily_multi": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 8,
+        "success": 21,
+        "success_rate": 0.7241379310344828
+      },
+      "multi_user/single/pa_active_minutes_multi": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 4,
+        "success": 25,
+        "success_rate": 0.8620689655172413
+      },
+      "multi_user/single/pa_daily_summary_multi": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 3,
+        "success": 26,
+        "success_rate": 0.896551724137931
+      },
+      "multi_user/single/pa_reports_multi": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 3,
+        "success": 26,
+        "success_rate": 0.896551724137931
+      },
+      "multi_user/single/respiratory_rate_multi": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 8,
+        "success": 21,
+        "success_rate": 0.7241379310344828
+      },
+      "multi_user/single/skin_temp_sleep_nightly_multi": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 8,
+        "success": 21,
+        "success_rate": 0.7241379310344828
+      },
+      "multi_user/single/stress_daily_scores_multi": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 6,
+        "success": 23,
+        "success_rate": 0.7931034482758621
+      },
+      "single_user/M-C2/activity_food_joint": {
+        "attempted": 15,
+        "risky": 0,
+        "failed": 2,
+        "success": 13,
+        "success_rate": 0.8666666666666667
+      },
+      "single_user/M-C2/activity_sleep_joint": {
+        "attempted": 15,
+        "risky": 0,
+        "failed": 1,
+        "success": 14,
+        "success_rate": 0.9333333333333333
+      },
+      "single_user/M-C2/emotion_food_joint": {
+        "attempted": 15,
+        "risky": 0,
+        "failed": 4,
+        "success": 11,
+        "success_rate": 0.7333333333333333
+      },
+      "single_user/M-C2/food_sleep_joint": {
+        "attempted": 15,
+        "risky": 0,
+        "failed": 5,
+        "success": 10,
+        "success_rate": 0.6666666666666666
+      },
+      "single_user/M-C2/pa_emotion_joint": {
+        "attempted": 15,
+        "risky": 0,
+        "failed": 1,
+        "success": 14,
+        "success_rate": 0.9333333333333333
+      },
+      "single_user/M-C2/sleep_stress_joint": {
+        "attempted": 15,
+        "risky": 0,
+        "failed": 1,
+        "success": 14,
+        "success_rate": 0.9333333333333333
+      },
+      "single_user/M-C4/all_joint": {
+        "attempted": 15,
+        "risky": 0,
+        "failed": 6,
+        "success": 9,
+        "success_rate": 0.6
+      },
+      "single_user/M-activity/physical_activity_joint": {
+        "attempted": 15,
+        "risky": 0,
+        "failed": 1,
+        "success": 14,
+        "success_rate": 0.9333333333333333
+      },
+      "single_user/M-sleep/sleep_joint": {
+        "attempted": 15,
+        "risky": 0,
+        "failed": 3,
+        "success": 12,
+        "success_rate": 0.8
+      },
+      "single_user/single/additional_sleep": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 1,
+        "success": 28,
+        "success_rate": 0.9655172413793104
+      },
+      "single_user/single/food_meal_labels": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 2,
+        "success": 27,
+        "success_rate": 0.9310344827586207
+      },
+      "single_user/single/heart_rate_variability": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 1,
+        "success": 28,
+        "success_rate": 0.9655172413793104
+      },
+      "single_user/single/oxygen_sat_daily": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 0,
+        "success": 29,
+        "success_rate": 1.0
+      },
+      "single_user/single/pa_active_minutes": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 2,
+        "success": 27,
+        "success_rate": 0.9310344827586207
+      },
+      "single_user/single/pa_daily_summary": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 2,
+        "success": 27,
+        "success_rate": 0.9310344827586207
+      },
+      "single_user/single/pa_reports": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 0,
+        "success": 29,
+        "success_rate": 1.0
+      },
+      "single_user/single/respiratory_rate": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 1,
+        "success": 28,
+        "success_rate": 0.9655172413793104
+      },
+      "single_user/single/skin_temp_sleep_nightly": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 0,
+        "success": 29,
+        "success_rate": 1.0
+      },
+      "single_user/single/stress_daily_scores": {
+        "attempted": 29,
+        "risky": 0,
+        "failed": 0,
+        "success": 29,
+        "success_rate": 1.0
+      }
+    }
+  }
+}

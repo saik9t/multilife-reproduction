@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/oxygen_sat_daily",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/oxygen_sat_daily/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the average {lower_bound_oxygen_saturation} in oxygen_sat_daily of A4F_76957 during sleeping within one week, starting from 2022-05-22?\n\nSchema (DDL):\n```sql\nCREATE TABLE `oxygen_sat_daily` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `sleep_average_oxygen_saturation` DECIMAL(5,2),\n  `lower_bound_oxygen_saturation`   DECIMAL(5,2),\n  `upper_bound_oxygen_saturation`   DECIMAL(5,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the average {lower_bound_oxygen_saturation} in oxygen_sat_daily of A4F_76957 during sleeping within one week, starting from 2022-05-22?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "65.09",
+    "GeneratedSQL": "SELECT AVG(lower_bound_oxygen_saturation) AS average_lower_bound_oxygen_saturation \nFROM oxygen_sat_daily \nWHERE id = 'A4F_76957' \nAND DATE(ts) BETWEEN '2022-05-22' AND '2022-05-29';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "average_lower_bound_oxygen_saturation\n91.116667",
+    "ModelOutput": "91.12",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/oxygen_sat_daily",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/oxygen_sat_daily/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the average {lower_bound_oxygen_saturation} in oxygen_sat_daily of A4F_65695 during sleeping within one week, starting from 2022-05-19?\n\nSchema (DDL):\n```sql\nCREATE TABLE `oxygen_sat_daily` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `sleep_average_oxygen_saturation` DECIMAL(5,2),\n  `lower_bound_oxygen_saturation`   DECIMAL(5,2),\n  `upper_bound_oxygen_saturation`   DECIMAL(5,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the average {lower_bound_oxygen_saturation} in oxygen_sat_daily of A4F_65695 during sleeping within one week, starting from 2022-05-19?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "53.57",
+    "GeneratedSQL": "SELECT AVG(lower_bound_oxygen_saturation) AS average_lower_bound_oxygen_saturation \nFROM oxygen_sat_daily \nWHERE id = 'A4F_65695' \nAND DATE(ts) BETWEEN '2022-05-19' AND '2022-05-26';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "average_lower_bound_oxygen_saturation\n93.720000",
+    "ModelOutput": "93.72",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/oxygen_sat_daily",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/oxygen_sat_daily/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the average {upper_bound_oxygen_saturation} in oxygen_sat_daily of A4F_52749 during sleeping within one week, starting from 2022-06-09?\n\nSchema (DDL):\n```sql\nCREATE TABLE `oxygen_sat_daily` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `sleep_average_oxygen_saturation` DECIMAL(5,2),\n  `lower_bound_oxygen_saturation`   DECIMAL(5,2),\n  `upper_bound_oxygen_saturation`   DECIMAL(5,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the average {upper_bound_oxygen_saturation} in oxygen_sat_daily of A4F_52749 during sleeping within one week, starting from 2022-06-09?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "97.46",
+    "GeneratedSQL": "SELECT AVG(upper_bound_oxygen_saturation) AS average_upper_bound_oxygen_saturation \nFROM oxygen_sat_daily \nWHERE id = 'A4F_52749' \nAND DATE(ts) BETWEEN '2022-06-09' AND '2022-06-16';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "average_upper_bound_oxygen_saturation\n96.962500",
+    "ModelOutput": "96.96",
+    "Correct": false
+  }
+]

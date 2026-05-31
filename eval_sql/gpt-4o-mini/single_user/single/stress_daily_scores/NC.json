@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/stress_daily_scores",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/stress_daily_scores/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was the lowest {sleep_points} in stress_daily_scores recorded for A4F_77391 within one week and on which day did it occur, starting from 2022-05-22?\n\nSchema (DDL):\n```sql\nCREATE TABLE `stress_daily_scores` (\n  `id`                     VARCHAR(20) NOT NULL,\n  `ts`                     DATETIME    NOT NULL,\n  `stress_score`           SMALLINT UNSIGNED,\n  `sleep_points`           SMALLINT,\n  `responsiveness_points`  SMALLINT,\n  `exertion_points`        SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was the lowest {sleep_points} in stress_daily_scores recorded for A4F_77391 within one week and on which day did it occur, starting from 2022-05-22?\nOutput requirement: return 1 value(s); types (ordered): {else}",
+    "Answer": "20 on 2022-05-27",
+    "GeneratedSQL": "SELECT DATE(ts) AS day, MIN(sleep_points) AS lowest_sleep_points \nFROM stress_daily_scores \nWHERE id = 'A4F_77391' AND DATE(ts) BETWEEN '2022-05-22' AND '2022-05-29' \nGROUP BY DATE(ts) \nORDER BY lowest_sleep_points ASC \nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "day\tlowest_sleep_points\n2022-05-27\t20",
+    "ModelOutput": "2022-05-27",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/stress_daily_scores",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/stress_daily_scores/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow much higher was {stress_score} in stress_daily_scores for A4F_35752 on 2022-06-13 compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `stress_daily_scores` (\n  `id`                     VARCHAR(20) NOT NULL,\n  `ts`                     DATETIME    NOT NULL,\n  `stress_score`           SMALLINT UNSIGNED,\n  `sleep_points`           SMALLINT,\n  `responsiveness_points`  SMALLINT,\n  `exertion_points`        SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How much higher was {stress_score} in stress_daily_scores for A4F_35752 on 2022-06-13 compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "-66",
+    "GeneratedSQL": "SELECT \n    (SELECT stress_score FROM stress_daily_scores WHERE id = 'A4F_35752' AND DATE(ts) = '2022-06-13') - \n    (SELECT stress_score FROM stress_daily_scores WHERE id = 'A4F_35752' AND DATE(ts) = '2022-06-12') AS score_difference;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "score_difference\nNULL",
+    "ModelOutput": "NULL",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/stress_daily_scores",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/stress_daily_scores/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was the highest {stress_score} in stress_daily_scores recorded for A4F_10021 within one week and on which day did it occur, starting from 2022-06-09?\n\nSchema (DDL):\n```sql\nCREATE TABLE `stress_daily_scores` (\n  `id`                     VARCHAR(20) NOT NULL,\n  `ts`                     DATETIME    NOT NULL,\n  `stress_score`           SMALLINT UNSIGNED,\n  `sleep_points`           SMALLINT,\n  `responsiveness_points`  SMALLINT,\n  `exertion_points`        SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was the highest {stress_score} in stress_daily_scores recorded for A4F_10021 within one week and on which day did it occur, starting from 2022-06-09?\nOutput requirement: return 1 value(s); types (ordered): {else}",
+    "Answer": "87 on 2022-06-12",
+    "GeneratedSQL": "SELECT DATE(ts) AS day, MAX(stress_score) AS highest_stress_score \nFROM stress_daily_scores \nWHERE id = 'A4F_10021' AND DATE(ts) BETWEEN '2022-06-09' AND '2022-06-16' \nGROUP BY day \nORDER BY highest_stress_score DESC \nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "day\thighest_stress_score\n2022-06-12\t87",
+    "ModelOutput": "2022-06-12",
+    "Correct": false
+  }
+]

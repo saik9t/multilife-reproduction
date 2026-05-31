@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/stress_daily_scores_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/stress_daily_scores_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did the average sleep_points in stress_daily_scores across all users decrease, starting from 2022-05-23?\n\nSchema (DDL):\n```sql\n{'stress_daily_scores': 'CREATE TABLE `stress_daily_scores` (\\n  `id`                     VARCHAR(20) NOT NULL,\\n  `ts`                     DATETIME    NOT NULL,\\n  `stress_score`           SMALLINT UNSIGNED,\\n  `sleep_points`           SMALLINT,\\n  `responsiveness_points`  SMALLINT,\\n  `exertion_points`        SMALLINT,\\n  PRIMARY KEY (`id`,`ts`)\\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\\n-- Use DATE(ts) for day filtering.\\n'}\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did the average sleep_points in stress_daily_scores across all users decrease, starting from 2022-05-23?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "2",
+    "GeneratedSQL": "WITH daily_avg AS (\n    SELECT DATE(ts) AS date, AVG(sleep_points) AS avg_sleep_points\n    FROM stress_daily_scores\n    WHERE DATE(ts) >= '2022-05-23'\n    GROUP BY DATE(ts)\n),\nconsecutive_decrease AS (\n    SELECT date, avg_sleep_points,\n           LAG(avg_sleep_points) OVER (ORDER BY date) AS prev_avg_sleep_points\n    FROM daily_avg\n)\nSELECT COUNT(*) AS consecutive_days\nFROM consecutive_decrease\nWHERE avg_sleep_points < prev_avg_sleep_points;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_days\n11",
+    "ModelOutput": "11",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/stress_daily_scores_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/stress_daily_scores_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days was A4F_28771's sleep_points in stress_daily_scores higher than the average across all users, starting from 2022-06-13?\n\nSchema (DDL):\n```sql\n{'stress_daily_scores': 'CREATE TABLE `stress_daily_scores` (\\n  `id`                     VARCHAR(20) NOT NULL,\\n  `ts`                     DATETIME    NOT NULL,\\n  `stress_score`           SMALLINT UNSIGNED,\\n  `sleep_points`           SMALLINT,\\n  `responsiveness_points`  SMALLINT,\\n  `exertion_points`        SMALLINT,\\n  PRIMARY KEY (`id`,`ts`)\\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\\n-- Use DATE(ts) for day filtering.\\n'}\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days was A4F_28771's sleep_points in stress_daily_scores higher than the average across all users, starting from 2022-06-13?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "3",
+    "GeneratedSQL": "WITH avg_sleep_points AS (\n    SELECT AVG(sleep_points) AS avg_points\n    FROM stress_daily_scores\n    WHERE DATE(ts) >= '2022-06-13'\n),\nconsecutive_days AS (\n    SELECT DATE(ts) AS date, sleep_points\n    FROM stress_daily_scores\n    WHERE id = 'A4F_28771' AND DATE(ts) >= '2022-06-13' AND sleep_points > (SELECT avg_points FROM avg_sleep_points)\n)\nSELECT COUNT(*) AS consecutive_days_count\nFROM (\n    SELECT date, \n           @prev_date := IF(@prev_date IS NULL OR DATE_SUB(date, INTERVAL 1 DAY) <> @prev_date, date, @prev_date) AS prev_date,\n           @row_num := IF(@prev_date IS NULL OR DATE_SUB(date, INTERVAL 1 DAY) <> @prev_date, @row_num + 1, @row_num) AS row_num\n    FROM consecutive_days, (SELECT @prev_date := NULL, @row_num := 0) AS vars\n    ORDER BY date\n) AS grouped_days\nWHERE row_num = 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_days_count\n1",
+    "ModelOutput": "1",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/stress_daily_scores_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/stress_daily_scores_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days was A4F_67598's stress_score in stress_daily_scores higher than the average across all users, starting from 2022-06-01?\n\nSchema (DDL):\n```sql\n{'stress_daily_scores': 'CREATE TABLE `stress_daily_scores` (\\n  `id`                     VARCHAR(20) NOT NULL,\\n  `ts`                     DATETIME    NOT NULL,\\n  `stress_score`           SMALLINT UNSIGNED,\\n  `sleep_points`           SMALLINT,\\n  `responsiveness_points`  SMALLINT,\\n  `exertion_points`        SMALLINT,\\n  PRIMARY KEY (`id`,`ts`)\\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\\n-- Use DATE(ts) for day filtering.\\n'}\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days was A4F_67598's stress_score in stress_daily_scores higher than the average across all users, starting from 2022-06-01?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "2",
+    "GeneratedSQL": "WITH daily_scores AS (\n    SELECT DATE(ts) AS date, stress_score\n    FROM stress_daily_scores\n    WHERE id = 'A4F_67598' AND DATE(ts) >= '2022-06-01'\n),\naverage_scores AS (\n    SELECT DATE(ts) AS date, AVG(stress_score) AS avg_stress_score\n    FROM stress_daily_scores\n    GROUP BY DATE(ts)\n),\nconsecutive_days AS (\n    SELECT ds.date, ds.stress_score, avg.avg_stress_score,\n           @row_num := IF(@prev_score > avg.avg_stress_score, @row_num + 1, 1) AS consecutive_count,\n           @prev_score := ds.stress_score\n    FROM daily_scores ds\n    JOIN average_scores avg ON ds.date = avg.date\n    CROSS JOIN (SELECT @row_num := 0, @prev_score := NULL) AS vars\n    ORDER BY ds.date\n)\nSELECT MAX(consecutive_count) AS consecutive_days_above_average\nFROM consecutive_days\nWHERE stress_score > avg_stress_score;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_days_above_average\n2.0",
+    "ModelOutput": "2",
+    "Correct": true
+  }
+]

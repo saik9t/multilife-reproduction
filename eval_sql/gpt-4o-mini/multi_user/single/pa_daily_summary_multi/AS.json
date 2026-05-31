@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/pa_daily_summary_multi",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_daily_summary_multi/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhich user had the lowest distance_m in pa_daily_summary (converted to kilometers) within one week, starting from 2022-05-18?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) = 'YYYY-MM-DD' for date filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Which user had the lowest distance_m in pa_daily_summary (converted to kilometers) within one week, starting from 2022-05-18?\nOutput requirement: return 1 value(s); types (ordered): {uid}",
+    "Answer": "A4F_10021",
+    "GeneratedSQL": "SELECT id, MIN(distance_m / 1000) AS min_distance_km \nFROM pa_daily_summary \nWHERE DATE(ts) BETWEEN '2022-05-18' AND '2022-05-25' \nGROUP BY id \nORDER BY min_distance_km ASC \nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "id\tmin_distance_km\nA4F_69129\t18.720000",
+    "ModelOutput": "A4F_69129",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/pa_daily_summary_multi",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_daily_summary_multi/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was the median calories_kcal in pa_daily_summary across all users within one week, starting from 2022-06-05?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) = 'YYYY-MM-DD' for date filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was the median calories_kcal in pa_daily_summary across all users within one week, starting from 2022-06-05?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "6089.89",
+    "GeneratedSQL": "SELECT AVG(calories_kcal) AS median_calories_kcal FROM (\n    SELECT calories_kcal FROM pa_daily_summary \n    WHERE DATE(ts) BETWEEN '2022-06-05' AND '2022-06-12' \n    ORDER BY calories_kcal \n    LIMIT 2 - (SELECT COUNT(*) FROM pa_daily_summary WHERE DATE(ts) BETWEEN '2022-06-05' AND '2022-06-12') % 2 \n    OFFSET (SELECT (COUNT(*) - 1) / 2 FROM pa_daily_summary WHERE DATE(ts) BETWEEN '2022-06-05' AND '2022-06-12')\n) AS median_values;",
+    "SQLStatus": "failed",
+    "SQLError": "ProgrammingError args=(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '- (SELECT COUNT(*) FROM pa_daily_summary WHERE DATE(ts) BETWEEN '2022-06-05' AND' at line 5\") repr=ProgrammingError(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '- (SELECT COUNT(*) FROM pa_daily_summary WHERE DATE(ts) BETWEEN '2022-06-05' AND' at line 5\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/pa_daily_summary_multi",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_daily_summary_multi/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhich user had the lowest distance_m in pa_daily_summary (converted to kilometers) within one week, starting from 2022-06-11?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) = 'YYYY-MM-DD' for date filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Which user had the lowest distance_m in pa_daily_summary (converted to kilometers) within one week, starting from 2022-06-11?\nOutput requirement: return 1 value(s); types (ordered): {uid}",
+    "Answer": "A4F_10709",
+    "GeneratedSQL": "SELECT id, MIN(distance_m / 1000) AS min_distance_km \nFROM pa_daily_summary \nWHERE DATE(ts) BETWEEN '2022-06-11' AND '2022-06-18' \nGROUP BY id \nORDER BY min_distance_km ASC \nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "id\tmin_distance_km\nA4F_35752\t37.180000",
+    "ModelOutput": "A4F_35752",
+    "Correct": false
+  }
+]

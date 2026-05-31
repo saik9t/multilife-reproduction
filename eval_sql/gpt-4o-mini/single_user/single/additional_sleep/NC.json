@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/additional_sleep",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/additional_sleep/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was the highest {minutes_in_deep_sleep} in additional_sleep recorded for A4F_13504 within a week and on which day did it occur, starting from 2022-05-18?\n\nSchema (DDL):\n```sql\nCREATE TABLE `additional_sleep` (\n  `sleep_id`         BIGINT      NOT NULL,\n  `id`               VARCHAR(20) NOT NULL,\n  `start_time`       DATETIME,\n  `end_time`         DATETIME,\n  `duration_min`     SMALLINT,\n  `minutes_asleep`   SMALLINT,\n  `minutes_awake`    SMALLINT,\n  `minutes_in_bed`   SMALLINT,\n  `main_sleep`       TINYINT(1),\n  `minutes_in_deep_sleep`  SMALLINT,\n  `minutes_in_light_sleep` SMALLINT,\n  `minutes_in_rem`   SMALLINT,\n  PRIMARY KEY (`sleep_id`),\n  INDEX (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_time) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was the highest {minutes_in_deep_sleep} in additional_sleep recorded for A4F_13504 within a week and on which day did it occur, starting from 2022-05-18?\nOutput requirement: return 1 value(s); types (ordered): {else}",
+    "Answer": "91 on 2022-05-22",
+    "GeneratedSQL": "SELECT DATE(start_time) AS sleep_date, MAX(minutes_in_deep_sleep) AS max_deep_sleep\nFROM additional_sleep\nWHERE id = 'A4F_13504' AND DATE(start_time) BETWEEN '2022-05-18' AND '2022-05-25'\nGROUP BY sleep_date\nORDER BY max_deep_sleep DESC\nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "sleep_date\tmax_deep_sleep\n2022-05-20\t85",
+    "ModelOutput": "2022-05-20",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/additional_sleep",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/additional_sleep/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was the highest {minutes_in_rem} in additional_sleep recorded for A4F_25413 within a week and on which day did it occur, starting from 2022-06-07?\n\nSchema (DDL):\n```sql\nCREATE TABLE `additional_sleep` (\n  `sleep_id`         BIGINT      NOT NULL,\n  `id`               VARCHAR(20) NOT NULL,\n  `start_time`       DATETIME,\n  `end_time`         DATETIME,\n  `duration_min`     SMALLINT,\n  `minutes_asleep`   SMALLINT,\n  `minutes_awake`    SMALLINT,\n  `minutes_in_bed`   SMALLINT,\n  `main_sleep`       TINYINT(1),\n  `minutes_in_deep_sleep`  SMALLINT,\n  `minutes_in_light_sleep` SMALLINT,\n  `minutes_in_rem`   SMALLINT,\n  PRIMARY KEY (`sleep_id`),\n  INDEX (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_time) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was the highest {minutes_in_rem} in additional_sleep recorded for A4F_25413 within a week and on which day did it occur, starting from 2022-06-07?\nOutput requirement: return 1 value(s); types (ordered): {else}",
+    "Answer": "118 on 2022-06-11",
+    "GeneratedSQL": "SELECT DATE(start_time) AS sleep_date, MAX(minutes_in_rem) AS max_minutes_in_rem\nFROM additional_sleep\nWHERE id = 'A4F_25413' AND DATE(start_time) BETWEEN '2022-06-07' AND '2022-06-14'\nGROUP BY sleep_date\nORDER BY max_minutes_in_rem DESC\nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "sleep_date\tmax_minutes_in_rem\n2022-06-11\t118",
+    "ModelOutput": "2022-06-11",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/additional_sleep",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/additional_sleep/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many more {minutes_awake} in additional_sleep did A4F_13504 have on 2022-05-27 compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `additional_sleep` (\n  `sleep_id`         BIGINT      NOT NULL,\n  `id`               VARCHAR(20) NOT NULL,\n  `start_time`       DATETIME,\n  `end_time`         DATETIME,\n  `duration_min`     SMALLINT,\n  `minutes_asleep`   SMALLINT,\n  `minutes_awake`    SMALLINT,\n  `minutes_in_bed`   SMALLINT,\n  `main_sleep`       TINYINT(1),\n  `minutes_in_deep_sleep`  SMALLINT,\n  `minutes_in_light_sleep` SMALLINT,\n  `minutes_in_rem`   SMALLINT,\n  PRIMARY KEY (`sleep_id`),\n  INDEX (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_time) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many more {minutes_awake} in additional_sleep did A4F_13504 have on 2022-05-27 compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "-12",
+    "GeneratedSQL": "SELECT \n    (SELECT minutes_awake FROM additional_sleep WHERE id = 'A4F_13504' AND DATE(start_time) = '2022-05-27') - \n    (SELECT minutes_awake FROM additional_sleep WHERE id = 'A4F_13504' AND DATE(start_time) = '2022-05-26') AS additional_minutes_awake;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "additional_minutes_awake\n-12",
+    "ModelOutput": "-12",
+    "Correct": true
+  }
+]

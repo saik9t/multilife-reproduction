@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/stress_daily_scores_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/stress_daily_scores_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement that returns a single word 'yes' or 'no' for the question (use DATE(ts) for date filters). Output SQL only.\n\nQuestion:\nWas A4F_24211's sleep_points in stress_daily_scores higher than the average across all users on 2022-06-11?\n\nSchema (DDL):\n```sql\nCREATE TABLE `stress_daily_scores` (\n  `id`                     VARCHAR(20) NOT NULL,\n  `ts`                     DATETIME    NOT NULL,\n  `stress_score`           SMALLINT UNSIGNED,\n  `sleep_points`           SMALLINT,\n  `responsiveness_points`  SMALLINT,\n  `exertion_points`        SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question in {data}. Please answer strictly with one word: yes or no.\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "no",
+    "GeneratedSQL": "SELECT IF((SELECT sleep_points FROM stress_daily_scores WHERE id = 'A4F_24211' AND DATE(ts) = '2022-06-11') > (SELECT AVG(sleep_points) FROM stress_daily_scores WHERE DATE(ts) = '2022-06-11'), 'yes', 'no') AS result;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "result\nno",
+    "ModelOutput": "no",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/stress_daily_scores_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/stress_daily_scores_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement that returns a single word 'yes' or 'no' for the question (use DATE(ts) for date filters). Output SQL only.\n\nQuestion:\nWas A4F_89897's exertion_points in stress_daily_scores higher than the average across all users within one week, starting from 2022-06-02?\n\nSchema (DDL):\n```sql\nCREATE TABLE `stress_daily_scores` (\n  `id`                     VARCHAR(20) NOT NULL,\n  `ts`                     DATETIME    NOT NULL,\n  `stress_score`           SMALLINT UNSIGNED,\n  `sleep_points`           SMALLINT,\n  `responsiveness_points`  SMALLINT,\n  `exertion_points`        SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question in {data}. Please answer strictly with one word: yes or no.\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "no",
+    "GeneratedSQL": "SELECT IF((SELECT exertion_points FROM stress_daily_scores WHERE id = 'A4F_89897' AND DATE(ts) BETWEEN '2022-06-02' AND '2022-06-08') > (SELECT AVG(exertion_points) FROM stress_daily_scores WHERE DATE(ts) BETWEEN '2022-06-02' AND '2022-06-08'), 'yes', 'no') AS result;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "result\nno",
+    "ModelOutput": "no",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/stress_daily_scores_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/stress_daily_scores_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement that returns a single word 'yes' or 'no' for the question (use DATE(ts) for date filters). Output SQL only.\n\nQuestion:\nWas A4F_45863's exertion_points in stress_daily_scores lower than the median across all users on 2022-05-28?\n\nSchema (DDL):\n```sql\nCREATE TABLE `stress_daily_scores` (\n  `id`                     VARCHAR(20) NOT NULL,\n  `ts`                     DATETIME    NOT NULL,\n  `stress_score`           SMALLINT UNSIGNED,\n  `sleep_points`           SMALLINT,\n  `responsiveness_points`  SMALLINT,\n  `exertion_points`        SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question in {data}. Please answer strictly with one word: yes or no.\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "no",
+    "GeneratedSQL": "SELECT IF((SELECT exertion_points FROM stress_daily_scores WHERE id = 'A4F_45863' AND DATE(ts) = '2022-05-28') < (SELECT AVG(exertion_points) FROM (SELECT exertion_points FROM stress_daily_scores WHERE DATE(ts) = '2022-05-28') AS median_subquery), 'yes', 'no') AS result;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "result\nno",
+    "ModelOutput": "no",
+    "Correct": true
+  }
+]

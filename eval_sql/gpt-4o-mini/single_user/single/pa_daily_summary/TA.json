@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/pa_daily_summary",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_daily_summary/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nDid A4F_60429's distance on 2022-06-21 increase or decrease or remain the same, compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Did A4F_60429's distance on 2022-06-21 increase or decrease or remain the same, compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "increase",
+    "GeneratedSQL": "SELECT \n    CASE \n        WHEN (SELECT distance_m FROM pa_daily_summary WHERE id = 'A4F_60429' AND DATE(ts) = '2022-06-21') > \n             (SELECT distance_m FROM pa_daily_summary WHERE id = 'A4F_60429' AND DATE(ts) = '2022-06-20') THEN 'increase'\n        WHEN (SELECT distance_m FROM pa_daily_summary WHERE id = 'A4F_60429' AND DATE(ts) = '2022-06-21') < \n             (SELECT distance_m FROM pa_daily_summary WHERE id = 'A4F_60429' AND DATE(ts) = '2022-06-20') THEN 'decrease'\n        ELSE 'remain the same'\n    END AS distance_change\nFROM dual;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "distance_change\nincrease",
+    "ModelOutput": "increase",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/single/pa_daily_summary",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_daily_summary/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did A4F_22119's steps in pa_daily_summary increase, starting from 2022-05-25?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did A4F_22119's steps in pa_daily_summary increase, starting from 2022-05-25?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "2",
+    "GeneratedSQL": "SELECT COUNT(*) AS consecutive_days\nFROM (\n    SELECT DATE(ts) AS step_date, steps,\n           @prev_steps := IF(@prev_steps IS NULL, steps, @prev_steps) AS prev_steps,\n           @is_increasing := IF(steps > @prev_steps, 1, 0) AS is_increasing,\n           @prev_steps := steps\n    FROM pa_daily_summary\n    CROSS JOIN (SELECT @prev_steps := NULL, @is_increasing := 0) AS vars\n    WHERE id = 'A4F_22119' AND DATE(ts) >= '2022-05-25'\n    ORDER BY DATE(ts)\n) AS daily_steps\nWHERE is_increasing = 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_days\n3",
+    "ModelOutput": "3",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/single/pa_daily_summary",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_daily_summary/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did A4F_17705's steps in pa_daily_summary decrease, starting from 2022-05-18?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did A4F_17705's steps in pa_daily_summary decrease, starting from 2022-05-18?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "2",
+    "GeneratedSQL": "WITH step_decreases AS (\n    SELECT DATE(ts) AS date, steps,\n           LAG(steps) OVER (ORDER BY DATE(ts)) AS previous_steps\n    FROM pa_daily_summary\n    WHERE id = 'A4F_17705' AND DATE(ts) >= '2022-05-18'\n)\nSELECT COUNT(*) AS consecutive_days\nFROM step_decreases\nWHERE steps < previous_steps;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_days\n7",
+    "ModelOutput": "7",
+    "Correct": false
+  }
+]

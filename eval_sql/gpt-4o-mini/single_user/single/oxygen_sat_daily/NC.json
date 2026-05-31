@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/oxygen_sat_daily",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/oxygen_sat_daily/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was the highest {upper_bound_oxygen_saturation} in oxygen_sat_daily recorded for A4F_31649 during sleeping within a week and on which day did it occur, starting from 2022-06-15?\n\nSchema (DDL):\n```sql\nCREATE TABLE `oxygen_sat_daily` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `sleep_average_oxygen_saturation` DECIMAL(5,2),\n  `lower_bound_oxygen_saturation`   DECIMAL(5,2),\n  `upper_bound_oxygen_saturation`   DECIMAL(5,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was the highest {upper_bound_oxygen_saturation} in oxygen_sat_daily recorded for A4F_31649 during sleeping within a week and on which day did it occur, starting from 2022-06-15?\nOutput requirement: return 1 value(s); types (ordered): {else}",
+    "Answer": "96 on 2022-06-21",
+    "GeneratedSQL": "SELECT DATE(ts) AS sleep_date, MAX(upper_bound_oxygen_saturation) AS max_oxygen_saturation \nFROM oxygen_sat_daily \nWHERE id = 'A4F_31649' AND DATE(ts) BETWEEN '2022-06-15' AND DATE_ADD('2022-06-15', INTERVAL 6 DAY) \nGROUP BY sleep_date \nORDER BY max_oxygen_saturation DESC \nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "sleep_date\tmax_oxygen_saturation\n2022-06-21\t96.00",
+    "ModelOutput": "96.00, 2022-06-21",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/oxygen_sat_daily",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/oxygen_sat_daily/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was the lowest {sleep_average_oxygen_saturation} in oxygen_sat_daily recorded for A4F_17705 during sleeping within a week and on which day did it occur, starting from 2022-05-27?\n\nSchema (DDL):\n```sql\nCREATE TABLE `oxygen_sat_daily` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `sleep_average_oxygen_saturation` DECIMAL(5,2),\n  `lower_bound_oxygen_saturation`   DECIMAL(5,2),\n  `upper_bound_oxygen_saturation`   DECIMAL(5,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was the lowest {sleep_average_oxygen_saturation} in oxygen_sat_daily recorded for A4F_17705 during sleeping within a week and on which day did it occur, starting from 2022-05-27?\nOutput requirement: return 1 value(s); types (ordered): {else}",
+    "Answer": "94.7 on 2022-05-29",
+    "GeneratedSQL": "SELECT DATE(ts) AS day, MIN(sleep_average_oxygen_saturation) AS lowest_oxygen_saturation \nFROM oxygen_sat_daily \nWHERE id = 'A4F_17705' AND DATE(ts) BETWEEN '2022-05-27' AND '2022-06-03' \nGROUP BY DATE(ts) \nORDER BY lowest_oxygen_saturation ASC \nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "day\tlowest_oxygen_saturation\n2022-05-29\t94.70",
+    "ModelOutput": "94.70",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/oxygen_sat_daily",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/oxygen_sat_daily/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was the highest {upper_bound_oxygen_saturation} in oxygen_sat_daily recorded for A4F_79824 during sleeping within a week and on which day did it occur, starting from 2022-06-09?\n\nSchema (DDL):\n```sql\nCREATE TABLE `oxygen_sat_daily` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `sleep_average_oxygen_saturation` DECIMAL(5,2),\n  `lower_bound_oxygen_saturation`   DECIMAL(5,2),\n  `upper_bound_oxygen_saturation`   DECIMAL(5,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was the highest {upper_bound_oxygen_saturation} in oxygen_sat_daily recorded for A4F_79824 during sleeping within a week and on which day did it occur, starting from 2022-06-09?\nOutput requirement: return 1 value(s); types (ordered): {else}",
+    "Answer": "95.5 on 2022-06-14",
+    "GeneratedSQL": "SELECT DATE(ts) AS day, MAX(upper_bound_oxygen_saturation) AS highest_oxygen_saturation \nFROM oxygen_sat_daily \nWHERE id = 'A4F_79824' AND DATE(ts) BETWEEN '2022-06-09' AND DATE_ADD('2022-06-09', INTERVAL 6 DAY) \nAND sleep_average_oxygen_saturation IS NOT NULL \nGROUP BY day \nORDER BY highest_oxygen_saturation DESC \nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "day\thighest_oxygen_saturation\n2022-06-14\t95.50",
+    "ModelOutput": "95.50, 2022-06-14",
+    "Correct": false
+  }
+]

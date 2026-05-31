@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/pa_daily_summary",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_daily_summary/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the total distance covered by A4F_10660 within one week, starting from 2022-06-08?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the total distance covered by A4F_10660 within one week, starting from 2022-06-08?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "9393.36",
+    "GeneratedSQL": "SELECT SUM(distance_m) AS total_distance FROM pa_daily_summary WHERE id = 'A4F_10660' AND DATE(ts) BETWEEN '2022-06-08' AND '2022-06-15';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "total_distance\n9747220.00",
+    "ModelOutput": "9747220.00",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/pa_daily_summary",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_daily_summary/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the average steps in pa_daily_summary of A4F_50227 within one week, starting from 2022-06-07?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the average steps in pa_daily_summary of A4F_50227 within one week, starting from 2022-06-07?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "6505.14",
+    "GeneratedSQL": "SELECT AVG(steps) AS average_steps FROM pa_daily_summary WHERE id = 'A4F_50227' AND DATE(ts) BETWEEN '2022-06-07' AND '2022-06-14';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "average_steps\n6841.6250",
+    "ModelOutput": "6841.63",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/pa_daily_summary",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_daily_summary/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the total steps in pa_daily_summary of A4F_45118 within one week, starting from 2022-05-22?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the total steps in pa_daily_summary of A4F_45118 within one week, starting from 2022-05-22?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "92308",
+    "GeneratedSQL": "SELECT SUM(steps) AS total_steps FROM pa_daily_summary WHERE id = 'A4F_45118' AND DATE(ts) BETWEEN '2022-05-22' AND '2022-05-28';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "total_steps\n92308",
+    "ModelOutput": "92308",
+    "Correct": true
+  }
+]

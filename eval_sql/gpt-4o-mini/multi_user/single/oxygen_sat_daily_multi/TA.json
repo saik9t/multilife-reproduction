@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/oxygen_sat_daily_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/oxygen_sat_daily_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did the average sleep_average_oxygen_saturation in oxygen_sat_daily across all users increase, starting from 2022-06-17?\n\nSchema (DDL):\n```sql\nCREATE TABLE `oxygen_sat_daily` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `sleep_average_oxygen_saturation` DECIMAL(5,2),\n  `lower_bound_oxygen_saturation`   DECIMAL(5,2),\n  `upper_bound_oxygen_saturation`   DECIMAL(5,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did the average sleep_average_oxygen_saturation in oxygen_sat_daily across all users increase, starting from 2022-06-17?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "2",
+    "GeneratedSQL": "WITH daily_avg AS (\n    SELECT DATE(ts) AS date, AVG(sleep_average_oxygen_saturation) AS avg_oxygen_saturation\n    FROM oxygen_sat_daily\n    WHERE DATE(ts) >= '2022-06-17'\n    GROUP BY DATE(ts)\n),\nconsecutive_days AS (\n    SELECT date, avg_oxygen_saturation,\n           @prev_avg := @curr_avg AS prev_avg,\n           @curr_avg := avg_oxygen_saturation,\n           @is_increasing := IF(@curr_avg > @prev_avg, @is_increasing + 1, 1) AS streak\n    FROM daily_avg, (SELECT @curr_avg := NULL, @prev_avg := NULL, @is_increasing := 0) AS vars\n    ORDER BY date\n)\nSELECT MAX(streak) AS consecutive_increase_days\nFROM consecutive_days;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_increase_days\n2.0",
+    "ModelOutput": "2",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/oxygen_sat_daily_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/oxygen_sat_daily_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWas the average lower_bound_oxygen_saturation in oxygen_sat_daily across all users higher, lower, or the same within one week, starting from 2022-06-11, compared to the previous week?\n\nSchema (DDL):\n```sql\nCREATE TABLE `oxygen_sat_daily` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `sleep_average_oxygen_saturation` DECIMAL(5,2),\n  `lower_bound_oxygen_saturation`   DECIMAL(5,2),\n  `upper_bound_oxygen_saturation`   DECIMAL(5,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Was the average lower_bound_oxygen_saturation in oxygen_sat_daily across all users higher, lower, or the same within one week, starting from 2022-06-11, compared to the previous week?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "decrease",
+    "GeneratedSQL": "SELECT \n    CASE \n        WHEN AVG(CASE WHEN DATE(ts) BETWEEN '2022-06-11' AND '2022-06-17' THEN lower_bound_oxygen_saturation END) >\n             AVG(CASE WHEN DATE(ts) BETWEEN '2022-06-04' AND '2022-06-10' THEN lower_bound_oxygen_saturation END) \n        THEN 'higher'\n        WHEN AVG(CASE WHEN DATE(ts) BETWEEN '2022-06-11' AND '2022-06-17' THEN lower_bound_oxygen_saturation END) <\n             AVG(CASE WHEN DATE(ts) BETWEEN '2022-06-04' AND '2022-06-10' THEN lower_bound_oxygen_saturation END) \n        THEN 'lower'\n        ELSE 'same'\n    END AS comparison\nFROM oxygen_sat_daily;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "comparison\nhigher",
+    "ModelOutput": "higher",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/oxygen_sat_daily_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/oxygen_sat_daily_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days was A4F_17419's sleep_average_oxygen_saturation in oxygen_sat_daily lower than the average across all users, starting from 2022-06-06?\n\nSchema (DDL):\n```sql\nCREATE TABLE `oxygen_sat_daily` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `sleep_average_oxygen_saturation` DECIMAL(5,2),\n  `lower_bound_oxygen_saturation`   DECIMAL(5,2),\n  `upper_bound_oxygen_saturation`   DECIMAL(5,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days was A4F_17419's sleep_average_oxygen_saturation in oxygen_sat_daily lower than the average across all users, starting from 2022-06-06?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "2",
+    "GeneratedSQL": "SELECT COUNT(*) AS consecutive_days\nFROM (\n    SELECT DATE(ts) AS date, sleep_average_oxygen_saturation\n    FROM oxygen_sat_daily\n    WHERE id = 'A4F_17419' AND DATE(ts) >= '2022-06-06'\n) AS user_data\nWHERE sleep_average_oxygen_saturation < (\n    SELECT AVG(sleep_average_oxygen_saturation)\n    FROM oxygen_sat_daily\n) \nORDER BY date;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_days\n0",
+    "ModelOutput": "0",
+    "Correct": false
+  }
+]

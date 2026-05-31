@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/M-C2/pa_emotion_joint",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/pa_emotion_joint/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did A4F_92332's sedentary_minutes in pa_active_minutes decrease while his/her stress_score in stress_daily_scores also decreased, starting from 2022-06-08?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                        VARCHAR(20) NOT NULL,\n  `ts`                        DATETIME    NOT NULL,\n  `fat_burn_minutes`          SMALLINT UNSIGNED,\n  `cardio_minutes`            SMALLINT UNSIGNED,\n  `peak_minutes`              SMALLINT UNSIGNED,\n  `sedentary_minutes`         SMALLINT UNSIGNED,\n  `lightly_active_minutes`    SMALLINT UNSIGNED,\n  `moderately_active_minutes` SMALLINT UNSIGNED,\n  `very_active_minutes`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did A4F_92332's sedentary_minutes in pa_active_minutes decrease while his/her stress_score in stress_daily_scores also decreased, starting from 2022-06-08?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "2",
+    "GeneratedSQL": "WITH combined_data AS (\n    SELECT \n        DATE(pa.ts) AS date,\n        pa.sedentary_minutes,\n        ss.stress_score,\n        LAG(pa.sedentary_minutes) OVER (ORDER BY DATE(pa.ts)) AS prev_sedentary_minutes,\n        LAG(ss.stress_score) OVER (ORDER BY DATE(ss.ts)) AS prev_stress_score\n    FROM \n        pa_active_minutes pa\n    JOIN \n        stress_daily_scores ss ON pa.id = ss.id AND DATE(pa.ts) = DATE(ss.ts)\n    WHERE \n        pa.id = 'A4F_92332' AND DATE(pa.ts) >= '2022-06-08'\n)\nSELECT COUNT(*) AS consecutive_days\nFROM combined_data\nWHERE sedentary_minutes < prev_sedentary_minutes AND stress_score < prev_stress_score;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_days\n3",
+    "ModelOutput": "3",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/M-C2/pa_emotion_joint",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/pa_emotion_joint/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWas A4F_33497's stress_score in stress_daily_scores lower when his/her calories_minutes in pa_active_minutes on 2022-06-02 increased compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                        VARCHAR(20) NOT NULL,\n  `ts`                        DATETIME    NOT NULL,\n  `fat_burn_minutes`          SMALLINT UNSIGNED,\n  `cardio_minutes`            SMALLINT UNSIGNED,\n  `peak_minutes`              SMALLINT UNSIGNED,\n  `sedentary_minutes`         SMALLINT UNSIGNED,\n  `lightly_active_minutes`    SMALLINT UNSIGNED,\n  `moderately_active_minutes` SMALLINT UNSIGNED,\n  `very_active_minutes`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Was A4F_33497's stress_score in stress_daily_scores lower when his/her calories_minutes in pa_active_minutes on 2022-06-02 increased compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "no",
+    "GeneratedSQL": "SELECT \n    CASE \n        WHEN a.calories_minutes > COALESCE(LAG(a.calories_minutes) OVER (PARTITION BY a.id ORDER BY a.ts), 0) \n        AND s.stress_score < COALESCE(LAG(s.stress_score) OVER (PARTITION BY s.id ORDER BY s.ts), 0) \n        THEN 'Yes' \n        ELSE 'No' \n    END AS stress_score_lower\nFROM \n    (SELECT id, DATE(ts) AS date, SUM(fat_burn_minutes + cardio_minutes + peak_minutes + sedentary_minutes + lightly_active_minutes + moderately_active_minutes + very_active_minutes) AS calories_minutes\n     FROM pa_active_minutes \n     WHERE DATE(ts) IN ('2022-06-01', '2022-06-02') \n     GROUP BY id, DATE(ts)) a\nJOIN \n    (SELECT id, DATE(ts) AS date, AVG(stress_score) AS stress_score\n     FROM stress_daily_scores \n     WHERE DATE(ts) IN ('2022-06-01', '2022-06-02') \n     GROUP BY id, DATE(ts)) s \nON a.id = s.id AND a.date = '2022-06-02' AND s.date = '2022-06-02';",
+    "SQLStatus": "failed",
+    "SQLError": "OperationalError args=(1054, \"Unknown column 'a.ts' in 'window order by'\") repr=OperationalError(1054, \"Unknown column 'a.ts' in 'window order by'\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/M-C2/pa_emotion_joint",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/pa_emotion_joint/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did A4F_79824's sedentary_minutes in pa_active_minutes decrease while his/her stress_score in stress_daily_scores also decreased, starting from 2022-06-17?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                        VARCHAR(20) NOT NULL,\n  `ts`                        DATETIME    NOT NULL,\n  `fat_burn_minutes`          SMALLINT UNSIGNED,\n  `cardio_minutes`            SMALLINT UNSIGNED,\n  `peak_minutes`              SMALLINT UNSIGNED,\n  `sedentary_minutes`         SMALLINT UNSIGNED,\n  `lightly_active_minutes`    SMALLINT UNSIGNED,\n  `moderately_active_minutes` SMALLINT UNSIGNED,\n  `very_active_minutes`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did A4F_79824's sedentary_minutes in pa_active_minutes decrease while his/her stress_score in stress_daily_scores also decreased, starting from 2022-06-17?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "2",
+    "GeneratedSQL": "WITH combined_data AS (\n    SELECT \n        DATE(pa.ts) AS date,\n        pa.sedentary_minutes,\n        ss.stress_score,\n        LAG(pa.sedentary_minutes) OVER (ORDER BY DATE(pa.ts)) AS prev_sedentary_minutes,\n        LAG(ss.stress_score) OVER (ORDER BY DATE(ss.ts)) AS prev_stress_score\n    FROM \n        pa_active_minutes pa\n    JOIN \n        stress_daily_scores ss ON pa.id = ss.id AND DATE(pa.ts) = DATE(ss.ts)\n    WHERE \n        pa.id = 'A4F_79824' AND DATE(pa.ts) >= '2022-06-17'\n)\nSELECT COUNT(*) AS consecutive_days\nFROM combined_data\nWHERE sedentary_minutes < prev_sedentary_minutes AND stress_score < prev_stress_score;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_days\n0",
+    "ModelOutput": "0",
+    "Correct": false
+  }
+]

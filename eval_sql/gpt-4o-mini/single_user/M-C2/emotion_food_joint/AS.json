@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/M-C2/emotion_food_joint",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/emotion_food_joint/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWithin one week starting from 2022-06-10, what percentage of A4F_82994's meals were subcategory in food_meal_labels = 'Soft Drinks', and what was his/her average sleep_points in stress_daily_scores?\n\nSchema (DDL):\n```sql\nCREATE TABLE `food_meal_labels` (\n  `id`            VARCHAR(20)   NOT NULL,\n  `ts`            DATETIME      NOT NULL,\n  `image_id`      VARCHAR(100)  NOT NULL,\n  `category`      VARCHAR(128)  NOT NULL,\n  `subcategory`   VARCHAR(128)  NOT NULL,\n  `cooking_style` VARCHAR(128)  NOT NULL,\n  PRIMARY KEY (`id`,`ts`,`image_id`,`category`,`subcategory`,`cooking_style`),\n  KEY `idx_id_ts` (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Aggregation semantics:\n--   * Deduplicate within a meal (id, ts): same label counted once.\n--   * For daily/weekly \"times\", count DISTINCT meals (ts) that include the label.\n--   * Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Within one week starting from 2022-06-10, what percentage of A4F_82994's meals were subcategory in food_meal_labels = 'Soft Drinks', and what was his/her average sleep_points in stress_daily_scores?\nOutput requirement: return 2 value(s); types (ordered): {integer}; {real number (two decimal)}",
+    "Answer": "22; 15.71",
+    "GeneratedSQL": "SELECT \n    (SUM(subcategory_count) / COUNT(DISTINCT meal_date)) * 100 AS percentage_soft_drinks,\n    AVG(sleep_points) AS average_sleep_points\nFROM (\n    SELECT \n        DATE(f.ts) AS meal_date,\n        COUNT(DISTINCT f.ts) AS subcategory_count\n    FROM \n        food_meal_labels f\n    WHERE \n        f.id = 'A4F_82994' \n        AND f.subcategory = 'Soft Drinks' \n        AND DATE(f.ts) BETWEEN '2022-06-10' AND '2022-06-17'\n    GROUP BY \n        meal_date\n) AS meals\nJOIN (\n    SELECT \n        DATE(ts) AS score_date,\n        AVG(sleep_points) AS sleep_points\n    FROM \n        stress_daily_scores\n    WHERE \n        id = 'A4F_82994' \n        AND DATE(ts) BETWEEN '2022-06-10' AND '2022-06-17'\n    GROUP BY \n        score_date\n) AS scores ON meals.meal_date = scores.score_date;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "percentage_soft_drinks\taverage_sleep_points\n200.0000\t21.75000000",
+    "ModelOutput": "200, 21.75",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/M-C2/emotion_food_joint",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/emotion_food_joint/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWithin one week starting from 2022-05-25, what was A4F_43794's most frequent category in food_meal_labels and his/her average exertion_points in stress_daily_scores?\n\nSchema (DDL):\n```sql\nCREATE TABLE `food_meal_labels` (\n  `id`            VARCHAR(20)   NOT NULL,\n  `ts`            DATETIME      NOT NULL,\n  `image_id`      VARCHAR(100)  NOT NULL,\n  `category`      VARCHAR(128)  NOT NULL,\n  `subcategory`   VARCHAR(128)  NOT NULL,\n  `cooking_style` VARCHAR(128)  NOT NULL,\n  PRIMARY KEY (`id`,`ts`,`image_id`,`category`,`subcategory`,`cooking_style`),\n  KEY `idx_id_ts` (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Aggregation semantics:\n--   * Deduplicate within a meal (id, ts): same label counted once.\n--   * For daily/weekly \"times\", count DISTINCT meals (ts) that include the label.\n--   * Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Within one week starting from 2022-05-25, what was A4F_43794's most frequent category in food_meal_labels and his/her average exertion_points in stress_daily_scores?\nOutput requirement: return 2 value(s); types (ordered): {word}; {real number (two decimal)}",
+    "Answer": "Vegetables and Fruits; 32.43",
+    "GeneratedSQL": "SELECT category, AVG(exertion_points) AS average_exertion_points\nFROM (\n    SELECT DISTINCT f.category, s.exertion_points\n    FROM food_meal_labels f\n    JOIN stress_daily_scores s ON f.id = s.id AND DATE(f.ts) = DATE(s.ts)\n    WHERE f.id = 'A4F_43794' AND DATE(f.ts) BETWEEN '2022-05-25' AND '2022-06-01'\n) AS combined\nGROUP BY category\nORDER BY COUNT(*) DESC\nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "category\taverage_exertion_points\nDairy and Plant-Based Drinks\t32.5000",
+    "ModelOutput": "Dairy and Plant-Based Drinks; 32.50",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/M-C2/emotion_food_joint",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/emotion_food_joint/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWithin one week starting from 2022-06-17, what was A4F_97618's most frequent category in food_meal_labels and his/her average exertion_points in stress_daily_scores?\n\nSchema (DDL):\n```sql\nCREATE TABLE `food_meal_labels` (\n  `id`            VARCHAR(20)   NOT NULL,\n  `ts`            DATETIME      NOT NULL,\n  `image_id`      VARCHAR(100)  NOT NULL,\n  `category`      VARCHAR(128)  NOT NULL,\n  `subcategory`   VARCHAR(128)  NOT NULL,\n  `cooking_style` VARCHAR(128)  NOT NULL,\n  PRIMARY KEY (`id`,`ts`,`image_id`,`category`,`subcategory`,`cooking_style`),\n  KEY `idx_id_ts` (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Aggregation semantics:\n--   * Deduplicate within a meal (id, ts): same label counted once.\n--   * For daily/weekly \"times\", count DISTINCT meals (ts) that include the label.\n--   * Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Within one week starting from 2022-06-17, what was A4F_97618's most frequent category in food_meal_labels and his/her average exertion_points in stress_daily_scores?\nOutput requirement: return 2 value(s); types (ordered): {word}; {real number (two decimal)}",
+    "Answer": "Vegetables and Fruits; 33.86",
+    "GeneratedSQL": "SELECT category, AVG(exertion_points) AS average_exertion_points\nFROM (\n    SELECT DISTINCT f.category, s.exertion_points\n    FROM food_meal_labels f\n    JOIN stress_daily_scores s ON f.id = s.id AND DATE(f.ts) = DATE(s.ts)\n    WHERE f.id = 'A4F_97618' AND DATE(f.ts) BETWEEN '2022-06-17' AND '2022-06-24'\n) AS combined\nGROUP BY category\nORDER BY COUNT(*) DESC\nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "category\taverage_exertion_points\nVegetables and Fruits\t34.5000",
+    "ModelOutput": "Vegetables and Fruits; 34.50",
+    "Correct": false
+  }
+]

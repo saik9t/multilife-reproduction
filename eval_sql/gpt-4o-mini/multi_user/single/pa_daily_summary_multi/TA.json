@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/pa_daily_summary_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_daily_summary_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nDid the average steps in pa_daily_summary across all users increase, decrease, or remain the same on 2022-06-22 compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) = 'YYYY-MM-DD' for date filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Did the average steps in pa_daily_summary across all users increase, decrease, or remain the same on 2022-06-22 compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "decrease",
+    "GeneratedSQL": "SELECT \n    CASE \n        WHEN AVG(CASE WHEN DATE(ts) = '2022-06-22' THEN steps END) > AVG(CASE WHEN DATE(ts) = '2022-06-21' THEN steps END) THEN 'increase'\n        WHEN AVG(CASE WHEN DATE(ts) = '2022-06-22' THEN steps END) < AVG(CASE WHEN DATE(ts) = '2022-06-21' THEN steps END) THEN 'decrease'\n        ELSE 'same'\n    END AS steps_trend\nFROM pa_daily_summary;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "steps_trend\ndecrease",
+    "ModelOutput": "decrease",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/pa_daily_summary_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_daily_summary_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nDid the average steps in pa_daily_summary across all users increase, decrease, or remain the same on 2022-06-18 compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) = 'YYYY-MM-DD' for date filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Did the average steps in pa_daily_summary across all users increase, decrease, or remain the same on 2022-06-18 compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "increase",
+    "GeneratedSQL": "SELECT \n    CASE \n        WHEN AVG(CASE WHEN DATE(ts) = '2022-06-18' THEN steps END) > AVG(CASE WHEN DATE(ts) = '2022-06-17' THEN steps END) THEN 'increase'\n        WHEN AVG(CASE WHEN DATE(ts) = '2022-06-18' THEN steps END) < AVG(CASE WHEN DATE(ts) = '2022-06-17' THEN steps END) THEN 'decrease'\n        ELSE 'same'\n    END AS steps_trend\nFROM pa_daily_summary;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "steps_trend\nincrease",
+    "ModelOutput": "increase",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/pa_daily_summary_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_daily_summary_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did the average distance_m in pa_daily_summary (converted to kilometers) across all users increase, starting from 2022-06-07?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) = 'YYYY-MM-DD' for date filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did the average distance_m in pa_daily_summary (converted to kilometers) across all users increase, starting from 2022-06-07?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "2",
+    "GeneratedSQL": "WITH daily_avg_distance AS (\n    SELECT DATE(ts) AS date, AVG(distance_m) / 1000 AS avg_distance_km\n    FROM pa_daily_summary\n    WHERE DATE(ts) >= '2022-06-07'\n    GROUP BY DATE(ts)\n),\nconsecutive_days AS (\n    SELECT date, \n           avg_distance_km,\n           @prev_avg := @curr_avg AS prev_avg,\n           @curr_avg := avg_distance_km\n    FROM daily_avg_distance, (SELECT @curr_avg := NULL) AS init\n    ORDER BY date\n)\nSELECT COUNT(*) AS consecutive_days_count\nFROM consecutive_days\nWHERE avg_distance_km > prev_avg;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_days_count\n8",
+    "ModelOutput": "8",
+    "Correct": false
+  }
+]

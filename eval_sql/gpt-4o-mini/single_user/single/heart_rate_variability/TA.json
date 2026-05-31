@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/heart_rate_variability",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/heart_rate_variability/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nDid A4F_28771's {rmssd} in heart_rate_variability during sleeping on 2022-06-06 increase or decrease or remain the same, compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `heart_rate_variability` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `rmssd`    DECIMAL(6,2),\n  `nrem_hr`  DECIMAL(6,2),\n  `entropy`  DECIMAL(6,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Did A4F_28771's {rmssd} in heart_rate_variability during sleeping on 2022-06-06 increase or decrease or remain the same, compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "increase",
+    "GeneratedSQL": "SELECT \n    CASE \n        WHEN t1.rmssd > t2.rmssd THEN 'increase' \n        WHEN t1.rmssd < t2.rmssd THEN 'decrease' \n        ELSE 'remain the same' \n    END AS change\nFROM \n    (SELECT rmssd FROM heart_rate_variability WHERE id = 'A4F_28771' AND DATE(ts) = '2022-06-06' AND HOUR(ts) BETWEEN 0 AND 6) t1,\n    (SELECT rmssd FROM heart_rate_variability WHERE id = 'A4F_28771' AND DATE(ts) = '2022-06-05' AND HOUR(ts) BETWEEN 0 AND 6) t2;",
+    "SQLStatus": "failed",
+    "SQLError": "ProgrammingError args=(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'change\\nFROM \\n    (SELECT rmssd FROM heart_rate_variability WHERE id = 'A4F_28771' at line 6\") repr=ProgrammingError(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'change\\nFROM \\n    (SELECT rmssd FROM heart_rate_variability WHERE id = 'A4F_28771' at line 6\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/heart_rate_variability",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/heart_rate_variability/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did A4F_10660's {rmssd} in heart_rate_variability during sleeping increase, starting from 2022-06-14?\n\nSchema (DDL):\n```sql\nCREATE TABLE `heart_rate_variability` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `rmssd`    DECIMAL(6,2),\n  `nrem_hr`  DECIMAL(6,2),\n  `entropy`  DECIMAL(6,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did A4F_10660's {rmssd} in heart_rate_variability during sleeping increase, starting from 2022-06-14?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "3",
+    "GeneratedSQL": "SELECT COUNT(*) AS consecutive_days\nFROM (\n    SELECT DATE(ts) AS date, rmssd,\n           @prev_rmssd := IF(@prev_date = DATE(ts) - INTERVAL 1 DAY, @prev_rmssd, NULL) AS prev_rmssd,\n           @prev_date := DATE(ts) AS prev_date\n    FROM heart_rate_variability, (SELECT @prev_rmssd := NULL, @prev_date := NULL) AS vars\n    WHERE id = 'A4F_10660' AND DATE(ts) >= '2022-06-14'\n    ORDER BY DATE(ts)\n) AS subquery\nWHERE rmssd > prev_rmssd;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_days\n0",
+    "ModelOutput": "0",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/heart_rate_variability",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/heart_rate_variability/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nDid A4F_31033's {nrem_hr} in heart_rate_variability during sleeping on 2022-06-12 increase or decrease or remain the same, compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `heart_rate_variability` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `rmssd`    DECIMAL(6,2),\n  `nrem_hr`  DECIMAL(6,2),\n  `entropy`  DECIMAL(6,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Did A4F_31033's {nrem_hr} in heart_rate_variability during sleeping on 2022-06-12 increase or decrease or remain the same, compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "increase",
+    "GeneratedSQL": "SELECT \n    CASE \n        WHEN t1.nrem_hr > t2.nrem_hr THEN 'increase' \n        WHEN t1.nrem_hr < t2.nrem_hr THEN 'decrease' \n        ELSE 'remain the same' \n    END AS change_status\nFROM \n    (SELECT nrem_hr FROM heart_rate_variability WHERE id = 'A4F_31033' AND DATE(ts) = '2022-06-12' AND nrem_hr IS NOT NULL) t1,\n    (SELECT nrem_hr FROM heart_rate_variability WHERE id = 'A4F_31033' AND DATE(ts) = '2022-06-11' AND nrem_hr IS NOT NULL) t2;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "change_status\nincrease",
+    "ModelOutput": "increase",
+    "Correct": true
+  }
+]

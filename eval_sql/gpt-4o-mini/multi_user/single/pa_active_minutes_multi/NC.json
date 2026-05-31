@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/pa_active_minutes_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_active_minutes_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWas A4F_65060's sedentary_minutes in pa_active_minutes higher than the average across all users on 2022-05-30?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                         VARCHAR(20) NOT NULL,\n  `ts`                         DATETIME NOT NULL,\n  `fat_burn_minutes`           SMALLINT UNSIGNED,\n  `cardio_minutes`             SMALLINT UNSIGNED,\n  `peak_minutes`               SMALLINT UNSIGNED,\n  `sedentary_minutes`          SMALLINT UNSIGNED,\n  `lightly_active_minutes`     SMALLINT UNSIGNED,\n  `moderately_active_minutes`  SMALLINT UNSIGNED,\n  `very_active_minutes`        SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Was A4F_65060's sedentary_minutes in pa_active_minutes higher than the average across all users on 2022-05-30?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "Yes",
+    "GeneratedSQL": "SELECT \n    (SELECT sedentary_minutes FROM pa_active_minutes WHERE id = 'A4F_65060' AND DATE(ts) = '2022-05-30') > \n    (SELECT AVG(sedentary_minutes) FROM pa_active_minutes WHERE DATE(ts) = '2022-05-30') AS is_higher;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "is_higher\n1",
+    "ModelOutput": "yes",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/pa_active_minutes_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_active_minutes_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWere sedentary_minutes in pa_active_minutes greater than total active_minutes in pa_active_minutes across all users within one week, starting from 2022-05-19?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                         VARCHAR(20) NOT NULL,\n  `ts`                         DATETIME NOT NULL,\n  `fat_burn_minutes`           SMALLINT UNSIGNED,\n  `cardio_minutes`             SMALLINT UNSIGNED,\n  `peak_minutes`               SMALLINT UNSIGNED,\n  `sedentary_minutes`          SMALLINT UNSIGNED,\n  `lightly_active_minutes`     SMALLINT UNSIGNED,\n  `moderately_active_minutes`  SMALLINT UNSIGNED,\n  `very_active_minutes`        SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Were sedentary_minutes in pa_active_minutes greater than total active_minutes in pa_active_minutes across all users within one week, starting from 2022-05-19?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "Yes",
+    "GeneratedSQL": "SELECT SUM(sedentary_minutes) > SUM(fat_burn_minutes + cardio_minutes + peak_minutes + lightly_active_minutes + moderately_active_minutes + very_active_minutes) AS is_sedentary_greater\nFROM pa_active_minutes\nWHERE DATE(ts) BETWEEN '2022-05-19' AND '2022-05-25';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "is_sedentary_greater\n0",
+    "ModelOutput": "no",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/pa_active_minutes_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_active_minutes_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWas the average lightly_active_minutes in pa_active_minutes higher than the average moderately_active_minutes in pa_active_minutes across all users on 2022-05-30?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                         VARCHAR(20) NOT NULL,\n  `ts`                         DATETIME NOT NULL,\n  `fat_burn_minutes`           SMALLINT UNSIGNED,\n  `cardio_minutes`             SMALLINT UNSIGNED,\n  `peak_minutes`               SMALLINT UNSIGNED,\n  `sedentary_minutes`          SMALLINT UNSIGNED,\n  `lightly_active_minutes`     SMALLINT UNSIGNED,\n  `moderately_active_minutes`  SMALLINT UNSIGNED,\n  `very_active_minutes`        SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Was the average lightly_active_minutes in pa_active_minutes higher than the average moderately_active_minutes in pa_active_minutes across all users on 2022-05-30?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "Yes",
+    "GeneratedSQL": "SELECT AVG(lightly_active_minutes) > AVG(moderately_active_minutes) AS is_lightly_higher FROM pa_active_minutes WHERE DATE(ts) = '2022-05-30';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "is_lightly_higher\n1",
+    "ModelOutput": "yes",
+    "Correct": true
+  }
+]

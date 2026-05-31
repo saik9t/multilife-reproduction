@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/heart_rate_variability",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/heart_rate_variability/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the average {nrem_hr} in heart_rate_variability of A4F_48857 during sleeping within one week, starting from 2022-06-14?\n\nSchema (DDL):\n```sql\nCREATE TABLE `heart_rate_variability` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `rmssd`    DECIMAL(6,2),\n  `nrem_hr`  DECIMAL(6,2),\n  `entropy`  DECIMAL(6,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the average {nrem_hr} in heart_rate_variability of A4F_48857 during sleeping within one week, starting from 2022-06-14?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "63.76",
+    "GeneratedSQL": "SELECT AVG(nrem_hr) AS average_nrem_hr FROM heart_rate_variability WHERE id = 'A4F_48857' AND DATE(ts) BETWEEN '2022-06-14' AND '2022-06-21';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "average_nrem_hr\n63.492500",
+    "ModelOutput": "63.49",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/single/heart_rate_variability",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/heart_rate_variability/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the average {nrem_hr} in heart_rate_variability of A4F_33497 during sleeping within one week, starting from 2022-05-19?\n\nSchema (DDL):\n```sql\nCREATE TABLE `heart_rate_variability` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `rmssd`    DECIMAL(6,2),\n  `nrem_hr`  DECIMAL(6,2),\n  `entropy`  DECIMAL(6,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the average {nrem_hr} in heart_rate_variability of A4F_33497 during sleeping within one week, starting from 2022-05-19?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "58.37",
+    "GeneratedSQL": "SELECT AVG(nrem_hr) AS average_nrem_hr FROM heart_rate_variability WHERE id = 'A4F_33497' AND DATE(ts) BETWEEN '2022-05-19' AND '2022-05-26' AND nrem_hr IS NOT NULL;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "average_nrem_hr\n59.030000",
+    "ModelOutput": "59.03",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/heart_rate_variability",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/heart_rate_variability/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the average {nrem_hr} in heart_rate_variability of A4F_79824 during sleeping within one week, starting from 2022-06-04?\n\nSchema (DDL):\n```sql\nCREATE TABLE `heart_rate_variability` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `rmssd`    DECIMAL(6,2),\n  `nrem_hr`  DECIMAL(6,2),\n  `entropy`  DECIMAL(6,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the average {nrem_hr} in heart_rate_variability of A4F_79824 during sleeping within one week, starting from 2022-06-04?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "68.91",
+    "GeneratedSQL": "SELECT AVG(nrem_hr) AS average_nrem_hr FROM heart_rate_variability WHERE id = 'A4F_79824' AND DATE(ts) BETWEEN '2022-06-04' AND '2022-06-11' AND rmssd IS NOT NULL;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "average_nrem_hr\n69.171250",
+    "ModelOutput": "69.17",
+    "Correct": true
+  }
+]

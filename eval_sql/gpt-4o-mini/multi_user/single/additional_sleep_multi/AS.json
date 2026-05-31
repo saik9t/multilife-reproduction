@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/additional_sleep_multi",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/additional_sleep_multi/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was the median minutes_in_rem in additional_sleep across all users within one week, starting from 2022-06-09?\n\nSchema (DDL):\n```sql\nCREATE TABLE `additional_sleep` (\n  `sleep_id`         BIGINT      NOT NULL,\n  `id`               VARCHAR(20) NOT NULL,\n  `start_time`       DATETIME,\n  `end_time`         DATETIME,\n  `duration_min`     SMALLINT,\n  `minutes_asleep`   SMALLINT,\n  `minutes_awake`    SMALLINT,\n  `minutes_in_bed`   SMALLINT,\n  `main_sleep`       TINYINT(1),\n  `minutes_in_deep_sleep`  SMALLINT,\n  `minutes_in_light_sleep` SMALLINT,\n  `minutes_in_rem`   SMALLINT,\n  PRIMARY KEY (`sleep_id`),\n  INDEX (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_time) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was the median minutes_in_rem in additional_sleep across all users within one week, starting from 2022-06-09?\nOutput requirement: return 1 value(s); types (ordered): {else}",
+    "Answer": "529.5",
+    "GeneratedSQL": "SELECT AVG(median_minutes_in_rem) AS median_minutes_in_rem\nFROM (\n    SELECT minutes_in_rem, \n           @rownum := @rownum + 1 AS row_number,\n           @total_rows := @rownum\n    FROM additional_sleep, (SELECT @rownum := 0) r\n    WHERE DATE(start_time) BETWEEN '2022-06-09' AND '2022-06-16'\n    ORDER BY minutes_in_rem\n) AS ranked\nWHERE row_number IN (FLOOR((@total_rows + 1) / 2), FLOOR((@total_rows + 2) / 2));",
+    "SQLStatus": "failed",
+    "SQLError": "ProgrammingError args=(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'row_number,\\n           @total_rows := @rownum\\n    FROM additional_sleep, (SELECT' at line 4\") repr=ProgrammingError(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'row_number,\\n           @total_rows := @rownum\\n    FROM additional_sleep, (SELECT' at line 4\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/additional_sleep_multi",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/additional_sleep_multi/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was A4F_13368's rank among all users for minutes_asleep in additional_sleep within one week, starting from 2022-05-29?\n\nSchema (DDL):\n```sql\nCREATE TABLE `additional_sleep` (\n  `sleep_id`         BIGINT      NOT NULL,\n  `id`               VARCHAR(20) NOT NULL,\n  `start_time`       DATETIME,\n  `end_time`         DATETIME,\n  `duration_min`     SMALLINT,\n  `minutes_asleep`   SMALLINT,\n  `minutes_awake`    SMALLINT,\n  `minutes_in_bed`   SMALLINT,\n  `main_sleep`       TINYINT(1),\n  `minutes_in_deep_sleep`  SMALLINT,\n  `minutes_in_light_sleep` SMALLINT,\n  `minutes_in_rem`   SMALLINT,\n  PRIMARY KEY (`sleep_id`),\n  INDEX (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_time) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was A4F_13368's rank among all users for minutes_asleep in additional_sleep within one week, starting from 2022-05-29?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "34",
+    "GeneratedSQL": "SELECT COUNT(*) + 1 AS rank\nFROM additional_sleep\nWHERE DATE(start_time) BETWEEN '2022-05-29' AND '2022-06-05'\nAND minutes_asleep > (SELECT minutes_asleep \n                       FROM additional_sleep \n                       WHERE id = 'A4F_13368' \n                       AND DATE(start_time) BETWEEN '2022-05-29' AND '2022-06-05');",
+    "SQLStatus": "failed",
+    "SQLError": "ProgrammingError args=(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'rank\\nFROM additional_sleep\\nWHERE DATE(start_time) BETWEEN '2022-05-29' AND '2022' at line 1\") repr=ProgrammingError(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'rank\\nFROM additional_sleep\\nWHERE DATE(start_time) BETWEEN '2022-05-29' AND '2022' at line 1\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/additional_sleep_multi",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/additional_sleep_multi/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many minutes_asleep in additional_sleep more than the average across all users did A4F_97386 have within one week, starting from 2022-06-06?\n\nSchema (DDL):\n```sql\nCREATE TABLE `additional_sleep` (\n  `sleep_id`         BIGINT      NOT NULL,\n  `id`               VARCHAR(20) NOT NULL,\n  `start_time`       DATETIME,\n  `end_time`         DATETIME,\n  `duration_min`     SMALLINT,\n  `minutes_asleep`   SMALLINT,\n  `minutes_awake`    SMALLINT,\n  `minutes_in_bed`   SMALLINT,\n  `main_sleep`       TINYINT(1),\n  `minutes_in_deep_sleep`  SMALLINT,\n  `minutes_in_light_sleep` SMALLINT,\n  `minutes_in_rem`   SMALLINT,\n  PRIMARY KEY (`sleep_id`),\n  INDEX (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_time) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many minutes_asleep in additional_sleep more than the average across all users did A4F_97386 have within one week, starting from 2022-06-06?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "1137.67",
+    "GeneratedSQL": "SELECT \n    SUM(minutes_asleep) - (SELECT AVG(minutes_asleep) FROM additional_sleep WHERE DATE(start_time) BETWEEN '2022-06-06' AND '2022-06-13') AS additional_sleep_difference\nFROM \n    additional_sleep\nWHERE \n    id = 'A4F_97386' AND DATE(start_time) BETWEEN '2022-06-06' AND '2022-06-13';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "additional_sleep_difference\n3404.2073",
+    "ModelOutput": "3404.21",
+    "Correct": false
+  }
+]

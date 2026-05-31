@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/respiratory_rate",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/respiratory_rate/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement that returns a single word among {increase, decrease, same} describing the trend between the specified period and its previous period. Return exactly one row and one column containing only the word. Output SQL only.\n\nQuestion:\nDid A4F_10709's {rem_sleep_breathing_rate} in respiratory_rate during sleeping on 2022-06-04 increase or decrease or remain the same, compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `respiratory_rate` (\n  `id`                            VARCHAR(20)  NOT NULL,\n  `night_end`                     DATETIME     NOT NULL,\n  `full_sleep_breathing_rate`     DECIMAL(4,1),\n  `full_sleep_standard_deviation` DECIMAL(4,1),\n  `full_sleep_signal_to_noise`    DECIMAL(6,2),\n  `deep_sleep_breathing_rate`     DECIMAL(4,1),\n  `deep_sleep_standard_deviation` DECIMAL(4,1),\n  `deep_sleep_signal_to_noise`    DECIMAL(6,2),\n  `light_sleep_breathing_rate`    DECIMAL(4,1),\n  `light_sleep_standard_deviation`DECIMAL(4,1),\n  `light_sleep_signal_to_noise`   DECIMAL(6,2),\n  `rem_sleep_breathing_rate`      DECIMAL(4,1),\n  `rem_sleep_standard_deviation`  DECIMAL(4,1),\n  `rem_sleep_signal_to_noise`     DECIMAL(6,2),\n  PRIMARY KEY (`id`, `night_end`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(night_end) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question in {data}. Please answer strictly with one word: increase, decrease, or same.\nQuestion: Did A4F_10709's {rem_sleep_breathing_rate} in respiratory_rate during sleeping on 2022-06-04 increase or decrease or remain the same, compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "increase",
+    "GeneratedSQL": "SELECT CASE \n           WHEN current.rem_sleep_breathing_rate > previous.rem_sleep_breathing_rate THEN 'increase'\n           WHEN current.rem_sleep_breathing_rate < previous.rem_sleep_breathing_rate THEN 'decrease'\n           ELSE 'same'\n       END AS trend\nFROM (SELECT rem_sleep_breathing_rate FROM respiratory_rate WHERE id = 'A4F_10709' AND DATE(night_end) = '2022-06-04') AS current,\n     (SELECT rem_sleep_breathing_rate FROM respiratory_rate WHERE id = 'A4F_10709' AND DATE(night_end) = '2022-06-03') AS previous;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "trend\ndecrease\ndecrease",
+    "ModelOutput": "decrease",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/respiratory_rate",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/respiratory_rate/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement that returns a single word among {increase, decrease, same} describing the trend between the specified period and its previous period. Return exactly one row and one column containing only the word. Output SQL only.\n\nQuestion:\nDid A4F_29474's {deep_sleep_breathing_rate} in respiratory_rate during sleeping on 2022-06-11 increase or decrease or remain the same, compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `respiratory_rate` (\n  `id`                            VARCHAR(20)  NOT NULL,\n  `night_end`                     DATETIME     NOT NULL,\n  `full_sleep_breathing_rate`     DECIMAL(4,1),\n  `full_sleep_standard_deviation` DECIMAL(4,1),\n  `full_sleep_signal_to_noise`    DECIMAL(6,2),\n  `deep_sleep_breathing_rate`     DECIMAL(4,1),\n  `deep_sleep_standard_deviation` DECIMAL(4,1),\n  `deep_sleep_signal_to_noise`    DECIMAL(6,2),\n  `light_sleep_breathing_rate`    DECIMAL(4,1),\n  `light_sleep_standard_deviation`DECIMAL(4,1),\n  `light_sleep_signal_to_noise`   DECIMAL(6,2),\n  `rem_sleep_breathing_rate`      DECIMAL(4,1),\n  `rem_sleep_standard_deviation`  DECIMAL(4,1),\n  `rem_sleep_signal_to_noise`     DECIMAL(6,2),\n  PRIMARY KEY (`id`, `night_end`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(night_end) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question in {data}. Please answer strictly with one word: increase, decrease, or same.\nQuestion: Did A4F_29474's {deep_sleep_breathing_rate} in respiratory_rate during sleeping on 2022-06-11 increase or decrease or remain the same, compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "decrease",
+    "GeneratedSQL": "SELECT CASE \n           WHEN current.deep_sleep_breathing_rate > previous.deep_sleep_breathing_rate THEN 'increase'\n           WHEN current.deep_sleep_breathing_rate < previous.deep_sleep_breathing_rate THEN 'decrease'\n           ELSE 'same'\n       END AS trend\nFROM respiratory_rate AS current\nJOIN respiratory_rate AS previous ON current.id = previous.id \nWHERE DATE(current.night_end) = '2022-06-11' \n  AND DATE(previous.night_end) = '2022-06-10' \n  AND current.id = 'A4F_29474';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "trend\ndecrease",
+    "ModelOutput": "decrease",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/single/respiratory_rate",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/respiratory_rate/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement that returns a single word among {increase, decrease, same} describing the trend between the specified period and its previous period. Return exactly one row and one column containing only the word. Output SQL only.\n\nQuestion:\nDid A4F_43794's {light_sleep_signal_to_noise} in respiratory_rate during sleeping on 2022-06-04 increase or decrease or remain the same, compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `respiratory_rate` (\n  `id`                            VARCHAR(20)  NOT NULL,\n  `night_end`                     DATETIME     NOT NULL,\n  `full_sleep_breathing_rate`     DECIMAL(4,1),\n  `full_sleep_standard_deviation` DECIMAL(4,1),\n  `full_sleep_signal_to_noise`    DECIMAL(6,2),\n  `deep_sleep_breathing_rate`     DECIMAL(4,1),\n  `deep_sleep_standard_deviation` DECIMAL(4,1),\n  `deep_sleep_signal_to_noise`    DECIMAL(6,2),\n  `light_sleep_breathing_rate`    DECIMAL(4,1),\n  `light_sleep_standard_deviation`DECIMAL(4,1),\n  `light_sleep_signal_to_noise`   DECIMAL(6,2),\n  `rem_sleep_breathing_rate`      DECIMAL(4,1),\n  `rem_sleep_standard_deviation`  DECIMAL(4,1),\n  `rem_sleep_signal_to_noise`     DECIMAL(6,2),\n  PRIMARY KEY (`id`, `night_end`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(night_end) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question in {data}. Please answer strictly with one word: increase, decrease, or same.\nQuestion: Did A4F_43794's {light_sleep_signal_to_noise} in respiratory_rate during sleeping on 2022-06-04 increase or decrease or remain the same, compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "decrease",
+    "GeneratedSQL": "SELECT CASE \n           WHEN current.light_sleep_signal_to_noise > previous.light_sleep_signal_to_noise THEN 'increase'\n           WHEN current.light_sleep_signal_to_noise < previous.light_sleep_signal_to_noise THEN 'decrease'\n           ELSE 'same'\n       END AS trend\nFROM respiratory_rate AS current\nJOIN respiratory_rate AS previous ON current.id = previous.id \nWHERE DATE(current.night_end) = '2022-06-04' \n  AND DATE(previous.night_end) = '2022-06-03'\n  AND current.id = 'A4F_43794';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "trend\ndecrease",
+    "ModelOutput": "decrease",
+    "Correct": true
+  }
+]

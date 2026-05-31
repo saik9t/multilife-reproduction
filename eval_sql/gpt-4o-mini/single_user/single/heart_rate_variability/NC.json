@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/heart_rate_variability",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/heart_rate_variability/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was the highest {rmssd} in heart_rate_variability recorded for A4F_97618 during sleeping within a week and on which day did it occur, starting from 2022-06-13?\n\nSchema (DDL):\n```sql\nCREATE TABLE `heart_rate_variability` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `rmssd`    DECIMAL(6,2),\n  `nrem_hr`  DECIMAL(6,2),\n  `entropy`  DECIMAL(6,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was the highest {rmssd} in heart_rate_variability recorded for A4F_97618 during sleeping within a week and on which day did it occur, starting from 2022-06-13?\nOutput requirement: return 1 value(s); types (ordered): {else}",
+    "Answer": "68.16 on 2022-06-17",
+    "GeneratedSQL": "SELECT DATE(ts) AS sleep_date, MAX(rmssd) AS highest_rmssd\nFROM heart_rate_variability\nWHERE id = 'A4F_97618' AND DATE(ts) BETWEEN '2022-06-13' AND '2022-06-20' AND nrem_hr IS NOT NULL\nGROUP BY DATE(ts)\nORDER BY highest_rmssd DESC\nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "sleep_date\thighest_rmssd\n2022-06-20\t68.30",
+    "ModelOutput": "2022-06-20",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/heart_rate_variability",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/heart_rate_variability/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was the highest {entropy} in heart_rate_variability recorded for A4F_82994 during sleeping within a week and on which day did it occur, starting from 2022-06-13?\n\nSchema (DDL):\n```sql\nCREATE TABLE `heart_rate_variability` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `rmssd`    DECIMAL(6,2),\n  `nrem_hr`  DECIMAL(6,2),\n  `entropy`  DECIMAL(6,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was the highest {entropy} in heart_rate_variability recorded for A4F_82994 during sleeping within a week and on which day did it occur, starting from 2022-06-13?\nOutput requirement: return 1 value(s); types (ordered): {else}",
+    "Answer": "2.78 on 2022-06-15",
+    "GeneratedSQL": "SELECT DATE(ts) AS day, MAX(entropy) AS highest_entropy \nFROM heart_rate_variability \nWHERE id = 'A4F_82994' AND DATE(ts) BETWEEN '2022-06-13' AND '2022-06-20' \nAND nrem_hr IS NOT NULL \nGROUP BY DATE(ts) \nORDER BY highest_entropy DESC \nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "day\thighest_entropy\n2022-06-15\t2.78",
+    "ModelOutput": "2022-06-15",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/heart_rate_variability",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/heart_rate_variability/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was the highest {nrem_hr} in heart_rate_variability recorded for A4F_70804 during sleeping within a week and on which day did it occur, starting from 2022-06-09?\n\nSchema (DDL):\n```sql\nCREATE TABLE `heart_rate_variability` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `rmssd`    DECIMAL(6,2),\n  `nrem_hr`  DECIMAL(6,2),\n  `entropy`  DECIMAL(6,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was the highest {nrem_hr} in heart_rate_variability recorded for A4F_70804 during sleeping within a week and on which day did it occur, starting from 2022-06-09?\nOutput requirement: return 1 value(s); types (ordered): {else}",
+    "Answer": "61.56 on 2022-06-14",
+    "GeneratedSQL": "SELECT DATE(ts) AS sleep_date, MAX(nrem_hr) AS highest_nrem_hr \nFROM heart_rate_variability \nWHERE id = 'A4F_70804' AND DATE(ts) BETWEEN '2022-06-09' AND '2022-06-16' \nGROUP BY sleep_date \nORDER BY highest_nrem_hr DESC \nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "sleep_date\thighest_nrem_hr\n2022-06-14\t61.56",
+    "ModelOutput": "2022-06-14",
+    "Correct": false
+  }
+]

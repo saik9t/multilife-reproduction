@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/M-C2/pa_emotion_joint",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/pa_emotion_joint/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWithin one week starting from 2022-05-24, what day showed the largest gap between calories_kcal in pa_daily_summary being at its maximum and stress_score in stress_daily_scores being at its minimum?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_reports` (\n  `session_id`                      BIGINT AUTO_INCREMENT PRIMARY KEY,\n  `id`                              VARCHAR(20) NOT NULL,\n  `record_ts`                       DATETIME    NOT NULL,\n  `activity_name`                   VARCHAR(50),\n  `average_heart_rate`              DECIMAL(5,2),\n  `duration`                        INT UNSIGNED,\n  `active_duration`                 INT UNSIGNED,\n  `calories`                        DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  INDEX `idx_pa_reports_id_ts` (`id`,`record_ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(record_ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Within one week starting from 2022-05-24, what day showed the largest gap between calories_kcal in pa_daily_summary being at its maximum and stress_score in stress_daily_scores being at its minimum?\nOutput requirement: return 2 value(s); types (ordered): {else}; {else}",
+    "Answer": "391 on 2022-05-28; 0 on 2022-05-24",
+    "GeneratedSQL": "WITH daily_calories AS (\n    SELECT DATE(record_ts) AS report_date, MAX(calories) AS max_calories\n    FROM pa_reports\n    WHERE DATE(record_ts) BETWEEN '2022-05-24' AND '2022-05-30'\n    GROUP BY report_date\n),\ndaily_stress AS (\n    SELECT DATE(ts) AS stress_date, MIN(stress_score) AS min_stress\n    FROM stress_daily_scores\n    WHERE DATE(ts) BETWEEN '2022-05-24' AND '2022-05-30'\n    GROUP BY stress_date\n)\nSELECT dc.report_date, (dc.max_calories - ds.min_stress) AS calorie_stress_gap\nFROM daily_calories dc\nJOIN daily_stress ds ON dc.report_date = ds.stress_date\nORDER BY calorie_stress_gap DESC\nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "report_date\tcalorie_stress_gap\n2022-05-29\t2252.00",
+    "ModelOutput": "2022-05-29, 2252.00",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/M-C2/pa_emotion_joint",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/pa_emotion_joint/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was the highest steps in pa_daily_summary and the highest stress_score in stress_daily_scores recorded for A4F_32988 within one week starting from 2022-05-25, and on which days did they occur?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was the highest steps in pa_daily_summary and the highest stress_score in stress_daily_scores recorded for A4F_32988 within one week starting from 2022-05-25, and on which days did they occur?\nOutput requirement: return 2 value(s); types (ordered): {else}; {else}",
+    "Answer": "14425 on 2022-05-28; 0 on 2022-05-25",
+    "GeneratedSQL": "SELECT DATE(pa.ts) AS date, MAX(pa.steps) AS highest_steps, MAX(ss.stress_score) AS highest_stress_score\nFROM pa_daily_summary pa\nJOIN stress_daily_scores ss ON DATE(pa.ts) = DATE(ss.ts)\nWHERE pa.id = 'A4F_32988' AND DATE(pa.ts) BETWEEN '2022-05-25' AND '2022-06-01'\nGROUP BY DATE(pa.ts);",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "date\thighest_steps\thighest_stress_score\n2022-05-25\t12298\t90\n2022-05-26\t11364\t90\n2022-05-27\t7856\t86\n2022-05-28\t14425\t89\n2022-05-29\t2170\t84\n2022-05-30\t2063\t89\n2022-05-31\t12510\t94\n2022-06-01\t12372\t87",
+    "ModelOutput": "2170, 94",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/M-C2/pa_emotion_joint",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/pa_emotion_joint/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was the highest steps in pa_daily_summary and the highest stress_score in stress_daily_scores recorded for A4F_49219 within one week starting from 2022-05-21, and on which days did they occur?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was the highest steps in pa_daily_summary and the highest stress_score in stress_daily_scores recorded for A4F_49219 within one week starting from 2022-05-21, and on which days did they occur?\nOutput requirement: return 2 value(s); types (ordered): {else}; {else}",
+    "Answer": "11355 on 2022-05-22; 82 on 2022-05-22",
+    "GeneratedSQL": "WITH pa_summary AS (\n    SELECT DATE(ts) AS date, MAX(steps) AS max_steps\n    FROM pa_daily_summary\n    WHERE id = 'A4F_49219' AND ts >= '2022-05-21' AND ts < '2022-05-28'\n    GROUP BY DATE(ts)\n), stress_summary AS (\n    SELECT DATE(ts) AS date, MAX(stress_score) AS max_stress_score\n    FROM stress_daily_scores\n    WHERE id = 'A4F_49219' AND ts >= '2022-05-21' AND ts < '2022-05-28'\n    GROUP BY DATE(ts)\n)\nSELECT pa.date, pa.max_steps, ss.max_stress_score\nFROM pa_summary pa\nJOIN stress_summary ss ON pa.date = ss.date\nORDER BY pa.date;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "date\tmax_steps\tmax_stress_score\n2022-05-21\t8199\t75\n2022-05-22\t11355\t82\n2022-05-23\t2586\t77\n2022-05-25\t3752\t72\n2022-05-26\t8297\t75\n2022-05-27\t10032\t73",
+    "ModelOutput": "11355, 82",
+    "Correct": false
+  }
+]

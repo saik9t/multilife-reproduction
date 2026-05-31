@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/heart_rate_variability_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/heart_rate_variability_multi/NC.jsonl",
+    "Query_sql": "Given the MySQL schema below, write ONE SELECT that returns exactly one word: yes or no. Return exactly one row and one column. Output SQL only.\n\nQuestion:\nWas A4F_39976's weekly-average rmssd in heart_rate_variability lower than the average across all users within one week, starting from 2022-05-27T00:00:00?\n\nSchema (DDL):\n```sql\nCREATE TABLE `heart_rate_variability` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `rmssd`    DECIMAL(6,2),\n  `nrem_hr`  DECIMAL(6,2),\n  `entropy`  DECIMAL(6,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n```",
+    "Query_base": "You will be given the SQL result in {data}. Answer strictly with one word: yes or no.\nQuestion: Was A4F_39976's weekly-average rmssd in heart_rate_variability lower than the average across all users within one week, starting from 2022-05-27T00:00:00?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "yes",
+    "GeneratedSQL": "SELECT IF(AVG(rmssd) < (SELECT AVG(rmssd) FROM heart_rate_variability WHERE id = 'A4F_39976' AND ts >= '2022-05-27' AND ts < '2022-06-03'), 'yes', 'no') AS result FROM heart_rate_variability WHERE ts >= '2022-05-27' AND ts < '2022-06-03';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "result\nno",
+    "ModelOutput": "no",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/heart_rate_variability_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/heart_rate_variability_multi/NC.jsonl",
+    "Query_sql": "Given the MySQL schema below, write ONE SELECT that returns exactly one word: yes or no. Return exactly one row and one column. Output SQL only.\n\nQuestion:\nWas A4F_56296's weekly-average entropy in heart_rate_variability lower than the average across all users within one week, starting from 2022-06-03T00:00:00?\n\nSchema (DDL):\n```sql\nCREATE TABLE `heart_rate_variability` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `rmssd`    DECIMAL(6,2),\n  `nrem_hr`  DECIMAL(6,2),\n  `entropy`  DECIMAL(6,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n```",
+    "Query_base": "You will be given the SQL result in {data}. Answer strictly with one word: yes or no.\nQuestion: Was A4F_56296's weekly-average entropy in heart_rate_variability lower than the average across all users within one week, starting from 2022-06-03T00:00:00?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "no",
+    "GeneratedSQL": "SELECT IF((SELECT AVG(entropy) FROM heart_rate_variability WHERE DATE(ts) BETWEEN '2022-06-03' AND '2022-06-10') > (SELECT AVG(entropy) FROM heart_rate_variability WHERE id = 'A4F_56296' AND DATE(ts) BETWEEN '2022-06-03' AND '2022-06-10'), 'yes', 'no') AS result;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "result\nno",
+    "ModelOutput": "no",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/heart_rate_variability_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/heart_rate_variability_multi/NC.jsonl",
+    "Query_sql": "Given the MySQL schema below, write ONE SELECT that returns exactly one word: yes or no. Return exactly one row and one column. Output SQL only.\n\nQuestion:\nWas A4F_18098's weekly-average rmssd in heart_rate_variability higher than the average across all users within one week, starting from 2022-06-10T00:00:00?\n\nSchema (DDL):\n```sql\nCREATE TABLE `heart_rate_variability` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `rmssd`    DECIMAL(6,2),\n  `nrem_hr`  DECIMAL(6,2),\n  `entropy`  DECIMAL(6,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n```",
+    "Query_base": "You will be given the SQL result in {data}. Answer strictly with one word: yes or no.\nQuestion: Was A4F_18098's weekly-average rmssd in heart_rate_variability higher than the average across all users within one week, starting from 2022-06-10T00:00:00?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "no",
+    "GeneratedSQL": "SELECT IF((SELECT AVG(rmssd) FROM heart_rate_variability WHERE DATE(ts) BETWEEN '2022-06-10' AND '2022-06-16') < (SELECT AVG(rmssd) FROM heart_rate_variability WHERE id = 'A4F_18098' AND DATE(ts) BETWEEN '2022-06-10' AND '2022-06-16'), 'yes', 'no') AS result;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "result\nno",
+    "ModelOutput": "no",
+    "Correct": true
+  }
+]

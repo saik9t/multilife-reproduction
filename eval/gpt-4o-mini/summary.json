@@ -1,0 +1,157 @@
+{
+  "model": "gpt-4o-mini",
+  "data_root": "./gen_data_processed/simple_subset",
+  "overall": {
+    "total": 775,
+    "correct": 457,
+    "acc": 0.5896774193548387
+  },
+  "by_type": {
+    "AS": {
+      "total": 95,
+      "correct": 10,
+      "acc": 0.10526315789473684
+    },
+    "CQ": {
+      "total": 195,
+      "correct": 115,
+      "acc": 0.5897435897435898
+    },
+    "FQ": {
+      "total": 195,
+      "correct": 151,
+      "acc": 0.7743589743589744
+    },
+    "NC": {
+      "total": 95,
+      "correct": 46,
+      "acc": 0.4842105263157895
+    },
+    "TA": {
+      "total": 195,
+      "correct": 135,
+      "acc": 0.6923076923076923
+    }
+  },
+  "by_outer": {
+    "single_user/M-C2/activity_food_joint": {
+      "total": 25,
+      "correct": 10,
+      "acc": 0.4
+    },
+    "single_user/M-C2/activity_sleep_joint": {
+      "total": 25,
+      "correct": 10,
+      "acc": 0.4
+    },
+    "single_user/M-C2/emotion_food_joint": {
+      "total": 25,
+      "correct": 10,
+      "acc": 0.4
+    },
+    "single_user/M-C2/food_sleep_joint": {
+      "total": 25,
+      "correct": 8,
+      "acc": 0.32
+    },
+    "single_user/M-C2/pa_emotion_joint": {
+      "total": 25,
+      "correct": 12,
+      "acc": 0.48
+    },
+    "single_user/M-C2/sleep_stress_joint": {
+      "total": 25,
+      "correct": 15,
+      "acc": 0.6
+    },
+    "single_user/M-C4/all_joint": {
+      "total": 25,
+      "correct": 12,
+      "acc": 0.48
+    },
+    "single_user/M-activity/physical_activity_joint": {
+      "total": 25,
+      "correct": 10,
+      "acc": 0.4
+    },
+    "single_user/M-sleep/sleep_joint": {
+      "total": 25,
+      "correct": 9,
+      "acc": 0.36
+    },
+    "single_user/single/additional_sleep": {
+      "total": 55,
+      "correct": 33,
+      "acc": 0.6
+    },
+    "single_user/single/food_meal_labels": {
+      "total": 55,
+      "correct": 22,
+      "acc": 0.4
+    },
+    "single_user/single/heart_rate_variability": {
+      "total": 55,
+      "correct": 40,
+      "acc": 0.7272727272727273
+    },
+    "single_user/single/oxygen_sat_daily": {
+      "total": 55,
+      "correct": 33,
+      "acc": 0.6
+    },
+    "single_user/single/pa_active_minutes": {
+      "total": 55,
+      "correct": 42,
+      "acc": 0.7636363636363637
+    },
+    "single_user/single/pa_daily_summary": {
+      "total": 55,
+      "correct": 33,
+      "acc": 0.6
+    },
+    "single_user/single/pa_reports": {
+      "total": 55,
+      "correct": 38,
+      "acc": 0.6909090909090909
+    },
+    "single_user/single/respiratory_rate": {
+      "total": 55,
+      "correct": 42,
+      "acc": 0.7636363636363637
+    },
+    "single_user/single/skin_temp_sleep_nightly": {
+      "total": 55,
+      "correct": 35,
+      "acc": 0.6363636363636364
+    },
+    "single_user/single/stress_daily_scores": {
+      "total": 55,
+      "correct": 43,
+      "acc": 0.7818181818181819
+    }
+  },
+  "by_joint": {
+    "joint": {
+      "total": 225,
+      "correct": 96,
+      "acc": 0.4266666666666667
+    },
+    "non-joint": {
+      "total": 550,
+      "correct": 361,
+      "acc": 0.6563636363636364
+    }
+  },
+  "by_answer_kind": {
+    "yes_no": {
+      "total": 36,
+      "correct": 21,
+      "acc": 0.5833333333333334
+    },
+    "other": {
+      "total": 739,
+      "correct": 436,
+      "acc": 0.5899864682002707
+    }
+  }
+}

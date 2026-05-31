@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/heart_rate_variability_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/heart_rate_variability_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did the average rmssd in heart_rate_variability across all users increase, starting from 2022-05-29T00:00:00?\n\nSchema (DDL):\n```sql\nCREATE TABLE `heart_rate_variability` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `rmssd`    DECIMAL(6,2),\n  `nrem_hr`  DECIMAL(6,2),\n  `entropy`  DECIMAL(6,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did the average rmssd in heart_rate_variability across all users increase, starting from 2022-05-29T00:00:00?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "3",
+    "GeneratedSQL": "WITH daily_avg AS (\n    SELECT DATE(ts) AS date, AVG(rmssd) AS avg_rmssd\n    FROM heart_rate_variability\n    WHERE ts >= '2022-05-29'\n    GROUP BY DATE(ts)\n),\nconsecutive_days AS (\n    SELECT date, avg_rmssd,\n           @prev_avg := @curr_avg AS prev_avg,\n           @curr_avg := avg_rmssd\n    FROM daily_avg, (SELECT @curr_avg := NULL) AS init\n    ORDER BY date\n)\nSELECT COUNT(*) AS consecutive_days\nFROM consecutive_days\nWHERE avg_rmssd > prev_avg;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_days\n9",
+    "ModelOutput": "9",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/heart_rate_variability_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/heart_rate_variability_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days was A4F_48857's rmssd in heart_rate_variability lower than the average across all users, starting from 2022-06-12T00:00:00?\n\nSchema (DDL):\n```sql\nCREATE TABLE `heart_rate_variability` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `rmssd`    DECIMAL(6,2),\n  `nrem_hr`  DECIMAL(6,2),\n  `entropy`  DECIMAL(6,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days was A4F_48857's rmssd in heart_rate_variability lower than the average across all users, starting from 2022-06-12T00:00:00?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "10",
+    "GeneratedSQL": "WITH avg_rmssd AS (\n    SELECT AVG(rmssd) AS avg_rmssd\n    FROM heart_rate_variability\n),\nconsecutive_days AS (\n    SELECT DATE(ts) AS date, rmssd\n    FROM heart_rate_variability\n    WHERE id = 'A4F_48857' AND DATE(ts) >= '2022-06-12' AND rmssd < (SELECT avg_rmssd FROM avg_rmssd)\n)\nSELECT COUNT(*) AS consecutive_days_count\nFROM (\n    SELECT date, \n           @prev_date := IF(@prev_date IS NULL OR DATE_SUB(date, INTERVAL 1 DAY) = @prev_date, @prev_date := date, NULL) AS group_date\n    FROM consecutive_days, (SELECT @prev_date := NULL) AS init\n    ORDER BY date\n) AS grouped\nWHERE group_date IS NOT NULL;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_days_count\n10",
+    "ModelOutput": "10",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/heart_rate_variability_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/heart_rate_variability_multi/TA.jsonl",
+    "Query_sql": "Given the MySQL schema below, write ONE SELECT returning exactly one word among {increase, decrease, same}. Use DATE(ts) for periods. Return one row, one column. Output SQL only.\n\nQuestion:\nDid the average rmssd in heart_rate_variability across all users increase, decrease, or remain the same on 2022-06-01T00:00:00 compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `heart_rate_variability` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `rmssd`    DECIMAL(6,2),\n  `nrem_hr`  DECIMAL(6,2),\n  `entropy`  DECIMAL(6,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n```",
+    "Query_base": "You will be given the SQL result in {data}. Answer strictly with one word: increase, decrease, or same.\nQuestion: Did the average rmssd in heart_rate_variability across all users increase, decrease, or remain the same on 2022-06-01T00:00:00 compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "decrease",
+    "GeneratedSQL": "SELECT CASE \n           WHEN AVG(CASE WHEN DATE(ts) = '2022-06-01' THEN rmssd END) > AVG(CASE WHEN DATE(ts) = '2022-05-31' THEN rmssd END) THEN 'increase'\n           WHEN AVG(CASE WHEN DATE(ts) = '2022-06-01' THEN rmssd END) < AVG(CASE WHEN DATE(ts) = '2022-05-31' THEN rmssd END) THEN 'decrease'\n           ELSE 'same'\n       END AS result\nFROM heart_rate_variability;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "result\ndecrease",
+    "ModelOutput": "decrease",
+    "Correct": true
+  }
+]

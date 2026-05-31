@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/oxygen_sat_daily_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/oxygen_sat_daily_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhich metric in oxygen_sat_daily was higher on average across all users on 2022-05-21: sleep_average_oxygen_saturation, lower_bound_oxygen_saturation, or upper_bound_oxygen_saturation?\n\nSchema (DDL):\n```sql\nCREATE TABLE `oxygen_sat_daily` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `sleep_average_oxygen_saturation` DECIMAL(5,2),\n  `lower_bound_oxygen_saturation`   DECIMAL(5,2),\n  `upper_bound_oxygen_saturation`   DECIMAL(5,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Which metric in oxygen_sat_daily was higher on average across all users on 2022-05-21: sleep_average_oxygen_saturation, lower_bound_oxygen_saturation, or upper_bound_oxygen_saturation?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "upper_bound_oxygen_saturation",
+    "GeneratedSQL": "SELECT \n    CASE \n        WHEN AVG(sleep_average_oxygen_saturation) > AVG(lower_bound_oxygen_saturation) AND AVG(sleep_average_oxygen_saturation) > AVG(upper_bound_oxygen_saturation) THEN 'sleep_average_oxygen_saturation'\n        WHEN AVG(lower_bound_oxygen_saturation) > AVG(sleep_average_oxygen_saturation) AND AVG(lower_bound_oxygen_saturation) > AVG(upper_bound_oxygen_saturation) THEN 'lower_bound_oxygen_saturation'\n        ELSE 'upper_bound_oxygen_saturation'\n    END AS higher_metric\nFROM oxygen_sat_daily\nWHERE DATE(ts) = '2022-05-21';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "higher_metric\nupper_bound_oxygen_saturation",
+    "ModelOutput": "upper_bound_oxygen_saturation",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/oxygen_sat_daily_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/oxygen_sat_daily_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWas A4F_31033's lower_bound_oxygen_saturation in oxygen_sat_daily lower than the median across all users within one week, starting from 2022-06-07?\n\nSchema (DDL):\n```sql\nCREATE TABLE `oxygen_sat_daily` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `sleep_average_oxygen_saturation` DECIMAL(5,2),\n  `lower_bound_oxygen_saturation`   DECIMAL(5,2),\n  `upper_bound_oxygen_saturation`   DECIMAL(5,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Was A4F_31033's lower_bound_oxygen_saturation in oxygen_sat_daily lower than the median across all users within one week, starting from 2022-06-07?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "Yes",
+    "GeneratedSQL": "SELECT \n    CASE \n        WHEN (SELECT lower_bound_oxygen_saturation \n              FROM oxygen_sat_daily \n              WHERE id = 'A4F_31033' AND DATE(ts) BETWEEN '2022-06-07' AND '2022-06-14') < \n             (SELECT AVG(lower_bound_oxygen_saturation) \n              FROM (SELECT lower_bound_oxygen_saturation \n                    FROM oxygen_sat_daily \n                    WHERE DATE(ts) BETWEEN '2022-06-07' AND '2022-06-14') AS median_data) \n        THEN 'Yes' \n        ELSE 'No' \n    END AS is_lower_than_median;",
+    "SQLStatus": "failed",
+    "SQLError": "OperationalError args=(1242, 'Subquery returns more than 1 row') repr=OperationalError(1242, 'Subquery returns more than 1 row')",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/oxygen_sat_daily_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/oxygen_sat_daily_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWas A4F_84962's lower_bound_oxygen_saturation in oxygen_sat_daily lower than the median across all users within one week, starting from 2022-05-21?\n\nSchema (DDL):\n```sql\nCREATE TABLE `oxygen_sat_daily` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `sleep_average_oxygen_saturation` DECIMAL(5,2),\n  `lower_bound_oxygen_saturation`   DECIMAL(5,2),\n  `upper_bound_oxygen_saturation`   DECIMAL(5,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Was A4F_84962's lower_bound_oxygen_saturation in oxygen_sat_daily lower than the median across all users within one week, starting from 2022-05-21?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "Yes",
+    "GeneratedSQL": "SELECT \n    CASE \n        WHEN (SELECT lower_bound_oxygen_saturation FROM oxygen_sat_daily WHERE id = 'A4F_84962' AND DATE(ts) BETWEEN '2022-05-21' AND '2022-05-27') < \n             (SELECT AVG(lower_bound_oxygen_saturation) FROM (SELECT lower_bound_oxygen_saturation FROM oxygen_sat_daily WHERE DATE(ts) BETWEEN '2022-05-21' AND '2022-05-27') AS subquery) \n        THEN 'Lower' \n        ELSE 'Not Lower' \n    END AS comparison_result;",
+    "SQLStatus": "failed",
+    "SQLError": "OperationalError args=(1242, 'Subquery returns more than 1 row') repr=OperationalError(1242, 'Subquery returns more than 1 row')",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  }
+]

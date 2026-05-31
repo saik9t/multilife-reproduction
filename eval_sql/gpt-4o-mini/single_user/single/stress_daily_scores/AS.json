@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/stress_daily_scores",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/stress_daily_scores/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat percentage does {responsiveness_points} in stress_daily_scores of A4F_67598 account for in the daily stress score on 2022-05-25?\n\nSchema (DDL):\n```sql\nCREATE TABLE `stress_daily_scores` (\n  `id`                     VARCHAR(20) NOT NULL,\n  `ts`                     DATETIME    NOT NULL,\n  `stress_score`           SMALLINT UNSIGNED,\n  `sleep_points`           SMALLINT,\n  `responsiveness_points`  SMALLINT,\n  `exertion_points`        SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What percentage does {responsiveness_points} in stress_daily_scores of A4F_67598 account for in the daily stress score on 2022-05-25?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "28.09",
+    "GeneratedSQL": "SELECT (SUM(responsiveness_points) / SUM(stress_score)) * 100 AS percentage FROM stress_daily_scores WHERE DATE(ts) = '2022-05-25';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "percentage\n31.3800",
+    "ModelOutput": "31.38",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/stress_daily_scores",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/stress_daily_scores/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat percentage does {responsiveness_points} in stress_daily_scores of A4F_39976 account for in the daily stress score on 2022-06-16?\n\nSchema (DDL):\n```sql\nCREATE TABLE `stress_daily_scores` (\n  `id`                     VARCHAR(20) NOT NULL,\n  `ts`                     DATETIME    NOT NULL,\n  `stress_score`           SMALLINT UNSIGNED,\n  `sleep_points`           SMALLINT,\n  `responsiveness_points`  SMALLINT,\n  `exertion_points`        SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What percentage does {responsiveness_points} in stress_daily_scores of A4F_39976 account for in the daily stress score on 2022-06-16?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "29.27",
+    "GeneratedSQL": "SELECT (SUM(responsiveness_points) / SUM(stress_score)) * 100 AS percentage FROM stress_daily_scores WHERE DATE(ts) = '2022-06-16' AND id = 'A4F_39976';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "percentage\n29.2700",
+    "ModelOutput": "29.27",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/single/stress_daily_scores",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/stress_daily_scores/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the total {exertion_points} in stress_daily_scores of A4F_98040 within one week, starting from 2022-06-09?\n\nSchema (DDL):\n```sql\nCREATE TABLE `stress_daily_scores` (\n  `id`                     VARCHAR(20) NOT NULL,\n  `ts`                     DATETIME    NOT NULL,\n  `stress_score`           SMALLINT UNSIGNED,\n  `sleep_points`           SMALLINT,\n  `responsiveness_points`  SMALLINT,\n  `exertion_points`        SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the total {exertion_points} in stress_daily_scores of A4F_98040 within one week, starting from 2022-06-09?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "201",
+    "GeneratedSQL": "SELECT SUM(exertion_points) AS total_exertion_points FROM stress_daily_scores WHERE id = 'A4F_98040' AND DATE(ts) BETWEEN '2022-06-09' AND '2022-06-16';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "total_exertion_points\n231",
+    "ModelOutput": "231",
+    "Correct": false
+  }
+]

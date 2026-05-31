@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/pa_active_minutes",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_active_minutes/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the average {sedentary_minutes} in pa_active_minutes of A4F_32988 within one week, starting from 2022-05-20?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                         VARCHAR(20) NOT NULL,\n  `ts`                         DATETIME NOT NULL,\n  `fat_burn_minutes`           SMALLINT UNSIGNED,\n  `cardio_minutes`             SMALLINT UNSIGNED,\n  `peak_minutes`               SMALLINT UNSIGNED,\n  `sedentary_minutes`          SMALLINT UNSIGNED,\n  `lightly_active_minutes`     SMALLINT UNSIGNED,\n  `moderately_active_minutes`  SMALLINT UNSIGNED,\n  `very_active_minutes`        SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the average {sedentary_minutes} in pa_active_minutes of A4F_32988 within one week, starting from 2022-05-20?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "278.14",
+    "GeneratedSQL": "SELECT AVG(sedentary_minutes) AS average_sedentary_minutes \nFROM pa_active_minutes \nWHERE id = 'A4F_32988' AND DATE(ts) BETWEEN '2022-05-20' AND '2022-05-27';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "average_sedentary_minutes\n371.1667",
+    "ModelOutput": "371.17",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/pa_active_minutes",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_active_minutes/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat percentage of total active minutes did A4F_13504 spend in {very_active_minutes} in pa_active_minutes within a week, starting from 2022-05-24?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                         VARCHAR(20) NOT NULL,\n  `ts`                         DATETIME NOT NULL,\n  `fat_burn_minutes`           SMALLINT UNSIGNED,\n  `cardio_minutes`             SMALLINT UNSIGNED,\n  `peak_minutes`               SMALLINT UNSIGNED,\n  `sedentary_minutes`          SMALLINT UNSIGNED,\n  `lightly_active_minutes`     SMALLINT UNSIGNED,\n  `moderately_active_minutes`  SMALLINT UNSIGNED,\n  `very_active_minutes`        SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What percentage of total active minutes did A4F_13504 spend in {very_active_minutes} in pa_active_minutes within a week, starting from 2022-05-24?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "11.93",
+    "GeneratedSQL": "SELECT (SUM(very_active_minutes) / SUM(fat_burn_minutes + cardio_minutes + peak_minutes + sedentary_minutes + lightly_active_minutes + moderately_active_minutes + very_active_minutes)) * 100 AS percentage_very_active_minutes\nFROM pa_active_minutes\nWHERE id = 'A4F_13504' AND DATE(ts) BETWEEN '2022-05-24' AND '2022-05-30';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "percentage_very_active_minutes\n4.0900",
+    "ModelOutput": "4.09",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/pa_active_minutes",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_active_minutes/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the total {very_active_minutes} in pa_active_minutes of A4F_13368 within one week, starting from 2022-05-22?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                         VARCHAR(20) NOT NULL,\n  `ts`                         DATETIME NOT NULL,\n  `fat_burn_minutes`           SMALLINT UNSIGNED,\n  `cardio_minutes`             SMALLINT UNSIGNED,\n  `peak_minutes`               SMALLINT UNSIGNED,\n  `sedentary_minutes`          SMALLINT UNSIGNED,\n  `lightly_active_minutes`     SMALLINT UNSIGNED,\n  `moderately_active_minutes`  SMALLINT UNSIGNED,\n  `very_active_minutes`        SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the total {very_active_minutes} in pa_active_minutes of A4F_13368 within one week, starting from 2022-05-22?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "263",
+    "GeneratedSQL": "SELECT SUM(very_active_minutes) AS total_very_active_minutes \nFROM pa_active_minutes \nWHERE id = 'A4F_13368' AND DATE(ts) BETWEEN '2022-05-22' AND '2022-05-29';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "total_very_active_minutes\n263",
+    "ModelOutput": "263",
+    "Correct": true
+  }
+]

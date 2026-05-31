@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/additional_sleep",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/additional_sleep/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat percentage of total sleep did A4F_56718 spend in {minutes_in_rem} in additional_sleep within a week, starting from 2022-05-19?\n\nSchema (DDL):\n```sql\nCREATE TABLE `additional_sleep` (\n  `sleep_id`         BIGINT      NOT NULL,\n  `id`               VARCHAR(20) NOT NULL,\n  `start_time`       DATETIME,\n  `end_time`         DATETIME,\n  `duration_min`     SMALLINT,\n  `minutes_asleep`   SMALLINT,\n  `minutes_awake`    SMALLINT,\n  `minutes_in_bed`   SMALLINT,\n  `main_sleep`       TINYINT(1),\n  `minutes_in_deep_sleep`  SMALLINT,\n  `minutes_in_light_sleep` SMALLINT,\n  `minutes_in_rem`   SMALLINT,\n  PRIMARY KEY (`sleep_id`),\n  INDEX (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_time) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What percentage of total sleep did A4F_56718 spend in {minutes_in_rem} in additional_sleep within a week, starting from 2022-05-19?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "12.84",
+    "GeneratedSQL": "SELECT (SUM(minutes_in_rem) / SUM(duration_min)) * 100 AS percentage_rem_sleep\nFROM additional_sleep\nWHERE id = 'A4F_56718' AND DATE(start_time) BETWEEN '2022-05-19' AND DATE_ADD('2022-05-19', INTERVAL 6 DAY);",
+    "SQLStatus": "failed",
+    "SQLError": "OperationalError args=(1054, \"Unknown column 'duration_min' in 'field list'\") repr=OperationalError(1054, \"Unknown column 'duration_min' in 'field list'\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/additional_sleep",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/additional_sleep/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many {minutes_in_bed} in additional_sleep did A4F_32988 have on 2022-05-21?\n\nSchema (DDL):\n```sql\nCREATE TABLE `additional_sleep` (\n  `sleep_id`         BIGINT      NOT NULL,\n  `id`               VARCHAR(20) NOT NULL,\n  `start_time`       DATETIME,\n  `end_time`         DATETIME,\n  `duration_min`     SMALLINT,\n  `minutes_asleep`   SMALLINT,\n  `minutes_awake`    SMALLINT,\n  `minutes_in_bed`   SMALLINT,\n  `main_sleep`       TINYINT(1),\n  `minutes_in_deep_sleep`  SMALLINT,\n  `minutes_in_light_sleep` SMALLINT,\n  `minutes_in_rem`   SMALLINT,\n  PRIMARY KEY (`sleep_id`),\n  INDEX (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_time) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many {minutes_in_bed} in additional_sleep did A4F_32988 have on 2022-05-21?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "319",
+    "GeneratedSQL": "SELECT SUM(minutes_in_bed) AS total_minutes_in_bed FROM additional_sleep WHERE id = 'A4F_32988' AND DATE(start_time) = '2022-05-21';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "total_minutes_in_bed\n319",
+    "ModelOutput": "319",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/single/additional_sleep",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/additional_sleep/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many {minutes_in_bed} in additional_sleep did A4F_39976 have on 2022-06-15?\n\nSchema (DDL):\n```sql\nCREATE TABLE `additional_sleep` (\n  `sleep_id`         BIGINT      NOT NULL,\n  `id`               VARCHAR(20) NOT NULL,\n  `start_time`       DATETIME,\n  `end_time`         DATETIME,\n  `duration_min`     SMALLINT,\n  `minutes_asleep`   SMALLINT,\n  `minutes_awake`    SMALLINT,\n  `minutes_in_bed`   SMALLINT,\n  `main_sleep`       TINYINT(1),\n  `minutes_in_deep_sleep`  SMALLINT,\n  `minutes_in_light_sleep` SMALLINT,\n  `minutes_in_rem`   SMALLINT,\n  PRIMARY KEY (`sleep_id`),\n  INDEX (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_time) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many {minutes_in_bed} in additional_sleep did A4F_39976 have on 2022-06-15?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "268",
+    "GeneratedSQL": "SELECT SUM(minutes_in_bed) AS total_minutes_in_bed FROM additional_sleep WHERE id = 'A4F_39976' AND DATE(start_time) = '2022-06-15';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "total_minutes_in_bed\n268",
+    "ModelOutput": "268",
+    "Correct": true
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/food_meal_labels",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/food_meal_labels/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat percentage of meals were subcategory in food_meal_labels = 'Sauces and Condiments' for A4F_25413 within one week, starting from 2022-06-09?\n\nSchema (DDL):\n```sql\nCREATE TABLE `food_meal_labels` (\n  `id`            VARCHAR(20)   NOT NULL,\n  `ts`            DATETIME      NOT NULL,\n  `image_id`      VARCHAR(100)  NOT NULL,\n  `category`      VARCHAR(128)  NOT NULL,\n  `subcategory`   VARCHAR(128)  NOT NULL,\n  `cooking_style` VARCHAR(128)  NOT NULL,\n  PRIMARY KEY (`id`,`ts`,`image_id`,`category`,`subcategory`,`cooking_style`),\n  KEY `idx_id_ts` (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- IMPORTANT aggregation note (for SQL tasks):\n--   * Deduplicate within a meal: treat duplicates within the same (id, ts, label) as one.\n--   * For \"times\" counts across a day/week, count distinct meals (ts) that include the label.\n--     A common pattern: COUNT(DISTINCT CASE WHEN <label predicate> THEN CONCAT(id,'#',ts) END)\n-- Use DATE(ts) for day filtering and 7-day windows.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What percentage of meals were subcategory in food_meal_labels = 'Sauces and Condiments' for A4F_25413 within one week, starting from 2022-06-09?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "6.25",
+    "GeneratedSQL": "SELECT \n    (COUNT(DISTINCT CASE WHEN subcategory = 'Sauces and Condiments' THEN CONCAT(id, '#', ts) END) / COUNT(DISTINCT CONCAT(id, '#', ts))) * 100 AS percentage\nFROM \n    food_meal_labels\nWHERE \n    DATE(ts) BETWEEN '2022-06-09' AND '2022-06-16';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "percentage\n6.0300",
+    "ModelOutput": "6.03",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/food_meal_labels",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/food_meal_labels/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many times did A4F_91516 eat subcategory in food_meal_labels = 'Bread' within one week, starting from 2022-05-21?\n\nSchema (DDL):\n```sql\nCREATE TABLE `food_meal_labels` (\n  `id`            VARCHAR(20)   NOT NULL,\n  `ts`            DATETIME      NOT NULL,\n  `image_id`      VARCHAR(100)  NOT NULL,\n  `category`      VARCHAR(128)  NOT NULL,\n  `subcategory`   VARCHAR(128)  NOT NULL,\n  `cooking_style` VARCHAR(128)  NOT NULL,\n  PRIMARY KEY (`id`,`ts`,`image_id`,`category`,`subcategory`,`cooking_style`),\n  KEY `idx_id_ts` (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- IMPORTANT aggregation note (for SQL tasks):\n--   * Deduplicate within a meal: treat duplicates within the same (id, ts, label) as one.\n--   * For \"times\" counts across a day/week, count distinct meals (ts) that include the label.\n--     A common pattern: COUNT(DISTINCT CASE WHEN <label predicate> THEN CONCAT(id,'#',ts) END)\n-- Use DATE(ts) for day filtering and 7-day windows.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many times did A4F_91516 eat subcategory in food_meal_labels = 'Bread' within one week, starting from 2022-05-21?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "9",
+    "GeneratedSQL": "SELECT COUNT(DISTINCT CONCAT(id, '#', ts)) AS meal_count \nFROM food_meal_labels \nWHERE id = 'A4F_91516' \n  AND subcategory = 'Bread' \n  AND DATE(ts) BETWEEN '2022-05-21' AND '2022-05-27';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "meal_count\n9",
+    "ModelOutput": "9",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/single/food_meal_labels",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/single/food_meal_labels/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many times did A4F_40008 eat category in food_meal_labels = 'Traditional Mediterranean Dishes' within one week, starting from 2022-06-09?\n\nSchema (DDL):\n```sql\nCREATE TABLE `food_meal_labels` (\n  `id`            VARCHAR(20)   NOT NULL,\n  `ts`            DATETIME      NOT NULL,\n  `image_id`      VARCHAR(100)  NOT NULL,\n  `category`      VARCHAR(128)  NOT NULL,\n  `subcategory`   VARCHAR(128)  NOT NULL,\n  `cooking_style` VARCHAR(128)  NOT NULL,\n  PRIMARY KEY (`id`,`ts`,`image_id`,`category`,`subcategory`,`cooking_style`),\n  KEY `idx_id_ts` (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- IMPORTANT aggregation note (for SQL tasks):\n--   * Deduplicate within a meal: treat duplicates within the same (id, ts, label) as one.\n--   * For \"times\" counts across a day/week, count distinct meals (ts) that include the label.\n--     A common pattern: COUNT(DISTINCT CASE WHEN <label predicate> THEN CONCAT(id,'#',ts) END)\n-- Use DATE(ts) for day filtering and 7-day windows.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many times did A4F_40008 eat category in food_meal_labels = 'Traditional Mediterranean Dishes' within one week, starting from 2022-06-09?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "6",
+    "GeneratedSQL": "SELECT COUNT(DISTINCT CONCAT(id, '#', ts)) AS meal_count \nFROM food_meal_labels \nWHERE id = 'A4F_40008' \n  AND category = 'Traditional Mediterranean Dishes' \n  AND DATE(ts) BETWEEN '2022-06-09' AND '2022-06-16';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "meal_count\n7",
+    "ModelOutput": "7",
+    "Correct": true
+  }
+]

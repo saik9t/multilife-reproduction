@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/skin_temp_sleep_nightly_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/skin_temp_sleep_nightly_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did the average nightly_temperature in skin_temp_sleep_nightly across all users increase, starting from 2022-06-07?\n\nSchema (DDL):\n```sql\nCREATE TABLE `skin_temp_sleep_nightly` (\n  `id`                                       VARCHAR(20)  NOT NULL,\n  `start_sleep`                               DATETIME     NOT NULL,\n  `end_sleep`                                 DATETIME     NOT NULL,\n  `temperature_samples`                       INT UNSIGNED,\n  `nightly_temperature`                       DECIMAL(5,2),\n  `baseline_relative_sample_sum`              DECIMAL(10,4),\n  `baseline_relative_sample_sum_of_squares`   DECIMAL(12,4),\n  `baseline_relative_nightly_standard_deviation` DECIMAL(6,4),\n  `baseline_relative_sample_standard_deviation`  DECIMAL(6,4),\n  PRIMARY KEY (`id`,`start_sleep`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_sleep) for day filtering and 7-day windows [S .. S+6].\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did the average nightly_temperature in skin_temp_sleep_nightly across all users increase, starting from 2022-06-07?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "3",
+    "GeneratedSQL": "WITH daily_avg_temp AS (\n    SELECT DATE(start_sleep) AS sleep_date, AVG(nightly_temperature) AS avg_temp\n    FROM skin_temp_sleep_nightly\n    WHERE DATE(start_sleep) >= '2022-06-07'\n    GROUP BY sleep_date\n),\ntemp_increase AS (\n    SELECT sleep_date, avg_temp,\n           @prev_temp := IF(@prev_temp IS NULL, avg_temp, @prev_temp) AS prev_temp,\n           @is_increasing := IF(avg_temp > @prev_temp, @is_increasing + 1, 1) AS streak\n    FROM daily_avg_temp, (SELECT @prev_temp := NULL, @is_increasing := 0) AS vars\n    ORDER BY sleep_date\n)\nSELECT MAX(streak) AS consecutive_days_increase\nFROM temp_increase;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_days_increase\n15.0",
+    "ModelOutput": "15",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/skin_temp_sleep_nightly_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/skin_temp_sleep_nightly_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nDid the average nightly_temperature in skin_temp_sleep_nightly across all users increase, decrease, or remain the same on 2022-06-17 compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `skin_temp_sleep_nightly` (\n  `id`                                       VARCHAR(20)  NOT NULL,\n  `start_sleep`                               DATETIME     NOT NULL,\n  `end_sleep`                                 DATETIME     NOT NULL,\n  `temperature_samples`                       INT UNSIGNED,\n  `nightly_temperature`                       DECIMAL(5,2),\n  `baseline_relative_sample_sum`              DECIMAL(10,4),\n  `baseline_relative_sample_sum_of_squares`   DECIMAL(12,4),\n  `baseline_relative_nightly_standard_deviation` DECIMAL(6,4),\n  `baseline_relative_sample_standard_deviation`  DECIMAL(6,4),\n  PRIMARY KEY (`id`,`start_sleep`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_sleep) for day filtering and 7-day windows [S .. S+6].\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Did the average nightly_temperature in skin_temp_sleep_nightly across all users increase, decrease, or remain the same on 2022-06-17 compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "increase",
+    "GeneratedSQL": "SELECT \n    CASE \n        WHEN AVG(CASE WHEN DATE(start_sleep) = '2022-06-17' THEN nightly_temperature END) >\n             AVG(CASE WHEN DATE(start_sleep) = '2022-06-16' THEN nightly_temperature END) THEN 'increase'\n        WHEN AVG(CASE WHEN DATE(start_sleep) = '2022-06-17' THEN nightly_temperature END) <\n             AVG(CASE WHEN DATE(start_sleep) = '2022-06-16' THEN nightly_temperature END) THEN 'decrease'\n        ELSE 'remain the same'\n    END AS temperature_trend\nFROM skin_temp_sleep_nightly;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "temperature_trend\nincrease",
+    "ModelOutput": "increase",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/skin_temp_sleep_nightly_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/skin_temp_sleep_nightly_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days was A4F_67757's nightly_temperature in skin_temp_sleep_nightly lower than the average across all users, starting from 2022-06-07?\n\nSchema (DDL):\n```sql\nCREATE TABLE `skin_temp_sleep_nightly` (\n  `id`                                       VARCHAR(20)  NOT NULL,\n  `start_sleep`                               DATETIME     NOT NULL,\n  `end_sleep`                                 DATETIME     NOT NULL,\n  `temperature_samples`                       INT UNSIGNED,\n  `nightly_temperature`                       DECIMAL(5,2),\n  `baseline_relative_sample_sum`              DECIMAL(10,4),\n  `baseline_relative_sample_sum_of_squares`   DECIMAL(12,4),\n  `baseline_relative_nightly_standard_deviation` DECIMAL(6,4),\n  `baseline_relative_sample_standard_deviation`  DECIMAL(6,4),\n  PRIMARY KEY (`id`,`start_sleep`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_sleep) for day filtering and 7-day windows [S .. S+6].\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days was A4F_67757's nightly_temperature in skin_temp_sleep_nightly lower than the average across all users, starting from 2022-06-07?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "4",
+    "GeneratedSQL": "WITH avg_temp AS (\n    SELECT AVG(nightly_temperature) AS average_temp\n    FROM skin_temp_sleep_nightly\n),\nconsecutive_days AS (\n    SELECT DATE(start_sleep) AS sleep_date, nightly_temperature\n    FROM skin_temp_sleep_nightly\n    WHERE id = 'A4F_67757' AND DATE(start_sleep) >= '2022-06-07'\n    AND nightly_temperature < (SELECT average_temp FROM avg_temp)\n)\nSELECT COUNT(*) AS consecutive_days_count\nFROM (\n    SELECT sleep_date, \n           @prev_date := IF(@prev_date IS NULL OR DATE_SUB(sleep_date, INTERVAL 1 DAY) <> @prev_date, sleep_date, @prev_date) AS prev_date,\n           @count := IF(@prev_date IS NULL OR DATE_SUB(sleep_date, INTERVAL 1 DAY) <> @prev_date, 1, @count + 1) AS count\n    FROM consecutive_days, (SELECT @prev_date := NULL, @count := 0) AS vars\n    ORDER BY sleep_date\n) AS day_counts\nWHERE count = (SELECT MAX(count) FROM (\n    SELECT COUNT(*) AS count\n    FROM consecutive_days, (SELECT @prev_date := NULL, @count := 0) AS vars\n    ORDER BY sleep_date\n    GROUP BY DATE(start_sleep)\n) AS grouped_counts);",
+    "SQLStatus": "failed",
+    "SQLError": "ProgrammingError args=(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'GROUP BY DATE(start_sleep)\\n) AS grouped_counts)' at line 23\") repr=ProgrammingError(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'GROUP BY DATE(start_sleep)\\n) AS grouped_counts)' at line 23\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  }
+]

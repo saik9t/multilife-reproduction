@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.egg-info/
+
+# Environment & secrets
+.env
+*.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data (not included in repo)
+data/
+gen_data_processed/
+
+# Large intermediate outputs (keep summary.json only if needed)
+# eval/**/all_outputs.jsonl    # uncomment if file too large

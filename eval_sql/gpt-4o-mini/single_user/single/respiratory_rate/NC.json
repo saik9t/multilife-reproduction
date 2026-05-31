@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/respiratory_rate",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/respiratory_rate/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to find the extreme (max or min) single-day value of the specified column within the 7-day window (inclusive) and the date it occurred. If there are ties, pick the earliest date. Return exactly one row and two columns: value and date (YYYY-MM-DD). Output SQL only.\n\nQuestion:\nWhat was the lowest {light_sleep_breathing_rate} in respiratory_rate recorded for A4F_20573 during sleeping within a week and on which day did it occur, starting from 2022-06-04?\n\nSchema (DDL):\n```sql\nCREATE TABLE `respiratory_rate` (\n  `id`                            VARCHAR(20)  NOT NULL,\n  `night_end`                     DATETIME     NOT NULL,\n  `full_sleep_breathing_rate`     DECIMAL(4,1),\n  `full_sleep_standard_deviation` DECIMAL(4,1),\n  `full_sleep_signal_to_noise`    DECIMAL(6,2),\n  `deep_sleep_breathing_rate`     DECIMAL(4,1),\n  `deep_sleep_standard_deviation` DECIMAL(4,1),\n  `deep_sleep_signal_to_noise`    DECIMAL(6,2),\n  `light_sleep_breathing_rate`    DECIMAL(4,1),\n  `light_sleep_standard_deviation`DECIMAL(4,1),\n  `light_sleep_signal_to_noise`   DECIMAL(6,2),\n  `rem_sleep_breathing_rate`      DECIMAL(4,1),\n  `rem_sleep_standard_deviation`  DECIMAL(4,1),\n  `rem_sleep_signal_to_noise`     DECIMAL(6,2),\n  PRIMARY KEY (`id`, `night_end`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(night_end) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question in {data}, with two columns: value and date. Please answer strictly as 'N on YYYY-MM-DD' (Round N to two decimal places).\nQuestion: What was the lowest {light_sleep_breathing_rate} in respiratory_rate recorded for A4F_20573 during sleeping within a week and on which day did it occur, starting from 2022-06-04?\nOutput requirement: return 1 value(s); types (ordered): {else}",
+    "Answer": "15 on 2022-06-04",
+    "GeneratedSQL": "SELECT light_sleep_breathing_rate AS value, DATE(night_end) AS date \nFROM respiratory_rate \nWHERE id = 'A4F_20573' AND night_end BETWEEN '2022-06-04' AND '2022-06-11' \nORDER BY light_sleep_breathing_rate ASC, night_end ASC \nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "value\tdate\n15.0\t2022-06-04",
+    "ModelOutput": "15.00 on 2022-06-04",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/respiratory_rate",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/respiratory_rate/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to find the extreme (max or min) single-day value of the specified column within the 7-day window (inclusive) and the date it occurred. If there are ties, pick the earliest date. Return exactly one row and two columns: value and date (YYYY-MM-DD). Output SQL only.\n\nQuestion:\nWhat was the lowest {light_sleep_standard_deviation} in respiratory_rate recorded for A4F_91516 during sleeping within a week and on which day did it occur, starting from 2022-05-25?\n\nSchema (DDL):\n```sql\nCREATE TABLE `respiratory_rate` (\n  `id`                            VARCHAR(20)  NOT NULL,\n  `night_end`                     DATETIME     NOT NULL,\n  `full_sleep_breathing_rate`     DECIMAL(4,1),\n  `full_sleep_standard_deviation` DECIMAL(4,1),\n  `full_sleep_signal_to_noise`    DECIMAL(6,2),\n  `deep_sleep_breathing_rate`     DECIMAL(4,1),\n  `deep_sleep_standard_deviation` DECIMAL(4,1),\n  `deep_sleep_signal_to_noise`    DECIMAL(6,2),\n  `light_sleep_breathing_rate`    DECIMAL(4,1),\n  `light_sleep_standard_deviation`DECIMAL(4,1),\n  `light_sleep_signal_to_noise`   DECIMAL(6,2),\n  `rem_sleep_breathing_rate`      DECIMAL(4,1),\n  `rem_sleep_standard_deviation`  DECIMAL(4,1),\n  `rem_sleep_signal_to_noise`     DECIMAL(6,2),\n  PRIMARY KEY (`id`, `night_end`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(night_end) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question in {data}, with two columns: value and date. Please answer strictly as 'N on YYYY-MM-DD' (Round N to two decimal places).\nQuestion: What was the lowest {light_sleep_standard_deviation} in respiratory_rate recorded for A4F_91516 during sleeping within a week and on which day did it occur, starting from 2022-05-25?\nOutput requirement: return 1 value(s); types (ordered): {else}",
+    "Answer": "1.3 on 2022-05-25",
+    "GeneratedSQL": "SELECT MIN(light_sleep_standard_deviation) AS value, DATE(night_end) AS date\nFROM respiratory_rate\nWHERE id = 'A4F_91516' AND night_end BETWEEN '2022-05-25' AND '2022-06-01'\nGROUP BY DATE(night_end)\nORDER BY value ASC, date ASC\nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "value\tdate\n1.3\t2022-05-25",
+    "ModelOutput": "1.30 on 2022-05-25",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/respiratory_rate",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/respiratory_rate/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to find the extreme (max or min) single-day value of the specified column within the 7-day window (inclusive) and the date it occurred. If there are ties, pick the earliest date. Return exactly one row and two columns: value and date (YYYY-MM-DD). Output SQL only.\n\nQuestion:\nWhat was the lowest {full_sleep_signal_to_noise} in respiratory_rate recorded for A4F_86472 during sleeping within a week and on which day did it occur, starting from 2022-06-07?\n\nSchema (DDL):\n```sql\nCREATE TABLE `respiratory_rate` (\n  `id`                            VARCHAR(20)  NOT NULL,\n  `night_end`                     DATETIME     NOT NULL,\n  `full_sleep_breathing_rate`     DECIMAL(4,1),\n  `full_sleep_standard_deviation` DECIMAL(4,1),\n  `full_sleep_signal_to_noise`    DECIMAL(6,2),\n  `deep_sleep_breathing_rate`     DECIMAL(4,1),\n  `deep_sleep_standard_deviation` DECIMAL(4,1),\n  `deep_sleep_signal_to_noise`    DECIMAL(6,2),\n  `light_sleep_breathing_rate`    DECIMAL(4,1),\n  `light_sleep_standard_deviation`DECIMAL(4,1),\n  `light_sleep_signal_to_noise`   DECIMAL(6,2),\n  `rem_sleep_breathing_rate`      DECIMAL(4,1),\n  `rem_sleep_standard_deviation`  DECIMAL(4,1),\n  `rem_sleep_signal_to_noise`     DECIMAL(6,2),\n  PRIMARY KEY (`id`, `night_end`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(night_end) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question in {data}, with two columns: value and date. Please answer strictly as 'N on YYYY-MM-DD' (Round N to two decimal places).\nQuestion: What was the lowest {full_sleep_signal_to_noise} in respiratory_rate recorded for A4F_86472 during sleeping within a week and on which day did it occur, starting from 2022-06-07?\nOutput requirement: return 1 value(s); types (ordered): {else}",
+    "Answer": "4.73 on 2022-06-13",
+    "GeneratedSQL": "SELECT MIN(full_sleep_signal_to_noise) AS value, DATE(night_end) AS date\nFROM respiratory_rate\nWHERE id = 'A4F_86472' AND night_end BETWEEN '2022-06-07' AND '2022-06-14'\nGROUP BY DATE(night_end)\nORDER BY value ASC, date ASC\nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "value\tdate\n4.73\t2022-06-13",
+    "ModelOutput": "4.73 on 2022-06-13",
+    "Correct": true
+  }
+]

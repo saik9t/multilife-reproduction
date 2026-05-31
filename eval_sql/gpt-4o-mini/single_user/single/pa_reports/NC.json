@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/pa_reports",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_reports/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many more {calories} in pa_reports did A4F_89897 burn in Swim than in Walk on 2022-05-25?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_reports` (\n  `session_id`               BIGINT AUTO_INCREMENT PRIMARY KEY,\n  `id`                       VARCHAR(20) NOT NULL,\n  `record_ts`                DATETIME    NOT NULL,\n  `activity_name`            VARCHAR(50),\n  `average_heart_rate`       DECIMAL(5,2),\n  `duration`             INT UNSIGNED,\n  `active_duration`      INT UNSIGNED,\n  `calories`            DECIMAL(8,2),\n  `steps`                    INT UNSIGNED,\n\n  `sedentary_minutes`        SMALLINT UNSIGNED,\n  `lightly_active_minutes`   SMALLINT UNSIGNED,\n  `fairly_active_minutes`    SMALLINT UNSIGNED,\n  `very_active_minutes`      SMALLINT UNSIGNED,\n\n  `out_of_range_minutes`     SMALLINT UNSIGNED,\n  `out_of_range_minimum_heart_rate`      DECIMAL(5,2),\n  `out_of_range_maximum_heart_rate`      DECIMAL(5,2),\n  `out_of_range_calories`    DECIMAL(8,2),\n\n  `fat_burn_minutes`         SMALLINT UNSIGNED,\n  `fat_burn_minimum_heart_rate`          DECIMAL(5,2),\n  `fat_burn_maximum_heart_rate`          DECIMAL(5,2),\n  `fat_burn_calories`        DECIMAL(8,2),\n\n  `cardio_minutes`           SMALLINT UNSIGNED,\n  `cardio_minimum_heart_rate`            DECIMAL(5,2),\n  `cardio_maximum_heart_rate`            DECIMAL(5,2),\n  `cardio_calories`          DECIMAL(8,2),\n\n  `peak_minutes`             SMALLINT UNSIGNED,\n  `peak_minimum_heart_rate`              DECIMAL(5,2),\n  `peak_maximum_heart_rate`              DECIMAL(5,2),\n  `peak_calories`            DECIMAL(8,2),\n\n  INDEX `idx_pa_reports_id_ts` (`id`,`record_ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(record_ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many more {calories} in pa_reports did A4F_89897 burn in Swim than in Walk on 2022-05-25?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "78",
+    "GeneratedSQL": "SELECT \n    SUM(CASE WHEN activity_name = 'Swim' THEN calories ELSE 0 END) - \n    SUM(CASE WHEN activity_name = 'Walk' THEN calories ELSE 0 END) AS calorie_difference\nFROM \n    pa_reports\nWHERE \n    id = 'A4F_89897' AND \n    DATE(record_ts) = '2022-05-25';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "calorie_difference\n78.00",
+    "ModelOutput": "78",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/single/pa_reports",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_reports/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the highest {average_heart_rate} in pa_reports of A4F_94120 within a week starting from 2022-06-03, and on which day does it occur?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_reports` (\n  `session_id`               BIGINT AUTO_INCREMENT PRIMARY KEY,\n  `id`                       VARCHAR(20) NOT NULL,\n  `record_ts`                DATETIME    NOT NULL,\n  `activity_name`            VARCHAR(50),\n  `average_heart_rate`       DECIMAL(5,2),\n  `duration`             INT UNSIGNED,\n  `active_duration`      INT UNSIGNED,\n  `calories`            DECIMAL(8,2),\n  `steps`                    INT UNSIGNED,\n\n  `sedentary_minutes`        SMALLINT UNSIGNED,\n  `lightly_active_minutes`   SMALLINT UNSIGNED,\n  `fairly_active_minutes`    SMALLINT UNSIGNED,\n  `very_active_minutes`      SMALLINT UNSIGNED,\n\n  `out_of_range_minutes`     SMALLINT UNSIGNED,\n  `out_of_range_minimum_heart_rate`      DECIMAL(5,2),\n  `out_of_range_maximum_heart_rate`      DECIMAL(5,2),\n  `out_of_range_calories`    DECIMAL(8,2),\n\n  `fat_burn_minutes`         SMALLINT UNSIGNED,\n  `fat_burn_minimum_heart_rate`          DECIMAL(5,2),\n  `fat_burn_maximum_heart_rate`          DECIMAL(5,2),\n  `fat_burn_calories`        DECIMAL(8,2),\n\n  `cardio_minutes`           SMALLINT UNSIGNED,\n  `cardio_minimum_heart_rate`            DECIMAL(5,2),\n  `cardio_maximum_heart_rate`            DECIMAL(5,2),\n  `cardio_calories`          DECIMAL(8,2),\n\n  `peak_minutes`             SMALLINT UNSIGNED,\n  `peak_minimum_heart_rate`              DECIMAL(5,2),\n  `peak_maximum_heart_rate`              DECIMAL(5,2),\n  `peak_calories`            DECIMAL(8,2),\n\n  INDEX `idx_pa_reports_id_ts` (`id`,`record_ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(record_ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the highest {average_heart_rate} in pa_reports of A4F_94120 within a week starting from 2022-06-03, and on which day does it occur?\nOutput requirement: return 1 value(s); types (ordered): {else}",
+    "Answer": "98 on 2022-06-03",
+    "GeneratedSQL": "SELECT DATE(record_ts) AS report_date, AVG(average_heart_rate) AS avg_heart_rate\nFROM pa_reports\nWHERE id = 'A4F_94120' AND DATE(record_ts) BETWEEN '2022-06-03' AND '2022-06-10'\nGROUP BY report_date\nORDER BY avg_heart_rate DESC\nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "report_date\tavg_heart_rate\n2022-06-03\t98.000000",
+    "ModelOutput": "2022-06-03",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/pa_reports",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_reports/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many more {calories} in pa_reports did A4F_89897 burn in Walk than in Swim on 2022-05-25?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_reports` (\n  `session_id`               BIGINT AUTO_INCREMENT PRIMARY KEY,\n  `id`                       VARCHAR(20) NOT NULL,\n  `record_ts`                DATETIME    NOT NULL,\n  `activity_name`            VARCHAR(50),\n  `average_heart_rate`       DECIMAL(5,2),\n  `duration`             INT UNSIGNED,\n  `active_duration`      INT UNSIGNED,\n  `calories`            DECIMAL(8,2),\n  `steps`                    INT UNSIGNED,\n\n  `sedentary_minutes`        SMALLINT UNSIGNED,\n  `lightly_active_minutes`   SMALLINT UNSIGNED,\n  `fairly_active_minutes`    SMALLINT UNSIGNED,\n  `very_active_minutes`      SMALLINT UNSIGNED,\n\n  `out_of_range_minutes`     SMALLINT UNSIGNED,\n  `out_of_range_minimum_heart_rate`      DECIMAL(5,2),\n  `out_of_range_maximum_heart_rate`      DECIMAL(5,2),\n  `out_of_range_calories`    DECIMAL(8,2),\n\n  `fat_burn_minutes`         SMALLINT UNSIGNED,\n  `fat_burn_minimum_heart_rate`          DECIMAL(5,2),\n  `fat_burn_maximum_heart_rate`          DECIMAL(5,2),\n  `fat_burn_calories`        DECIMAL(8,2),\n\n  `cardio_minutes`           SMALLINT UNSIGNED,\n  `cardio_minimum_heart_rate`            DECIMAL(5,2),\n  `cardio_maximum_heart_rate`            DECIMAL(5,2),\n  `cardio_calories`          DECIMAL(8,2),\n\n  `peak_minutes`             SMALLINT UNSIGNED,\n  `peak_minimum_heart_rate`              DECIMAL(5,2),\n  `peak_maximum_heart_rate`              DECIMAL(5,2),\n  `peak_calories`            DECIMAL(8,2),\n\n  INDEX `idx_pa_reports_id_ts` (`id`,`record_ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(record_ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many more {calories} in pa_reports did A4F_89897 burn in Walk than in Swim on 2022-05-25?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "-78",
+    "GeneratedSQL": "SELECT \n    SUM(CASE WHEN activity_name = 'Walk' THEN calories ELSE 0 END) - \n    SUM(CASE WHEN activity_name = 'Swim' THEN calories ELSE 0 END) AS calorie_difference\nFROM \n    pa_reports\nWHERE \n    id = 'A4F_89897' AND \n    DATE(record_ts) = '2022-05-25';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "calorie_difference\n-78.00",
+    "ModelOutput": "-78",
+    "Correct": true
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/pa_active_minutes_multi",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_active_minutes_multi/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was A4F_42312's rank among all users for cardio_minutes in pa_active_minutes within one week, starting from 2022-05-27?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                         VARCHAR(20) NOT NULL,\n  `ts`                         DATETIME NOT NULL,\n  `fat_burn_minutes`           SMALLINT UNSIGNED,\n  `cardio_minutes`             SMALLINT UNSIGNED,\n  `peak_minutes`               SMALLINT UNSIGNED,\n  `sedentary_minutes`          SMALLINT UNSIGNED,\n  `lightly_active_minutes`     SMALLINT UNSIGNED,\n  `moderately_active_minutes`  SMALLINT UNSIGNED,\n  `very_active_minutes`        SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was A4F_42312's rank among all users for cardio_minutes in pa_active_minutes within one week, starting from 2022-05-27?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "17",
+    "GeneratedSQL": "SELECT COUNT(*) + 1 AS rank\nFROM pa_active_minutes\nWHERE DATE(ts) BETWEEN '2022-05-27' AND '2022-06-03' AND cardio_minutes > (\n    SELECT cardio_minutes\n    FROM pa_active_minutes\n    WHERE id = 'A4F_42312' AND DATE(ts) BETWEEN '2022-05-27' AND '2022-06-03'\n);",
+    "SQLStatus": "failed",
+    "SQLError": "ProgrammingError args=(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'rank\\nFROM pa_active_minutes\\nWHERE DATE(ts) BETWEEN '2022-05-27' AND '2022-06-03'' at line 1\") repr=ProgrammingError(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'rank\\nFROM pa_active_minutes\\nWHERE DATE(ts) BETWEEN '2022-05-27' AND '2022-06-03'' at line 1\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/pa_active_minutes_multi",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_active_minutes_multi/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was the average sedentary_minutes in pa_active_minutes across all users within one week, starting from 2022-05-26?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                         VARCHAR(20) NOT NULL,\n  `ts`                         DATETIME NOT NULL,\n  `fat_burn_minutes`           SMALLINT UNSIGNED,\n  `cardio_minutes`             SMALLINT UNSIGNED,\n  `peak_minutes`               SMALLINT UNSIGNED,\n  `sedentary_minutes`          SMALLINT UNSIGNED,\n  `lightly_active_minutes`     SMALLINT UNSIGNED,\n  `moderately_active_minutes`  SMALLINT UNSIGNED,\n  `very_active_minutes`        SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was the average sedentary_minutes in pa_active_minutes across all users within one week, starting from 2022-05-26?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "1012.78",
+    "GeneratedSQL": "SELECT AVG(sedentary_minutes) AS average_sedentary_minutes FROM pa_active_minutes WHERE DATE(ts) BETWEEN '2022-05-26' AND '2022-06-02';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "average_sedentary_minutes\n402.4551",
+    "ModelOutput": "402.46",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/pa_active_minutes_multi",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_active_minutes_multi/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many very_active_minutes in pa_active_minutes more than the average across all users did A4F_56718 have within one week, starting from 2022-05-25?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                         VARCHAR(20) NOT NULL,\n  `ts`                         DATETIME NOT NULL,\n  `fat_burn_minutes`           SMALLINT UNSIGNED,\n  `cardio_minutes`             SMALLINT UNSIGNED,\n  `peak_minutes`               SMALLINT UNSIGNED,\n  `sedentary_minutes`          SMALLINT UNSIGNED,\n  `lightly_active_minutes`     SMALLINT UNSIGNED,\n  `moderately_active_minutes`  SMALLINT UNSIGNED,\n  `very_active_minutes`        SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many very_active_minutes in pa_active_minutes more than the average across all users did A4F_56718 have within one week, starting from 2022-05-25?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "32",
+    "GeneratedSQL": "SELECT SUM(very_active_minutes) - (SELECT AVG(very_active_minutes) FROM pa_active_minutes WHERE DATE(ts) BETWEEN '2022-05-25' AND '2022-06-01') AS excess_active_minutes\nFROM pa_active_minutes\nWHERE id = 'A4F_56718' AND DATE(ts) BETWEEN '2022-05-25' AND '2022-06-01';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "excess_active_minutes\n108.2353",
+    "ModelOutput": "108",
+    "Correct": false
+  }
+]

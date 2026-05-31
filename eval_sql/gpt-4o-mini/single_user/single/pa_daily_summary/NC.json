@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/pa_daily_summary",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_daily_summary/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many more steps in pa_daily_summary did A4F_43794 take on 2022-05-28 compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many more steps in pa_daily_summary did A4F_43794 take on 2022-05-28 compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "12614",
+    "GeneratedSQL": "SELECT \n    (SELECT steps FROM pa_daily_summary WHERE id = 'A4F_43794' AND DATE(ts) = '2022-05-28') - \n    (SELECT steps FROM pa_daily_summary WHERE id = 'A4F_43794' AND DATE(ts) = '2022-05-27') AS step_difference;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "step_difference\n12614",
+    "ModelOutput": "12614",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/single/pa_daily_summary",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_daily_summary/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many more steps in pa_daily_summary did A4F_28689 take on 2022-05-30 compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many more steps in pa_daily_summary did A4F_28689 take on 2022-05-30 compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "-144",
+    "GeneratedSQL": "SELECT \n    (SELECT steps FROM pa_daily_summary WHERE id = 'A4F_28689' AND DATE(ts) = '2022-05-30') - \n    (SELECT steps FROM pa_daily_summary WHERE id = 'A4F_28689' AND DATE(ts) = '2022-05-29') AS step_difference;",
+    "SQLStatus": "failed",
+    "SQLError": "OperationalError args=(1690, \"BIGINT UNSIGNED value is out of range in '((select `multilifeqa`.`pa_daily_summary`.`steps` from `multilifeqa`.`pa_daily_summary` where ((`multilifeqa`.`pa_daily_summary`.`id` = 'A4F_28689') and (cast(`multilifeqa`.`pa_daily_summary`.`ts` as date) = '2022-05-30'))) - (select `multilifeqa`.`pa_daily_summary`.`steps` from `multilifeqa`.`pa_daily_summary` where ((`multilifeqa`.`pa_daily_summary`.`id` = 'A4F_28689') and (cast(`multilifeqa`.`pa_daily_summary`.`ts` as date) = '2022-05-29'))))'\") repr=OperationalError(1690, \"BIGINT UNSIGNED value is out of range in '((select `multilifeqa`.`pa_daily_summary`.`steps` from `multilifeqa`.`pa_daily_summary` where ((`multilifeqa`.`pa_daily_summary`.`id` = 'A4F_28689') and (cast(`multilifeqa`.`pa_daily_summary`.`ts` as date) = '2022-05-30'))) - (select `multilifeqa`.`pa_daily_summary`.`steps` from `multilifeqa`.`pa_daily_summary` where ((`multilifeqa`.`pa_daily_summary`.`id` = 'A4F_28689') and (cast(`multilifeqa`.`pa_daily_summary`.`ts` as date) = '2022-05-29'))))'\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/pa_daily_summary",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_daily_summary/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many more steps in pa_daily_summary did A4F_10141 take on 2022-06-17 compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many more steps in pa_daily_summary did A4F_10141 take on 2022-06-17 compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "-6980",
+    "GeneratedSQL": "SELECT \n    (SELECT steps FROM pa_daily_summary WHERE id = 'A4F_10141' AND DATE(ts) = '2022-06-17') - \n    (SELECT steps FROM pa_daily_summary WHERE id = 'A4F_10141' AND DATE(ts) = '2022-06-16') AS step_difference;",
+    "SQLStatus": "failed",
+    "SQLError": "OperationalError args=(1690, \"BIGINT UNSIGNED value is out of range in '((select `multilifeqa`.`pa_daily_summary`.`steps` from `multilifeqa`.`pa_daily_summary` where ((`multilifeqa`.`pa_daily_summary`.`id` = 'A4F_10141') and (cast(`multilifeqa`.`pa_daily_summary`.`ts` as date) = '2022-06-17'))) - (select `multilifeqa`.`pa_daily_summary`.`steps` from `multilifeqa`.`pa_daily_summary` where ((`multilifeqa`.`pa_daily_summary`.`id` = 'A4F_10141') and (cast(`multilifeqa`.`pa_daily_summary`.`ts` as date) = '2022-06-16'))))'\") repr=OperationalError(1690, \"BIGINT UNSIGNED value is out of range in '((select `multilifeqa`.`pa_daily_summary`.`steps` from `multilifeqa`.`pa_daily_summary` where ((`multilifeqa`.`pa_daily_summary`.`id` = 'A4F_10141') and (cast(`multilifeqa`.`pa_daily_summary`.`ts` as date) = '2022-06-17'))) - (select `multilifeqa`.`pa_daily_summary`.`steps` from `multilifeqa`.`pa_daily_summary` where ((`multilifeqa`.`pa_daily_summary`.`id` = 'A4F_10141') and (cast(`multilifeqa`.`pa_daily_summary`.`ts` as date) = '2022-06-16'))))'\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  }
+]

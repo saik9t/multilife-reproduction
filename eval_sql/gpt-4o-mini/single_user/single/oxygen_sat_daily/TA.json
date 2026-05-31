@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/oxygen_sat_daily",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/oxygen_sat_daily/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nDid A4F_73455's {lower_bound_oxygen_saturation} in oxygen_sat_daily during sleeping on 2022-05-31 increase or decrease or remain the same, compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `oxygen_sat_daily` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `sleep_average_oxygen_saturation` DECIMAL(5,2),\n  `lower_bound_oxygen_saturation`   DECIMAL(5,2),\n  `upper_bound_oxygen_saturation`   DECIMAL(5,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Did A4F_73455's {lower_bound_oxygen_saturation} in oxygen_sat_daily during sleeping on 2022-05-31 increase or decrease or remain the same, compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "decrease",
+    "GeneratedSQL": "SELECT \n    CASE \n        WHEN current_day.lower_bound_oxygen_saturation > previous_day.lower_bound_oxygen_saturation THEN 'increase'\n        WHEN current_day.lower_bound_oxygen_saturation < previous_day.lower_bound_oxygen_saturation THEN 'decrease'\n        ELSE 'remain the same'\n    END AS change_status\nFROM \n    (SELECT lower_bound_oxygen_saturation \n     FROM oxygen_sat_daily \n     WHERE id = 'A4F_73455' AND DATE(ts) = '2022-05-31') AS current_day,\n    (SELECT lower_bound_oxygen_saturation \n     FROM oxygen_sat_daily \n     WHERE id = 'A4F_73455' AND DATE(ts) = '2022-05-30') AS previous_day;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "change_status\ndecrease",
+    "ModelOutput": "decrease",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/single/oxygen_sat_daily",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/oxygen_sat_daily/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nDid A4F_41207's {sleep_average_oxygen_saturation} in oxygen_sat_daily during sleeping on 2022-06-16 increase or decrease or remain the same, compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `oxygen_sat_daily` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `sleep_average_oxygen_saturation` DECIMAL(5,2),\n  `lower_bound_oxygen_saturation`   DECIMAL(5,2),\n  `upper_bound_oxygen_saturation`   DECIMAL(5,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Did A4F_41207's {sleep_average_oxygen_saturation} in oxygen_sat_daily during sleeping on 2022-06-16 increase or decrease or remain the same, compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "decrease",
+    "GeneratedSQL": "SELECT \n    CASE \n        WHEN t1.sleep_average_oxygen_saturation > t2.sleep_average_oxygen_saturation THEN 'increase'\n        WHEN t1.sleep_average_oxygen_saturation < t2.sleep_average_oxygen_saturation THEN 'decrease'\n        ELSE 'remain the same'\n    END AS change_status\nFROM \n    oxygen_sat_daily t1\nJOIN \n    oxygen_sat_daily t2 ON t1.id = t2.id \nWHERE \n    t1.id = 'A4F_41207' \n    AND DATE(t1.ts) = '2022-06-16' \n    AND DATE(t2.ts) = '2022-06-15';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "change_status\ndecrease",
+    "ModelOutput": "decrease",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/single/oxygen_sat_daily",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/oxygen_sat_daily/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did A4F_65060's {upper_bound_oxygen_saturation} in oxygen_sat_daily during sleeping increase, starting from 2022-05-19?\n\nSchema (DDL):\n```sql\nCREATE TABLE `oxygen_sat_daily` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `sleep_average_oxygen_saturation` DECIMAL(5,2),\n  `lower_bound_oxygen_saturation`   DECIMAL(5,2),\n  `upper_bound_oxygen_saturation`   DECIMAL(5,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did A4F_65060's {upper_bound_oxygen_saturation} in oxygen_sat_daily during sleeping increase, starting from 2022-05-19?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "3",
+    "GeneratedSQL": "SELECT COUNT(*) AS consecutive_days\nFROM (\n    SELECT DATE(ts) AS date, upper_bound_oxygen_saturation,\n           @prev_value := IF(@prev_value IS NULL, upper_bound_oxygen_saturation, @prev_value) AS prev_value,\n           @is_increasing := IF(upper_bound_oxygen_saturation > @prev_value, 1, 0) AS is_increasing,\n           @prev_value := upper_bound_oxygen_saturation\n    FROM oxygen_sat_daily, (SELECT @prev_value := NULL, @is_increasing := 0) AS vars\n    WHERE id = 'A4F_65060' AND DATE(ts) >= '2022-05-19'\n    ORDER BY DATE(ts)\n) AS subquery\nWHERE is_increasing = 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_days\n8",
+    "ModelOutput": "8",
+    "Correct": false
+  }
+]

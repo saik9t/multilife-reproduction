@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/M-C2/pa_emotion_joint",
+    "type": "CQ",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/pa_emotion_joint/CQ.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many days within a week did A4F_17419 have resting_heart_rate in pa_daily_summary greater than 56.21 while his/her responsiveness_points in stress_daily_scores were greater than 19.63, starting from 2022-06-12?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many days within a week did A4F_17419 have resting_heart_rate in pa_daily_summary greater than 56.21 while his/her responsiveness_points in stress_daily_scores were greater than 19.63, starting from 2022-06-12?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "1",
+    "GeneratedSQL": "SELECT COUNT(DISTINCT DATE(p.ts)) AS days_count\nFROM pa_daily_summary p\nJOIN stress_daily_scores s ON p.id = s.id AND DATE(p.ts) = DATE(s.ts)\nWHERE p.id = 'A4F_17419' \n  AND p.resting_heart_rate > 56.21 \n  AND s.responsiveness_points > 19.63 \n  AND DATE(p.ts) >= '2022-06-12'\n  AND DATE(p.ts) < DATE_ADD('2022-06-12', INTERVAL 7 DAY);",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "days_count\n1",
+    "ModelOutput": "1",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/M-C2/pa_emotion_joint",
+    "type": "CQ",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/pa_emotion_joint/CQ.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many days within a week did A4F_76957 have below-average very_active_minutes in pa_active_minutes and above-average stress_score in stress_daily_scores, starting from 2022-05-25?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                        VARCHAR(20) NOT NULL,\n  `ts`                        DATETIME    NOT NULL,\n  `fat_burn_minutes`          SMALLINT UNSIGNED,\n  `cardio_minutes`            SMALLINT UNSIGNED,\n  `peak_minutes`              SMALLINT UNSIGNED,\n  `sedentary_minutes`         SMALLINT UNSIGNED,\n  `lightly_active_minutes`    SMALLINT UNSIGNED,\n  `moderately_active_minutes` SMALLINT UNSIGNED,\n  `very_active_minutes`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many days within a week did A4F_76957 have below-average very_active_minutes in pa_active_minutes and above-average stress_score in stress_daily_scores, starting from 2022-05-25?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "3",
+    "GeneratedSQL": "SELECT COUNT(DISTINCT DATE(pa.ts)) AS days_below_avg_above_avg\nFROM pa_active_minutes pa\nJOIN stress_daily_scores ss ON pa.id = ss.id AND DATE(pa.ts) = DATE(ss.ts)\nWHERE pa.id = 'A4F_76957' \n  AND DATE(pa.ts) >= '2022-05-25'\n  AND pa.very_active_minutes < (SELECT AVG(very_active_minutes) FROM pa_active_minutes WHERE id = 'A4F_76957')\n  AND ss.stress_score > (SELECT AVG(stress_score) FROM stress_daily_scores WHERE id = 'A4F_76957');",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "days_below_avg_above_avg\n2",
+    "ModelOutput": "2",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/M-C2/pa_emotion_joint",
+    "type": "CQ",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/pa_emotion_joint/CQ.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many days within a week did A4F_17419 have resting_heart_rate in pa_daily_summary greater than 56.09 while his/her responsiveness_points in stress_daily_scores were greater than 18.97, starting from 2022-06-11?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many days within a week did A4F_17419 have resting_heart_rate in pa_daily_summary greater than 56.09 while his/her responsiveness_points in stress_daily_scores were greater than 18.97, starting from 2022-06-11?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "2",
+    "GeneratedSQL": "SELECT COUNT(DISTINCT DATE(p.ts)) AS days_count\nFROM pa_daily_summary p\nJOIN stress_daily_scores s ON p.id = s.id AND DATE(p.ts) = DATE(s.ts)\nWHERE p.resting_heart_rate > 56.09 \n  AND s.responsiveness_points > 18.97 \n  AND DATE(p.ts) >= '2022-06-11'\n  AND DATE(p.ts) < DATE_ADD('2022-06-11', INTERVAL 7 DAY);",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "days_count\n7",
+    "ModelOutput": "7",
+    "Correct": false
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/pa_active_minutes_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_active_minutes_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did the average fat_burn_minutes in pa_active_minutes across all users increase, starting from 2022-06-12?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                         VARCHAR(20) NOT NULL,\n  `ts`                         DATETIME NOT NULL,\n  `fat_burn_minutes`           SMALLINT UNSIGNED,\n  `cardio_minutes`             SMALLINT UNSIGNED,\n  `peak_minutes`               SMALLINT UNSIGNED,\n  `sedentary_minutes`          SMALLINT UNSIGNED,\n  `lightly_active_minutes`     SMALLINT UNSIGNED,\n  `moderately_active_minutes`  SMALLINT UNSIGNED,\n  `very_active_minutes`        SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did the average fat_burn_minutes in pa_active_minutes across all users increase, starting from 2022-06-12?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "2",
+    "GeneratedSQL": "WITH daily_avg AS (\n    SELECT DATE(ts) AS activity_date, AVG(fat_burn_minutes) AS avg_fat_burn\n    FROM pa_active_minutes\n    WHERE DATE(ts) >= '2022-06-12'\n    GROUP BY activity_date\n),\nconsecutive_days AS (\n    SELECT activity_date, \n           ROW_NUMBER() OVER (ORDER BY activity_date) - \n           ROW_NUMBER() OVER (PARTITION BY avg_fat_burn ORDER BY activity_date) AS grp\n    FROM daily_avg\n    WHERE avg_fat_burn IS NOT NULL\n)\nSELECT COUNT(*) AS consecutive_days_count\nFROM (\n    SELECT activity_date\n    FROM consecutive_days\n    GROUP BY grp\n    HAVING COUNT(*) > 1\n) AS streaks;",
+    "SQLStatus": "failed",
+    "SQLError": "OperationalError args=(1055, \"Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'consecutive_days.activity_date' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by\") repr=OperationalError(1055, \"Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'consecutive_days.activity_date' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/pa_active_minutes_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_active_minutes_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nDid the average sedentary_minutes in pa_active_minutes across all users increase, decrease, or remain the same on 2022-06-07 compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                         VARCHAR(20) NOT NULL,\n  `ts`                         DATETIME NOT NULL,\n  `fat_burn_minutes`           SMALLINT UNSIGNED,\n  `cardio_minutes`             SMALLINT UNSIGNED,\n  `peak_minutes`               SMALLINT UNSIGNED,\n  `sedentary_minutes`          SMALLINT UNSIGNED,\n  `lightly_active_minutes`     SMALLINT UNSIGNED,\n  `moderately_active_minutes`  SMALLINT UNSIGNED,\n  `very_active_minutes`        SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Did the average sedentary_minutes in pa_active_minutes across all users increase, decrease, or remain the same on 2022-06-07 compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "increase",
+    "GeneratedSQL": "SELECT \n    (SELECT AVG(sedentary_minutes) FROM pa_active_minutes WHERE DATE(ts) = '2022-06-07') AS avg_sedentary_june_7,\n    (SELECT AVG(sedentary_minutes) FROM pa_active_minutes WHERE DATE(ts) = '2022-06-06') AS avg_sedentary_june_6;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "avg_sedentary_june_7\tavg_sedentary_june_6\n786.9524\t828.8485",
+    "ModelOutput": "decrease",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/pa_active_minutes_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/pa_active_minutes_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWas the average very_active_minutes in pa_active_minutes across all users higher, lower, or the same within one week, starting from 2022-06-08, compared to the previous week?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                         VARCHAR(20) NOT NULL,\n  `ts`                         DATETIME NOT NULL,\n  `fat_burn_minutes`           SMALLINT UNSIGNED,\n  `cardio_minutes`             SMALLINT UNSIGNED,\n  `peak_minutes`               SMALLINT UNSIGNED,\n  `sedentary_minutes`          SMALLINT UNSIGNED,\n  `lightly_active_minutes`     SMALLINT UNSIGNED,\n  `moderately_active_minutes`  SMALLINT UNSIGNED,\n  `very_active_minutes`        SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Was the average very_active_minutes in pa_active_minutes across all users higher, lower, or the same within one week, starting from 2022-06-08, compared to the previous week?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "higher",
+    "GeneratedSQL": "SELECT \n    AVG(CASE WHEN DATE(ts) BETWEEN '2022-06-08' AND '2022-06-14' THEN very_active_minutes END) AS avg_current_week,\n    AVG(CASE WHEN DATE(ts) BETWEEN '2022-06-01' AND '2022-06-07' THEN very_active_minutes END) AS avg_previous_week\nFROM \n    pa_active_minutes;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "avg_current_week\tavg_previous_week\n31.9776\t32.6757",
+    "ModelOutput": "lower",
+    "Correct": false
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/M-C2/pa_emotion_joint",
+    "type": "FQ",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/pa_emotion_joint/FQ.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nOn 2022-06-02, how many calories_minutes in pa_active_minutes did A4F_60728 record and what was his/her stress_score in stress_daily_scores that day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                        VARCHAR(20) NOT NULL,\n  `ts`                        DATETIME    NOT NULL,\n  `fat_burn_minutes`          SMALLINT UNSIGNED,\n  `cardio_minutes`            SMALLINT UNSIGNED,\n  `peak_minutes`              SMALLINT UNSIGNED,\n  `sedentary_minutes`         SMALLINT UNSIGNED,\n  `lightly_active_minutes`    SMALLINT UNSIGNED,\n  `moderately_active_minutes` SMALLINT UNSIGNED,\n  `very_active_minutes`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: On 2022-06-02, how many calories_minutes in pa_active_minutes did A4F_60728 record and what was his/her stress_score in stress_daily_scores that day?\nOutput requirement: return 2 value(s); types (ordered): {integer}; {integer}",
+    "Answer": "384; 0",
+    "GeneratedSQL": "SELECT a.fat_burn_minutes + a.cardio_minutes + a.peak_minutes + a.lightly_active_minutes + a.moderately_active_minutes + a.very_active_minutes AS calories_minutes, s.stress_score \nFROM pa_active_minutes a \nJOIN stress_daily_scores s ON a.id = s.id AND DATE(a.ts) = DATE(s.ts) \nWHERE a.id = 'A4F_60728' AND DATE(a.ts) = '2022-06-02';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "NO ROWS",
+    "ModelOutput": "0, 0",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/M-C2/pa_emotion_joint",
+    "type": "FQ",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/pa_emotion_joint/FQ.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nOn 2022-05-31, how many steps in pa_daily_summary did A4F_43794 take and what was his/her stress_score in stress_daily_scores?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: On 2022-05-31, how many steps in pa_daily_summary did A4F_43794 take and what was his/her stress_score in stress_daily_scores?\nOutput requirement: return 2 value(s); types (ordered): {integer}; {integer}",
+    "Answer": "7950; 87",
+    "GeneratedSQL": "SELECT pa.steps, ss.stress_score \nFROM pa_daily_summary pa \nJOIN stress_daily_scores ss ON pa.id = ss.id AND DATE(pa.ts) = '2022-05-31' AND DATE(ss.ts) = '2022-05-31' \nWHERE pa.id = 'A4F_43794';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "steps\tstress_score\n7950\t87",
+    "ModelOutput": "7950, 87",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/M-C2/pa_emotion_joint",
+    "type": "FQ",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/pa_emotion_joint/FQ.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nOn 2022-06-08, how many peak_minutes in pa_active_minutes did A4F_79824 have and what was his/her responsiveness_points in stress_daily_scores?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                        VARCHAR(20) NOT NULL,\n  `ts`                        DATETIME    NOT NULL,\n  `fat_burn_minutes`          SMALLINT UNSIGNED,\n  `cardio_minutes`            SMALLINT UNSIGNED,\n  `peak_minutes`              SMALLINT UNSIGNED,\n  `sedentary_minutes`         SMALLINT UNSIGNED,\n  `lightly_active_minutes`    SMALLINT UNSIGNED,\n  `moderately_active_minutes` SMALLINT UNSIGNED,\n  `very_active_minutes`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: On 2022-06-08, how many peak_minutes in pa_active_minutes did A4F_79824 have and what was his/her responsiveness_points in stress_daily_scores?\nOutput requirement: return 2 value(s); types (ordered): {integer}; {integer}",
+    "Answer": "0; 18",
+    "GeneratedSQL": "SELECT pa.peak_minutes, ss.responsiveness_points \nFROM pa_active_minutes pa \nJOIN stress_daily_scores ss ON pa.id = ss.id AND DATE(pa.ts) = '2022-06-08' AND DATE(ss.ts) = '2022-06-08' \nWHERE pa.id = 'A4F_79824';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "peak_minutes\tresponsiveness_points\n0\t18",
+    "ModelOutput": "0, 18",
+    "Correct": true
+  }
+]

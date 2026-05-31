@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/M-C2/emotion_food_joint",
+    "type": "FQ",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/emotion_food_joint/FQ.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nOn 2022-05-25, what was A4F_68106's most frequent subcategory in food_meal_labels and his/her responsiveness_points in stress_daily_scores?\n\nSchema (DDL):\n```sql\nCREATE TABLE `food_meal_labels` (\n  `id`            VARCHAR(20)   NOT NULL,\n  `ts`            DATETIME      NOT NULL,\n  `image_id`      VARCHAR(100)  NOT NULL,\n  `category`      VARCHAR(128)  NOT NULL,\n  `subcategory`   VARCHAR(128)  NOT NULL,\n  `cooking_style` VARCHAR(128)  NOT NULL,\n  PRIMARY KEY (`id`,`ts`,`image_id`,`category`,`subcategory`,`cooking_style`),\n  KEY `idx_id_ts` (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Aggregation semantics:\n--   * Deduplicate within a meal (id, ts): same label counted once.\n--   * For daily/weekly \"times\", count DISTINCT meals (ts) that include the label.\n--   * Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: On 2022-05-25, what was A4F_68106's most frequent subcategory in food_meal_labels and his/her responsiveness_points in stress_daily_scores?\nOutput requirement: return 2 value(s); types (ordered): {word}; {integer}",
+    "Answer": "Bread; 25",
+    "GeneratedSQL": "SELECT subcategory, responsiveness_points \nFROM (\n    SELECT f.subcategory, s.responsiveness_points, COUNT(DISTINCT f.ts) AS meal_count\n    FROM food_meal_labels f\n    JOIN stress_daily_scores s ON f.id = s.id AND DATE(f.ts) = '2022-05-25' AND DATE(s.ts) = '2022-05-25'\n    WHERE f.id = 'A4F_68106'\n    GROUP BY f.subcategory, s.responsiveness_points\n) AS subquery\nORDER BY meal_count DESC\nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "subcategory\tresponsiveness_points\nBread\t25",
+    "ModelOutput": "Bread; 25",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/M-C2/emotion_food_joint",
+    "type": "FQ",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/emotion_food_joint/FQ.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nOn 2022-05-17, how many meals of cooking_style in food_meal_labels = 'Grilled' did A4F_33497 have and what was his/her stress_score in stress_daily_scores?\n\nSchema (DDL):\n```sql\nCREATE TABLE `food_meal_labels` (\n  `id`            VARCHAR(20)   NOT NULL,\n  `ts`            DATETIME      NOT NULL,\n  `image_id`      VARCHAR(100)  NOT NULL,\n  `category`      VARCHAR(128)  NOT NULL,\n  `subcategory`   VARCHAR(128)  NOT NULL,\n  `cooking_style` VARCHAR(128)  NOT NULL,\n  PRIMARY KEY (`id`,`ts`,`image_id`,`category`,`subcategory`,`cooking_style`),\n  KEY `idx_id_ts` (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Aggregation semantics:\n--   * Deduplicate within a meal (id, ts): same label counted once.\n--   * For daily/weekly \"times\", count DISTINCT meals (ts) that include the label.\n--   * Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: On 2022-05-17, how many meals of cooking_style in food_meal_labels = 'Grilled' did A4F_33497 have and what was his/her stress_score in stress_daily_scores?\nOutput requirement: return 2 value(s); types (ordered): {integer}; {integer}",
+    "Answer": "1; 0",
+    "GeneratedSQL": "SELECT COUNT(DISTINCT f.ts) AS meal_count, s.stress_score \nFROM food_meal_labels f \nJOIN stress_daily_scores s ON f.id = s.id AND DATE(f.ts) = DATE(s.ts) \nWHERE DATE(f.ts) = '2022-05-17' AND f.cooking_style = 'Grilled' AND f.id = 'A4F_33497';",
+    "SQLStatus": "failed",
+    "SQLError": "OperationalError args=(1140, \"In aggregated query without GROUP BY, expression #2 of SELECT list contains nonaggregated column 'multilifeqa.s.stress_score'; this is incompatible with sql_mode=only_full_group_by\") repr=OperationalError(1140, \"In aggregated query without GROUP BY, expression #2 of SELECT list contains nonaggregated column 'multilifeqa.s.stress_score'; this is incompatible with sql_mode=only_full_group_by\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/M-C2/emotion_food_joint",
+    "type": "FQ",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/emotion_food_joint/FQ.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nOn 2022-06-02, how many meals of subcategory in food_meal_labels = 'Water' did A4F_29474 have and what was his/her stress_score in stress_daily_scores?\n\nSchema (DDL):\n```sql\nCREATE TABLE `food_meal_labels` (\n  `id`            VARCHAR(20)   NOT NULL,\n  `ts`            DATETIME      NOT NULL,\n  `image_id`      VARCHAR(100)  NOT NULL,\n  `category`      VARCHAR(128)  NOT NULL,\n  `subcategory`   VARCHAR(128)  NOT NULL,\n  `cooking_style` VARCHAR(128)  NOT NULL,\n  PRIMARY KEY (`id`,`ts`,`image_id`,`category`,`subcategory`,`cooking_style`),\n  KEY `idx_id_ts` (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Aggregation semantics:\n--   * Deduplicate within a meal (id, ts): same label counted once.\n--   * For daily/weekly \"times\", count DISTINCT meals (ts) that include the label.\n--   * Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: On 2022-06-02, how many meals of subcategory in food_meal_labels = 'Water' did A4F_29474 have and what was his/her stress_score in stress_daily_scores?\nOutput requirement: return 2 value(s); types (ordered): {integer}; {integer}",
+    "Answer": "1; 66",
+    "GeneratedSQL": "SELECT COUNT(DISTINCT f.ts) AS meal_count, s.stress_score \nFROM food_meal_labels f \nJOIN stress_daily_scores s ON f.id = s.id AND DATE(f.ts) = '2022-06-02' AND DATE(s.ts) = '2022-06-02' \nWHERE f.subcategory = 'Water' AND f.id = 'A4F_29474';",
+    "SQLStatus": "failed",
+    "SQLError": "OperationalError args=(1140, \"In aggregated query without GROUP BY, expression #2 of SELECT list contains nonaggregated column 'multilifeqa.s.stress_score'; this is incompatible with sql_mode=only_full_group_by\") repr=OperationalError(1140, \"In aggregated query without GROUP BY, expression #2 of SELECT list contains nonaggregated column 'multilifeqa.s.stress_score'; this is incompatible with sql_mode=only_full_group_by\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  }
+]

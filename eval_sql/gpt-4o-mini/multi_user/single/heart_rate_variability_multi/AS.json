@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/heart_rate_variability_multi",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/heart_rate_variability_multi/AS.jsonl",
+    "Query_sql": "Given the MySQL schema below, write ONE SELECT that returns the user id (a single string). Return exactly one row and one column. Output SQL only.\n\nQuestion:\nWhich user had the lowest weekly-average nrem_hr in heart_rate_variability within one week, starting from 2022-05-25T00:00:00?\n\nSchema (DDL):\n```sql\nCREATE TABLE `heart_rate_variability` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `rmssd`    DECIMAL(6,2),\n  `nrem_hr`  DECIMAL(6,2),\n  `entropy`  DECIMAL(6,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n```",
+    "Query_base": "You will be given the SQL result in {data}. Answer strictly with the id string.\nQuestion: Which user had the lowest weekly-average nrem_hr in heart_rate_variability within one week, starting from 2022-05-25T00:00:00?\nOutput requirement: return 1 value(s); types (ordered): {uid}",
+    "Answer": "A4F_94336",
+    "GeneratedSQL": "SELECT id FROM heart_rate_variability WHERE ts >= '2022-05-25' AND ts < '2022-06-01' GROUP BY id ORDER BY AVG(nrem_hr) ASC LIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "id\nA4F_94336",
+    "ModelOutput": "A4F_94336",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/heart_rate_variability_multi",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/heart_rate_variability_multi/AS.jsonl",
+    "Query_sql": "Given the MySQL schema below, write ONE SELECT that returns the user id (a single string). Return exactly one row and one column. Output SQL only.\n\nQuestion:\nWhich user had the highest weekly-average nrem_hr in heart_rate_variability within one week, starting from 2022-05-29T00:00:00?\n\nSchema (DDL):\n```sql\nCREATE TABLE `heart_rate_variability` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `rmssd`    DECIMAL(6,2),\n  `nrem_hr`  DECIMAL(6,2),\n  `entropy`  DECIMAL(6,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n```",
+    "Query_base": "You will be given the SQL result in {data}. Answer strictly with the id string.\nQuestion: Which user had the highest weekly-average nrem_hr in heart_rate_variability within one week, starting from 2022-05-29T00:00:00?\nOutput requirement: return 1 value(s); types (ordered): {uid}",
+    "Answer": "A4F_92332",
+    "GeneratedSQL": "SELECT id FROM heart_rate_variability \nWHERE ts >= '2022-05-29 00:00:00' AND ts < '2022-06-05 00:00:00' \nGROUP BY id \nORDER BY AVG(nrem_hr) DESC \nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "id\nA4F_92332",
+    "ModelOutput": "A4F_92332",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/heart_rate_variability_multi",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/heart_rate_variability_multi/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many nrem_hr in heart_rate_variability more than the all-users average did A4F_56355 have within one week, starting from 2022-05-17T00:00:00?\n\nSchema (DDL):\n```sql\nCREATE TABLE `heart_rate_variability` (\n  `id`       VARCHAR(20) NOT NULL,\n  `ts`       DATETIME    NOT NULL,\n  `rmssd`    DECIMAL(6,2),\n  `nrem_hr`  DECIMAL(6,2),\n  `entropy`  DECIMAL(6,2),\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many nrem_hr in heart_rate_variability more than the all-users average did A4F_56355 have within one week, starting from 2022-05-17T00:00:00?\nOutput requirement: return 1 value(s); types (ordered): {real number (two decimal)}",
+    "Answer": "14.42",
+    "GeneratedSQL": "SELECT SUM(nrem_hr) AS total_nrem_hr\nFROM heart_rate_variability\nWHERE id = 'A4F_56355' \n  AND DATE(ts) BETWEEN '2022-05-17' AND '2022-05-24'\n  AND nrem_hr > (SELECT AVG(nrem_hr) FROM heart_rate_variability);",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "total_nrem_hr\n294.44",
+    "ModelOutput": "294.44",
+    "Correct": false
+  }
+]

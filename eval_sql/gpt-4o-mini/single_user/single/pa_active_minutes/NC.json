@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/pa_active_minutes",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_active_minutes/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhich duration of activity is longer for A4F_45863 within a week: {lightly_active_minutes in pa_active_minutes}, {moderately_active_minutes in pa_active_minutes} or {very_active_minutes in pa_active_minutes}, starting from {start_str}?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                         VARCHAR(20) NOT NULL,\n  `ts`                         DATETIME NOT NULL,\n  `fat_burn_minutes`           SMALLINT UNSIGNED,\n  `cardio_minutes`             SMALLINT UNSIGNED,\n  `peak_minutes`               SMALLINT UNSIGNED,\n  `sedentary_minutes`          SMALLINT UNSIGNED,\n  `lightly_active_minutes`     SMALLINT UNSIGNED,\n  `moderately_active_minutes`  SMALLINT UNSIGNED,\n  `very_active_minutes`        SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Which duration of activity is longer for A4F_45863 within a week: {lightly_active_minutes in pa_active_minutes}, {moderately_active_minutes in pa_active_minutes} or {very_active_minutes in pa_active_minutes}, starting from {start_str}?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "lightly_active_minutes",
+    "GeneratedSQL": "SELECT \n    CASE \n        WHEN SUM(lightly_active_minutes) > SUM(moderately_active_minutes) AND SUM(lightly_active_minutes) > SUM(very_active_minutes) THEN 'lightly_active_minutes'\n        WHEN SUM(moderately_active_minutes) > SUM(lightly_active_minutes) AND SUM(moderately_active_minutes) > SUM(very_active_minutes) THEN 'moderately_active_minutes'\n        ELSE 'very_active_minutes'\n    END AS longer_activity\nFROM pa_active_minutes\nWHERE id = 'A4F_45863' AND DATE(ts) BETWEEN DATE(start_str) AND DATE(start_str) + INTERVAL 6 DAY;",
+    "SQLStatus": "failed",
+    "SQLError": "OperationalError args=(1054, \"Unknown column 'start_str' in 'where clause'\") repr=OperationalError(1054, \"Unknown column 'start_str' in 'where clause'\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/pa_active_minutes",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_active_minutes/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many minutes longer was A4F_25413's sedentary time than his/her total activity time in a certain week, starting from 2022-06-08?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                         VARCHAR(20) NOT NULL,\n  `ts`                         DATETIME NOT NULL,\n  `fat_burn_minutes`           SMALLINT UNSIGNED,\n  `cardio_minutes`             SMALLINT UNSIGNED,\n  `peak_minutes`               SMALLINT UNSIGNED,\n  `sedentary_minutes`          SMALLINT UNSIGNED,\n  `lightly_active_minutes`     SMALLINT UNSIGNED,\n  `moderately_active_minutes`  SMALLINT UNSIGNED,\n  `very_active_minutes`        SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many minutes longer was A4F_25413's sedentary time than his/her total activity time in a certain week, starting from 2022-06-08?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "3552",
+    "GeneratedSQL": "SELECT SUM(sedentary_minutes) - SUM(fat_burn_minutes + cardio_minutes + peak_minutes + lightly_active_minutes + moderately_active_minutes + very_active_minutes) AS minutes_difference\nFROM pa_active_minutes\nWHERE id = 'A4F_25413' AND DATE(ts) BETWEEN '2022-06-08' AND '2022-06-14';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "minutes_difference\n3483",
+    "ModelOutput": "3483",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/pa_active_minutes",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/single_user/single/pa_active_minutes/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many minutes longer was A4F_70804's sedentary time than his/her total activity time in a certain week, starting from 2022-06-12?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                         VARCHAR(20) NOT NULL,\n  `ts`                         DATETIME NOT NULL,\n  `fat_burn_minutes`           SMALLINT UNSIGNED,\n  `cardio_minutes`             SMALLINT UNSIGNED,\n  `peak_minutes`               SMALLINT UNSIGNED,\n  `sedentary_minutes`          SMALLINT UNSIGNED,\n  `lightly_active_minutes`     SMALLINT UNSIGNED,\n  `moderately_active_minutes`  SMALLINT UNSIGNED,\n  `very_active_minutes`        SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Note: use DATE(ts)=YYYY-MM-DD for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many minutes longer was A4F_70804's sedentary time than his/her total activity time in a certain week, starting from 2022-06-12?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "2474",
+    "GeneratedSQL": "SELECT SUM(sedentary_minutes) - SUM(fat_burn_minutes + cardio_minutes + peak_minutes + lightly_active_minutes + moderately_active_minutes + very_active_minutes) AS minutes_difference\nFROM pa_active_minutes\nWHERE id = 'A4F_70804' AND DATE(ts) BETWEEN '2022-06-12' AND '2022-06-18';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "minutes_difference\n2099",
+    "ModelOutput": "2099",
+    "Correct": false
+  }
+]

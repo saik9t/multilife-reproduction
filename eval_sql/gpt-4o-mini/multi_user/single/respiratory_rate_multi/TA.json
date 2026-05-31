@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/respiratory_rate_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/respiratory_rate_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did the average full_sleep_breathing_rate in respiratory_rate across all users decrease, starting from 2022-06-08?\n\nSchema (DDL):\n```sql\nCREATE TABLE `respiratory_rate` (\n  `id`                            VARCHAR(20)  NOT NULL,\n  `night_end`                     DATETIME     NOT NULL,\n  `full_sleep_breathing_rate`     DECIMAL(4,1),\n  `full_sleep_standard_deviation` DECIMAL(4,1),\n  `full_sleep_signal_to_noise`    DECIMAL(6,2),\n  `deep_sleep_breathing_rate`     DECIMAL(4,1),\n  `deep_sleep_standard_deviation` DECIMAL(4,1),\n  `deep_sleep_signal_to_noise`    DECIMAL(6,2),\n  `light_sleep_breathing_rate`    DECIMAL(4,1),\n  `light_sleep_standard_deviation`DECIMAL(4,1),\n  `light_sleep_signal_to_noise`   DECIMAL(6,2),\n  `rem_sleep_breathing_rate`      DECIMAL(4,1),\n  `rem_sleep_standard_deviation`  DECIMAL(4,1),\n  `rem_sleep_signal_to_noise`     DECIMAL(6,2),\n  PRIMARY KEY (`id`, `night_end`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(night_end) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did the average full_sleep_breathing_rate in respiratory_rate across all users decrease, starting from 2022-06-08?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "4",
+    "GeneratedSQL": "WITH daily_avg AS (\n    SELECT DATE(night_end) AS date, AVG(full_sleep_breathing_rate) AS avg_breathing_rate\n    FROM respiratory_rate\n    WHERE DATE(night_end) >= '2022-06-08'\n    GROUP BY DATE(night_end)\n),\ndecreasing_days AS (\n    SELECT date, avg_breathing_rate,\n           LAG(avg_breathing_rate) OVER (ORDER BY date) AS prev_avg\n    FROM daily_avg\n)\nSELECT COUNT(*) AS consecutive_decreasing_days\nFROM decreasing_days\nWHERE avg_breathing_rate < prev_avg;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_decreasing_days\n8",
+    "ModelOutput": "8",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/respiratory_rate_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/respiratory_rate_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did the average rem_sleep_breathing_rate in respiratory_rate across all users increase, starting from 2022-05-31?\n\nSchema (DDL):\n```sql\nCREATE TABLE `respiratory_rate` (\n  `id`                            VARCHAR(20)  NOT NULL,\n  `night_end`                     DATETIME     NOT NULL,\n  `full_sleep_breathing_rate`     DECIMAL(4,1),\n  `full_sleep_standard_deviation` DECIMAL(4,1),\n  `full_sleep_signal_to_noise`    DECIMAL(6,2),\n  `deep_sleep_breathing_rate`     DECIMAL(4,1),\n  `deep_sleep_standard_deviation` DECIMAL(4,1),\n  `deep_sleep_signal_to_noise`    DECIMAL(6,2),\n  `light_sleep_breathing_rate`    DECIMAL(4,1),\n  `light_sleep_standard_deviation`DECIMAL(4,1),\n  `light_sleep_signal_to_noise`   DECIMAL(6,2),\n  `rem_sleep_breathing_rate`      DECIMAL(4,1),\n  `rem_sleep_standard_deviation`  DECIMAL(4,1),\n  `rem_sleep_signal_to_noise`     DECIMAL(6,2),\n  PRIMARY KEY (`id`, `night_end`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(night_end) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did the average rem_sleep_breathing_rate in respiratory_rate across all users increase, starting from 2022-05-31?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "3",
+    "GeneratedSQL": "WITH daily_avg AS (\n    SELECT DATE(night_end) AS sleep_date, AVG(rem_sleep_breathing_rate) AS avg_rem_breathing_rate\n    FROM respiratory_rate\n    WHERE night_end >= '2022-05-31'\n    GROUP BY sleep_date\n),\nconsecutive_days AS (\n    SELECT sleep_date, \n           avg_rem_breathing_rate,\n           @prev_avg := @curr_avg AS prev_avg,\n           @curr_avg := avg_rem_breathing_rate AS curr_avg,\n           @is_increasing := IF(@curr_avg > @prev_avg, 1, 0) AS is_increasing,\n           @count := IF(@is_increasing = 1, @count + 1, 1) AS consecutive_count\n    FROM daily_avg, (SELECT @prev_avg := NULL, @curr_avg := NULL, @is_increasing := 0, @count := 0) AS vars\n    ORDER BY sleep_date\n)\nSELECT MAX(consecutive_count) AS max_consecutive_days\nFROM consecutive_days\nWHERE is_increasing = 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "max_consecutive_days\n3.0",
+    "ModelOutput": "3",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/respiratory_rate_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/respiratory_rate_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT that returns a single word among {increase, decrease, same} comparing the average of the specified column on a date vs the previous day. Output SQL only.\n\nQuestion:\nDid the average rem_sleep_breathing_rate in respiratory_rate across all users increase, decrease, or remain the same on 2022-05-21 compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `respiratory_rate` (\n  `id`                            VARCHAR(20)  NOT NULL,\n  `night_end`                     DATETIME     NOT NULL,\n  `full_sleep_breathing_rate`     DECIMAL(4,1),\n  `full_sleep_standard_deviation` DECIMAL(4,1),\n  `full_sleep_signal_to_noise`    DECIMAL(6,2),\n  `deep_sleep_breathing_rate`     DECIMAL(4,1),\n  `deep_sleep_standard_deviation` DECIMAL(4,1),\n  `deep_sleep_signal_to_noise`    DECIMAL(6,2),\n  `light_sleep_breathing_rate`    DECIMAL(4,1),\n  `light_sleep_standard_deviation`DECIMAL(4,1),\n  `light_sleep_signal_to_noise`   DECIMAL(6,2),\n  `rem_sleep_breathing_rate`      DECIMAL(4,1),\n  `rem_sleep_standard_deviation`  DECIMAL(4,1),\n  `rem_sleep_signal_to_noise`     DECIMAL(6,2),\n  PRIMARY KEY (`id`, `night_end`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(night_end) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question in {data}. Please answer strictly with one word: increase, decrease, or same.\nQuestion: Did the average rem_sleep_breathing_rate in respiratory_rate across all users increase, decrease, or remain the same on 2022-05-21 compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "decrease",
+    "GeneratedSQL": "SELECT CASE \n           WHEN AVG(CASE WHEN DATE(night_end) = '2022-05-21' THEN rem_sleep_breathing_rate END) > \n                AVG(CASE WHEN DATE(night_end) = '2022-05-20' THEN rem_sleep_breathing_rate END) THEN 'increase'\n           WHEN AVG(CASE WHEN DATE(night_end) = '2022-05-21' THEN rem_sleep_breathing_rate END) < \n                AVG(CASE WHEN DATE(night_end) = '2022-05-20' THEN rem_sleep_breathing_rate END) THEN 'decrease'\n           ELSE 'same'\n       END AS comparison;",
+    "SQLStatus": "failed",
+    "SQLError": "OperationalError args=(1054, \"Unknown column 'night_end' in 'field list'\") repr=OperationalError(1054, \"Unknown column 'night_end' in 'field list'\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  }
+]

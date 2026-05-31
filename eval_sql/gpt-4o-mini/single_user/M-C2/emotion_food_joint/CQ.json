@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/M-C2/emotion_food_joint",
+    "type": "CQ",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/emotion_food_joint/CQ.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWithin one week starting from 2022-06-02, how many days did A4F_96181 consume subcategory in food_meal_labels = 'Spanish Omelette' more than 0.68 times and also record both responsiveness_points in stress_daily_scores > 22.25 and exertion_points in stress_daily_scores > 28.76?\n\nSchema (DDL):\n```sql\nCREATE TABLE `food_meal_labels` (\n  `id`            VARCHAR(20)   NOT NULL,\n  `ts`            DATETIME      NOT NULL,\n  `image_id`      VARCHAR(100)  NOT NULL,\n  `category`      VARCHAR(128)  NOT NULL,\n  `subcategory`   VARCHAR(128)  NOT NULL,\n  `cooking_style` VARCHAR(128)  NOT NULL,\n  PRIMARY KEY (`id`,`ts`,`image_id`,`category`,`subcategory`,`cooking_style`),\n  KEY `idx_id_ts` (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Aggregation semantics:\n--   * Deduplicate within a meal (id, ts): same label counted once.\n--   * For daily/weekly \"times\", count DISTINCT meals (ts) that include the label.\n--   * Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Within one week starting from 2022-06-02, how many days did A4F_96181 consume subcategory in food_meal_labels = 'Spanish Omelette' more than 0.68 times and also record both responsiveness_points in stress_daily_scores > 22.25 and exertion_points in stress_daily_scores > 28.76?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "1",
+    "GeneratedSQL": "SELECT COUNT(DISTINCT DATE(f.ts)) AS days_count\nFROM food_meal_labels f\nJOIN stress_daily_scores s ON f.id = s.id AND DATE(f.ts) = DATE(s.ts)\nWHERE f.subcategory = 'Spanish Omelette'\n  AND f.ts BETWEEN '2022-06-02' AND '2022-06-09'\n  AND f.cooking_style > 0.68\n  AND s.responsiveness_points > 22.25\n  AND s.exertion_points > 28.76;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "days_count\n0",
+    "ModelOutput": "0",
+    "Correct": true
+  },
+  {
+    "folder": "single_user/M-C2/emotion_food_joint",
+    "type": "CQ",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/emotion_food_joint/CQ.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWithin one week starting from 2022-06-02, how many days did A4F_67757 consume subcategory in food_meal_labels = 'Yogurt and Fresh Cheese' more than 0.51 times and also have sleep_points in stress_daily_scores lower than 21.44?\n\nSchema (DDL):\n```sql\nCREATE TABLE `food_meal_labels` (\n  `id`            VARCHAR(20)   NOT NULL,\n  `ts`            DATETIME      NOT NULL,\n  `image_id`      VARCHAR(100)  NOT NULL,\n  `category`      VARCHAR(128)  NOT NULL,\n  `subcategory`   VARCHAR(128)  NOT NULL,\n  `cooking_style` VARCHAR(128)  NOT NULL,\n  PRIMARY KEY (`id`,`ts`,`image_id`,`category`,`subcategory`,`cooking_style`),\n  KEY `idx_id_ts` (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Aggregation semantics:\n--   * Deduplicate within a meal (id, ts): same label counted once.\n--   * For daily/weekly \"times\", count DISTINCT meals (ts) that include the label.\n--   * Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Within one week starting from 2022-06-02, how many days did A4F_67757 consume subcategory in food_meal_labels = 'Yogurt and Fresh Cheese' more than 0.51 times and also have sleep_points in stress_daily_scores lower than 21.44?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "1",
+    "GeneratedSQL": "SELECT COUNT(DISTINCT DATE(f.ts)) AS days_count\nFROM food_meal_labels f\nJOIN stress_daily_scores s ON f.id = s.id AND DATE(f.ts) = DATE(s.ts)\nWHERE f.subcategory = 'Yogurt and Fresh Cheese'\n  AND DATE(f.ts) BETWEEN '2022-06-02' AND '2022-06-08'\n  AND (SELECT COUNT(DISTINCT DATE(ts)) FROM food_meal_labels WHERE id = f.id AND subcategory = 'Yogurt and Fresh Cheese' AND DATE(ts) = DATE(f.ts)) > 0.51\n  AND s.sleep_points < 21.44;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "days_count\n7",
+    "ModelOutput": "7",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/M-C2/emotion_food_joint",
+    "type": "CQ",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/emotion_food_joint/CQ.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWithin one week starting from 2022-05-25, how many days did A4F_56297 consume cooking_style in food_meal_labels = 'Fresh' more than 7.19 times and also have sleep_points in stress_daily_scores lower than 25.7?\n\nSchema (DDL):\n```sql\nCREATE TABLE `food_meal_labels` (\n  `id`            VARCHAR(20)   NOT NULL,\n  `ts`            DATETIME      NOT NULL,\n  `image_id`      VARCHAR(100)  NOT NULL,\n  `category`      VARCHAR(128)  NOT NULL,\n  `subcategory`   VARCHAR(128)  NOT NULL,\n  `cooking_style` VARCHAR(128)  NOT NULL,\n  PRIMARY KEY (`id`,`ts`,`image_id`,`category`,`subcategory`,`cooking_style`),\n  KEY `idx_id_ts` (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Aggregation semantics:\n--   * Deduplicate within a meal (id, ts): same label counted once.\n--   * For daily/weekly \"times\", count DISTINCT meals (ts) that include the label.\n--   * Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Within one week starting from 2022-05-25, how many days did A4F_56297 consume cooking_style in food_meal_labels = 'Fresh' more than 7.19 times and also have sleep_points in stress_daily_scores lower than 25.7?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "1",
+    "GeneratedSQL": "SELECT COUNT(DISTINCT DATE(f.ts)) AS days\nFROM food_meal_labels f\nJOIN stress_daily_scores s ON f.id = s.id AND DATE(f.ts) = DATE(s.ts)\nWHERE f.cooking_style = 'Fresh' \n  AND DATE(f.ts) BETWEEN '2022-05-25' AND '2022-06-01'\nGROUP BY DATE(f.ts)\nHAVING COUNT(DISTINCT f.ts) > 7.19 AND AVG(s.sleep_points) < 25.7;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "days\n1\n1\n1\n1\n1\n1\n1\n1",
+    "ModelOutput": "8",
+    "Correct": false
+  }
+]

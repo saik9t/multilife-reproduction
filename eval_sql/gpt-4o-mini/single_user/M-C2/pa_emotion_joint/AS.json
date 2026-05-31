@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/M-C2/pa_emotion_joint",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/pa_emotion_joint/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the average calories_minutes in pa_active_minutes and the average sleep_points in stress_daily_scores of A4F_86472 within one week, starting from 2022-06-08?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_active_minutes` (\n  `id`                        VARCHAR(20) NOT NULL,\n  `ts`                        DATETIME    NOT NULL,\n  `fat_burn_minutes`          SMALLINT UNSIGNED,\n  `cardio_minutes`            SMALLINT UNSIGNED,\n  `peak_minutes`              SMALLINT UNSIGNED,\n  `sedentary_minutes`         SMALLINT UNSIGNED,\n  `lightly_active_minutes`    SMALLINT UNSIGNED,\n  `moderately_active_minutes` SMALLINT UNSIGNED,\n  `very_active_minutes`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the average calories_minutes in pa_active_minutes and the average sleep_points in stress_daily_scores of A4F_86472 within one week, starting from 2022-06-08?\nOutput requirement: return 2 value(s); types (ordered): {real number (two decimal)}; {real number (two decimal)}",
+    "Answer": "297.71; 25.14",
+    "GeneratedSQL": "SELECT AVG(pa.fat_burn_minutes + pa.cardio_minutes + pa.peak_minutes + pa.lightly_active_minutes + pa.moderately_active_minutes + pa.very_active_minutes) AS average_calories_minutes, \n       AVG(sd.sleep_points) AS average_sleep_points\nFROM pa_active_minutes pa\nJOIN stress_daily_scores sd ON pa.id = sd.id AND DATE(pa.ts) = DATE(sd.ts)\nWHERE pa.id = 'A4F_86472' AND DATE(pa.ts) BETWEEN '2022-06-08' AND '2022-06-15';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "average_calories_minutes\taverage_sleep_points\n301.4286\t25.1429",
+    "ModelOutput": "301.43, 25.14",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/M-C2/pa_emotion_joint",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/pa_emotion_joint/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the average calories_kcal in pa_daily_summary and the average stress_score in stress_daily_scores of A4F_32988 within one week, starting from 2022-05-20?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_reports` (\n  `session_id`                      BIGINT AUTO_INCREMENT PRIMARY KEY,\n  `id`                              VARCHAR(20) NOT NULL,\n  `record_ts`                       DATETIME    NOT NULL,\n  `activity_name`                   VARCHAR(50),\n  `average_heart_rate`              DECIMAL(5,2),\n  `duration`                        INT UNSIGNED,\n  `active_duration`                 INT UNSIGNED,\n  `calories`                        DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  INDEX `idx_pa_reports_id_ts` (`id`,`record_ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(record_ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the average calories_kcal in pa_daily_summary and the average stress_score in stress_daily_scores of A4F_32988 within one week, starting from 2022-05-20?\nOutput requirement: return 2 value(s); types (ordered): {real number (two decimal)}; {integer}",
+    "Answer": "157.29; 0",
+    "GeneratedSQL": "SELECT AVG(pa.calories) AS average_calories_kcal, AVG(ss.stress_score) AS average_stress_score\nFROM pa_reports pa\nJOIN stress_daily_scores ss ON pa.id = ss.id\nWHERE pa.id = 'A4F_32988' AND DATE(pa.record_ts) BETWEEN '2022-05-20' AND '2022-05-27';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "average_calories_kcal\taverage_stress_score\nNULL\tNULL",
+    "ModelOutput": "NULL, NULL",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/M-C2/pa_emotion_joint",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/single_user/M-C2/pa_emotion_joint/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat is the average calories_kcal in pa_daily_summary and the average exertion_points in stress_daily_scores of A4F_29474 within one week, starting from 2022-06-08?\n\nSchema (DDL):\n```sql\nCREATE TABLE `pa_daily_summary` (\n  `id`                              VARCHAR(20) NOT NULL,\n  `ts`                              DATETIME    NOT NULL,\n  `resting_heart_rate`              DECIMAL(5,2),\n  `altitude_m`                      SMALLINT,\n  `calories_kcal`                   DECIMAL(8,2),\n  `steps`                           INT UNSIGNED,\n  `distance_m`                      DECIMAL(10,2),\n  `minutes_below_default_zone_1`    SMALLINT UNSIGNED,\n  `minutes_in_default_zone_1`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_2`       SMALLINT UNSIGNED,\n  `minutes_in_default_zone_3`       SMALLINT UNSIGNED,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\nCREATE TABLE `stress_daily_scores` (\n  `id`                    VARCHAR(20) NOT NULL,\n  `ts`                    DATETIME    NOT NULL,\n  `stress_score`          SMALLINT UNSIGNED,\n  `sleep_points`          SMALLINT,\n  `responsiveness_points` SMALLINT,\n  `exertion_points`       SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What is the average calories_kcal in pa_daily_summary and the average exertion_points in stress_daily_scores of A4F_29474 within one week, starting from 2022-06-08?\nOutput requirement: return 2 value(s); types (ordered): {real number (two decimal)}; {integer}",
+    "Answer": "3436.93; 35",
+    "GeneratedSQL": "SELECT AVG(pa.calories_kcal) AS avg_calories_kcal, AVG(ss.exertion_points) AS avg_exertion_points\nFROM pa_daily_summary pa\nJOIN stress_daily_scores ss ON pa.id = ss.id AND DATE(pa.ts) = DATE(ss.ts)\nWHERE pa.id = 'A4F_29474' AND DATE(pa.ts) BETWEEN '2022-06-08' AND '2022-06-15';",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "avg_calories_kcal\tavg_exertion_points\n3439.462500\t35.2500",
+    "ModelOutput": "3439.46, 35",
+    "Correct": true
+  }
+]

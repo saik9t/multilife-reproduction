@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/food_meal_labels_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/food_meal_labels_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhich subcategory in food_meal_labels was consumed most frequently across all users on 2022-06-05?\n\nSchema (DDL):\n```sql\nCREATE TABLE `food_meal_labels` (\n  `id`            VARCHAR(20)   NOT NULL,\n  `ts`            DATETIME      NOT NULL,\n  `image_id`      VARCHAR(100)  NOT NULL,\n  `category`      VARCHAR(128)  NOT NULL,\n  `subcategory`   VARCHAR(128)  NOT NULL,\n  `cooking_style` VARCHAR(128)  NOT NULL,\n  PRIMARY KEY (`id`,`ts`,`image_id`,`category`,`subcategory`,`cooking_style`),\n  KEY `idx_id_ts` (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Semantics:\n--   * Deduplicate within a meal (id, ts, label).\n--   * For \"times\" counts across a day/week, count distinct meals (ts) that include the label.\n--     A safe pattern is to build a meal-dedup CTE:\n--       WITH m AS (\n--         SELECT DISTINCT id, ts, DATE(ts) AS d, category, subcategory, cooking_style\n--         FROM food_meal_labels\n--       )\n--     Then aggregate on m.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Which subcategory in food_meal_labels was consumed most frequently across all users on 2022-06-05?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "Fruits",
+    "GeneratedSQL": "WITH m AS (\n  SELECT DISTINCT id, ts, DATE(ts) AS d, subcategory\n  FROM food_meal_labels\n)\nSELECT subcategory, COUNT(DISTINCT ts) AS meal_count\nFROM m\nWHERE d = '2022-06-05'\nGROUP BY subcategory\nORDER BY meal_count DESC\nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "subcategory\tmeal_count\nFruits\t57",
+    "ModelOutput": "Fruits",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/food_meal_labels_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/food_meal_labels_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhich cooking_style in food_meal_labels was used most frequently across all users within one week, starting from 2022-05-24?\n\nSchema (DDL):\n```sql\nCREATE TABLE `food_meal_labels` (\n  `id`            VARCHAR(20)   NOT NULL,\n  `ts`            DATETIME      NOT NULL,\n  `image_id`      VARCHAR(100)  NOT NULL,\n  `category`      VARCHAR(128)  NOT NULL,\n  `subcategory`   VARCHAR(128)  NOT NULL,\n  `cooking_style` VARCHAR(128)  NOT NULL,\n  PRIMARY KEY (`id`,`ts`,`image_id`,`category`,`subcategory`,`cooking_style`),\n  KEY `idx_id_ts` (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Semantics:\n--   * Deduplicate within a meal (id, ts, label).\n--   * For \"times\" counts across a day/week, count distinct meals (ts) that include the label.\n--     A safe pattern is to build a meal-dedup CTE:\n--       WITH m AS (\n--         SELECT DISTINCT id, ts, DATE(ts) AS d, category, subcategory, cooking_style\n--         FROM food_meal_labels\n--       )\n--     Then aggregate on m.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Which cooking_style in food_meal_labels was used most frequently across all users within one week, starting from 2022-05-24?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "Fresh",
+    "GeneratedSQL": "WITH m AS (\n  SELECT DISTINCT id, ts, DATE(ts) AS d, cooking_style\n  FROM food_meal_labels\n  WHERE DATE(ts) BETWEEN '2022-05-24' AND '2022-05-30'\n)\nSELECT cooking_style, COUNT(DISTINCT ts) AS meal_count\nFROM m\nGROUP BY cooking_style\nORDER BY meal_count DESC\nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "cooking_style\tmeal_count\nNone\t1354",
+    "ModelOutput": "None",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/food_meal_labels_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/food_meal_labels_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhich category in food_meal_labels was consumed most frequently across all users on 2022-05-22?\n\nSchema (DDL):\n```sql\nCREATE TABLE `food_meal_labels` (\n  `id`            VARCHAR(20)   NOT NULL,\n  `ts`            DATETIME      NOT NULL,\n  `image_id`      VARCHAR(100)  NOT NULL,\n  `category`      VARCHAR(128)  NOT NULL,\n  `subcategory`   VARCHAR(128)  NOT NULL,\n  `cooking_style` VARCHAR(128)  NOT NULL,\n  PRIMARY KEY (`id`,`ts`,`image_id`,`category`,`subcategory`,`cooking_style`),\n  KEY `idx_id_ts` (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Semantics:\n--   * Deduplicate within a meal (id, ts, label).\n--   * For \"times\" counts across a day/week, count distinct meals (ts) that include the label.\n--     A safe pattern is to build a meal-dedup CTE:\n--       WITH m AS (\n--         SELECT DISTINCT id, ts, DATE(ts) AS d, category, subcategory, cooking_style\n--         FROM food_meal_labels\n--       )\n--     Then aggregate on m.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Which category in food_meal_labels was consumed most frequently across all users on 2022-05-22?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "Vegetables and Fruits",
+    "GeneratedSQL": "WITH m AS (\n    SELECT DISTINCT id, ts, DATE(ts) AS d, category\n    FROM food_meal_labels\n)\nSELECT category, COUNT(DISTINCT ts) AS meal_count\nFROM m\nWHERE d = '2022-05-22'\nGROUP BY category\nORDER BY meal_count DESC\nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "category\tmeal_count\nVegetables and Fruits\t136",
+    "ModelOutput": "Vegetables and Fruits",
+    "Correct": true
+  }
+]

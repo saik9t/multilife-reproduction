@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/stress_daily_scores_multi",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/stress_daily_scores_multi/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was the median exertion_points in stress_daily_scores across all users within one week, starting from 2022-06-01?\n\nSchema (DDL):\n```sql\n{'stress_daily_scores': 'CREATE TABLE `stress_daily_scores` (\\n  `id`                     VARCHAR(20) NOT NULL,\\n  `ts`                     DATETIME    NOT NULL,\\n  `stress_score`           SMALLINT UNSIGNED,\\n  `sleep_points`           SMALLINT,\\n  `responsiveness_points`  SMALLINT,\\n  `exertion_points`        SMALLINT,\\n  PRIMARY KEY (`id`,`ts`)\\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\\n-- Use DATE(ts) for day filtering.\\n'}\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was the median exertion_points in stress_daily_scores across all users within one week, starting from 2022-06-01?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "88",
+    "GeneratedSQL": "SELECT AVG(exertion_points) AS median_exertion_points FROM (\n    SELECT exertion_points FROM stress_daily_scores \n    WHERE DATE(ts) BETWEEN '2022-06-01' AND '2022-06-07' \n    ORDER BY exertion_points \n    LIMIT 2 - (SELECT COUNT(*) FROM stress_daily_scores WHERE DATE(ts) BETWEEN '2022-06-01' AND '2022-06-07') % 2 \n    OFFSET (SELECT (COUNT(*) - 1) / 2 FROM stress_daily_scores WHERE DATE(ts) BETWEEN '2022-06-01' AND '2022-06-07')\n) AS median_values;",
+    "SQLStatus": "failed",
+    "SQLError": "ProgrammingError args=(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '- (SELECT COUNT(*) FROM stress_daily_scores WHERE DATE(ts) BETWEEN '2022-06-01' ' at line 5\") repr=ProgrammingError(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '- (SELECT COUNT(*) FROM stress_daily_scores WHERE DATE(ts) BETWEEN '2022-06-01' ' at line 5\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/stress_daily_scores_multi",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/stress_daily_scores_multi/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhat was A4F_94336's rank among all users for exertion_points in stress_daily_scores within one week, starting from 2022-05-22?\n\nSchema (DDL):\n```sql\n{'stress_daily_scores': 'CREATE TABLE `stress_daily_scores` (\\n  `id`                     VARCHAR(20) NOT NULL,\\n  `ts`                     DATETIME    NOT NULL,\\n  `stress_score`           SMALLINT UNSIGNED,\\n  `sleep_points`           SMALLINT,\\n  `responsiveness_points`  SMALLINT,\\n  `exertion_points`        SMALLINT,\\n  PRIMARY KEY (`id`,`ts`)\\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\\n-- Use DATE(ts) for day filtering.\\n'}\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: What was A4F_94336's rank among all users for exertion_points in stress_daily_scores within one week, starting from 2022-05-22?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "3",
+    "GeneratedSQL": "SELECT COUNT(*) + 1 AS rank FROM stress_daily_scores WHERE DATE(ts) BETWEEN '2022-05-22' AND '2022-05-29' AND exertion_points > (SELECT exertion_points FROM stress_daily_scores WHERE id = 'A4F_94336' AND DATE(ts) BETWEEN '2022-05-22' AND '2022-05-29');",
+    "SQLStatus": "failed",
+    "SQLError": "ProgrammingError args=(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'rank FROM stress_daily_scores WHERE DATE(ts) BETWEEN '2022-05-22' AND '2022-05-2' at line 1\") repr=ProgrammingError(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'rank FROM stress_daily_scores WHERE DATE(ts) BETWEEN '2022-05-22' AND '2022-05-2' at line 1\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/stress_daily_scores_multi",
+    "type": "AS",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/stress_daily_scores_multi/AS.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement that returns exactly ONE id (single row, single column) that satisfies the question (use DATE(ts) for date filters). Output SQL only.\n\nQuestion:\nWhich user had the lowest exertion_points in stress_daily_scores within one week, starting from 2022-06-17?\n\nSchema (DDL):\n```sql\nCREATE TABLE `stress_daily_scores` (\n  `id`                     VARCHAR(20) NOT NULL,\n  `ts`                     DATETIME    NOT NULL,\n  `stress_score`           SMALLINT UNSIGNED,\n  `sleep_points`           SMALLINT,\n  `responsiveness_points`  SMALLINT,\n  `exertion_points`        SMALLINT,\n  PRIMARY KEY (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(ts) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question in {data}. Please answer strictly with the id only.\nOutput requirement: return 1 value(s); types (ordered): {uid}",
+    "Answer": "A4F_96181",
+    "GeneratedSQL": "SELECT id FROM stress_daily_scores WHERE DATE(ts) BETWEEN '2022-06-17' AND '2022-06-24' ORDER BY exertion_points ASC LIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "id\nA4F_96181",
+    "ModelOutput": "A4F_96181",
+    "Correct": true
+  }
+]

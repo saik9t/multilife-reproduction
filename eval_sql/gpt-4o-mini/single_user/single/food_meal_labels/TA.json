@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "single_user/single/food_meal_labels",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/food_meal_labels/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nDid A4F_80622 eat the same subcategory in food_meal_labels = 'Infusions (Coffee and Others)' on 2022-05-22 as on the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `food_meal_labels` (\n  `id`            VARCHAR(20)   NOT NULL,\n  `ts`            DATETIME      NOT NULL,\n  `image_id`      VARCHAR(100)  NOT NULL,\n  `category`      VARCHAR(128)  NOT NULL,\n  `subcategory`   VARCHAR(128)  NOT NULL,\n  `cooking_style` VARCHAR(128)  NOT NULL,\n  PRIMARY KEY (`id`,`ts`,`image_id`,`category`,`subcategory`,`cooking_style`),\n  KEY `idx_id_ts` (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- IMPORTANT aggregation note (for SQL tasks):\n--   * Deduplicate within a meal: treat duplicates within the same (id, ts, label) as one.\n--   * For \"times\" counts across a day/week, count distinct meals (ts) that include the label.\n--     A common pattern: COUNT(DISTINCT CASE WHEN <label predicate> THEN CONCAT(id,'#',ts) END)\n-- Use DATE(ts) for day filtering and 7-day windows.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Did A4F_80622 eat the same subcategory in food_meal_labels = 'Infusions (Coffee and Others)' on 2022-05-22 as on the previous day?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "yes",
+    "GeneratedSQL": "SELECT \n    COUNT(DISTINCT CASE WHEN DATE(ts) = '2022-05-22' THEN CONCAT(id, '#', ts) END) AS count_today,\n    COUNT(DISTINCT CASE WHEN DATE(ts) = '2022-05-21' THEN CONCAT(id, '#', ts) END) AS count_yesterday,\n    (SELECT subcategory FROM food_meal_labels WHERE id = 'A4F_80622' AND DATE(ts) = '2022-05-22' AND food_meal_labels = 'Infusions (Coffee and Others') LIMIT 1) AS subcategory_today,\n    (SELECT subcategory FROM food_meal_labels WHERE id = 'A4F_80622' AND DATE(ts) = '2022-05-21' AND food_meal_labels = 'Infusions (Coffee and Others') LIMIT 1) AS subcategory_yesterday\nFROM food_meal_labels\nWHERE id = 'A4F_80622' AND (DATE(ts) = '2022-05-22' OR DATE(ts) = '2022-05-21');",
+    "SQLStatus": "failed",
+    "SQLError": "ProgrammingError args=(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') AS subcategory_today,\\n    (SELECT subcategory FROM food_meal_labels WHERE id =' at line 4\") repr=ProgrammingError(1064, \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') AS subcategory_today,\\n    (SELECT subcategory FROM food_meal_labels WHERE id =' at line 4\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/food_meal_labels",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/food_meal_labels/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did A4F_10660 eat subcategory in food_meal_labels = 'Processed Fruits', starting from 2022-06-06?\n\nSchema (DDL):\n```sql\nCREATE TABLE `food_meal_labels` (\n  `id`            VARCHAR(20)   NOT NULL,\n  `ts`            DATETIME      NOT NULL,\n  `image_id`      VARCHAR(100)  NOT NULL,\n  `category`      VARCHAR(128)  NOT NULL,\n  `subcategory`   VARCHAR(128)  NOT NULL,\n  `cooking_style` VARCHAR(128)  NOT NULL,\n  PRIMARY KEY (`id`,`ts`,`image_id`,`category`,`subcategory`,`cooking_style`),\n  KEY `idx_id_ts` (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- IMPORTANT aggregation note (for SQL tasks):\n--   * Deduplicate within a meal: treat duplicates within the same (id, ts, label) as one.\n--   * For \"times\" counts across a day/week, count distinct meals (ts) that include the label.\n--     A common pattern: COUNT(DISTINCT CASE WHEN <label predicate> THEN CONCAT(id,'#',ts) END)\n-- Use DATE(ts) for day filtering and 7-day windows.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did A4F_10660 eat subcategory in food_meal_labels = 'Processed Fruits', starting from 2022-06-06?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "5",
+    "GeneratedSQL": "SELECT COUNT(DISTINCT DATE(ts)) AS consecutive_days\nFROM (\n    SELECT DATE(ts) AS meal_date\n    FROM food_meal_labels\n    WHERE id = 'A4F_10660' AND subcategory = 'Processed Fruits' AND DATE(ts) >= '2022-06-06'\n    GROUP BY DATE(ts)\n) AS subquery\nWHERE meal_date = DATE_ADD('2022-06-06', INTERVAL (SELECT COUNT(*) FROM (\n    SELECT DATE(ts) AS meal_date\n    FROM food_meal_labels\n    WHERE id = 'A4F_10660' AND subcategory = 'Processed Fruits' AND DATE(ts) >= '2022-06-06'\n    GROUP BY DATE(ts)\n) AS inner_query WHERE meal_date = DATE_ADD('2022-06-06', INTERVAL -1 DAY)) DAY);",
+    "SQLStatus": "failed",
+    "SQLError": "OperationalError args=(1054, \"Unknown column 'ts' in 'field list'\") repr=OperationalError(1054, \"Unknown column 'ts' in 'field list'\")",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "single_user/single/food_meal_labels",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/single_user/single/food_meal_labels/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nDid A4F_72388 eat the same category in food_meal_labels = 'Vegetables and Fruits' on 2022-06-13 as on the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `food_meal_labels` (\n  `id`            VARCHAR(20)   NOT NULL,\n  `ts`            DATETIME      NOT NULL,\n  `image_id`      VARCHAR(100)  NOT NULL,\n  `category`      VARCHAR(128)  NOT NULL,\n  `subcategory`   VARCHAR(128)  NOT NULL,\n  `cooking_style` VARCHAR(128)  NOT NULL,\n  PRIMARY KEY (`id`,`ts`,`image_id`,`category`,`subcategory`,`cooking_style`),\n  KEY `idx_id_ts` (`id`,`ts`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- IMPORTANT aggregation note (for SQL tasks):\n--   * Deduplicate within a meal: treat duplicates within the same (id, ts, label) as one.\n--   * For \"times\" counts across a day/week, count distinct meals (ts) that include the label.\n--     A common pattern: COUNT(DISTINCT CASE WHEN <label predicate> THEN CONCAT(id,'#',ts) END)\n-- Use DATE(ts) for day filtering and 7-day windows.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Did A4F_72388 eat the same category in food_meal_labels = 'Vegetables and Fruits' on 2022-06-13 as on the previous day?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "yes",
+    "GeneratedSQL": "SELECT COUNT(DISTINCT CASE WHEN DATE(ts) = '2022-06-13' AND category = 'Vegetables and Fruits' THEN CONCAT(id, '#', ts) END) AS count_today,\n       COUNT(DISTINCT CASE WHEN DATE(ts) = '2022-06-12' AND category = 'Vegetables and Fruits' THEN CONCAT(id, '#', ts) END) AS count_yesterday\nFROM food_meal_labels\nWHERE id = 'A4F_72388' AND DATE(ts) IN ('2022-06-12', '2022-06-13');",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "count_today\tcount_yesterday\n1\t2",
+    "ModelOutput": "no",
+    "Correct": false
+  }
+]

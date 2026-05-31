@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/respiratory_rate_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/respiratory_rate_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWhich stage in respiratory_rate had the highest average breathing rate across all users on 2022-06-03: deep sleep, light sleep, or REM sleep?\n\nSchema (DDL):\n```sql\nCREATE TABLE `respiratory_rate` (\n  `id`                            VARCHAR(20)  NOT NULL,\n  `night_end`                     DATETIME     NOT NULL,\n  `full_sleep_breathing_rate`     DECIMAL(4,1),\n  `full_sleep_standard_deviation` DECIMAL(4,1),\n  `full_sleep_signal_to_noise`    DECIMAL(6,2),\n  `deep_sleep_breathing_rate`     DECIMAL(4,1),\n  `deep_sleep_standard_deviation` DECIMAL(4,1),\n  `deep_sleep_signal_to_noise`    DECIMAL(6,2),\n  `light_sleep_breathing_rate`    DECIMAL(4,1),\n  `light_sleep_standard_deviation`DECIMAL(4,1),\n  `light_sleep_signal_to_noise`   DECIMAL(6,2),\n  `rem_sleep_breathing_rate`      DECIMAL(4,1),\n  `rem_sleep_standard_deviation`  DECIMAL(4,1),\n  `rem_sleep_signal_to_noise`     DECIMAL(6,2),\n  PRIMARY KEY (`id`, `night_end`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(night_end) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Which stage in respiratory_rate had the highest average breathing rate across all users on 2022-06-03: deep sleep, light sleep, or REM sleep?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "deep",
+    "GeneratedSQL": "SELECT 'deep_sleep' AS stage, AVG(deep_sleep_breathing_rate) AS avg_breathing_rate\nFROM respiratory_rate\nWHERE DATE(night_end) = '2022-06-03'\nUNION ALL\nSELECT 'light_sleep', AVG(light_sleep_breathing_rate)\nFROM respiratory_rate\nWHERE DATE(night_end) = '2022-06-03'\nUNION ALL\nSELECT 'rem_sleep', AVG(rem_sleep_breathing_rate)\nFROM respiratory_rate\nWHERE DATE(night_end) = '2022-06-03'\nORDER BY avg_breathing_rate DESC\nLIMIT 1;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "stage\tavg_breathing_rate\ndeep_sleep\t14.80000",
+    "ModelOutput": "deep_sleep",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/respiratory_rate_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/respiratory_rate_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWas A4F_25413's rem_sleep_breathing_rate in respiratory_rate higher than the average across all users within one week, starting from 2022-06-05?\n\nSchema (DDL):\n```sql\nCREATE TABLE `respiratory_rate` (\n  `id`                            VARCHAR(20)  NOT NULL,\n  `night_end`                     DATETIME     NOT NULL,\n  `full_sleep_breathing_rate`     DECIMAL(4,1),\n  `full_sleep_standard_deviation` DECIMAL(4,1),\n  `full_sleep_signal_to_noise`    DECIMAL(6,2),\n  `deep_sleep_breathing_rate`     DECIMAL(4,1),\n  `deep_sleep_standard_deviation` DECIMAL(4,1),\n  `deep_sleep_signal_to_noise`    DECIMAL(6,2),\n  `light_sleep_breathing_rate`    DECIMAL(4,1),\n  `light_sleep_standard_deviation`DECIMAL(4,1),\n  `light_sleep_signal_to_noise`   DECIMAL(6,2),\n  `rem_sleep_breathing_rate`      DECIMAL(4,1),\n  `rem_sleep_standard_deviation`  DECIMAL(4,1),\n  `rem_sleep_signal_to_noise`     DECIMAL(6,2),\n  PRIMARY KEY (`id`, `night_end`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(night_end) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Was A4F_25413's rem_sleep_breathing_rate in respiratory_rate higher than the average across all users within one week, starting from 2022-06-05?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "Yes",
+    "GeneratedSQL": "SELECT \n    (SELECT rem_sleep_breathing_rate \n     FROM respiratory_rate \n     WHERE id = 'A4F_25413' AND DATE(night_end) BETWEEN '2022-06-05' AND '2022-06-12') AS user_rem_sleep_breathing_rate,\n    (SELECT AVG(rem_sleep_breathing_rate) \n     FROM respiratory_rate \n     WHERE DATE(night_end) BETWEEN '2022-06-05' AND '2022-06-12') AS avg_rem_sleep_breathing_rate\nFROM dual;",
+    "SQLStatus": "failed",
+    "SQLError": "OperationalError args=(1242, 'Subquery returns more than 1 row') repr=OperationalError(1242, 'Subquery returns more than 1 row')",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/respiratory_rate_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/respiratory_rate_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWas A4F_37469's deep_sleep_breathing_rate in respiratory_rate higher than the average across all users within one week, starting from 2022-05-19?\n\nSchema (DDL):\n```sql\nCREATE TABLE `respiratory_rate` (\n  `id`                            VARCHAR(20)  NOT NULL,\n  `night_end`                     DATETIME     NOT NULL,\n  `full_sleep_breathing_rate`     DECIMAL(4,1),\n  `full_sleep_standard_deviation` DECIMAL(4,1),\n  `full_sleep_signal_to_noise`    DECIMAL(6,2),\n  `deep_sleep_breathing_rate`     DECIMAL(4,1),\n  `deep_sleep_standard_deviation` DECIMAL(4,1),\n  `deep_sleep_signal_to_noise`    DECIMAL(6,2),\n  `light_sleep_breathing_rate`    DECIMAL(4,1),\n  `light_sleep_standard_deviation`DECIMAL(4,1),\n  `light_sleep_signal_to_noise`   DECIMAL(6,2),\n  `rem_sleep_breathing_rate`      DECIMAL(4,1),\n  `rem_sleep_standard_deviation`  DECIMAL(4,1),\n  `rem_sleep_signal_to_noise`     DECIMAL(6,2),\n  PRIMARY KEY (`id`, `night_end`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(night_end) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Was A4F_37469's deep_sleep_breathing_rate in respiratory_rate higher than the average across all users within one week, starting from 2022-05-19?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "Yes",
+    "GeneratedSQL": "SELECT CASE WHEN (SELECT AVG(deep_sleep_breathing_rate) FROM respiratory_rate WHERE DATE(night_end) BETWEEN '2022-05-19' AND '2022-05-26') < (SELECT deep_sleep_breathing_rate FROM respiratory_rate WHERE id = 'A4F_37469' AND DATE(night_end) BETWEEN '2022-05-19' AND '2022-05-26') THEN 'Higher' ELSE 'Not Higher' END AS comparison_result;",
+    "SQLStatus": "failed",
+    "SQLError": "OperationalError args=(1242, 'Subquery returns more than 1 row') repr=OperationalError(1242, 'Subquery returns more than 1 row')",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  }
+]

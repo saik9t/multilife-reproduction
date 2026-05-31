@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/additional_sleep_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/additional_sleep_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWas A4F_56297's minutes_in_deep_sleep in additional_sleep lower than the median across all users on 2022-05-29?\n\nSchema (DDL):\n```sql\nCREATE TABLE `additional_sleep` (\n  `sleep_id`         BIGINT      NOT NULL,\n  `id`               VARCHAR(20) NOT NULL,\n  `start_time`       DATETIME,\n  `end_time`         DATETIME,\n  `duration_min`     SMALLINT,\n  `minutes_asleep`   SMALLINT,\n  `minutes_awake`    SMALLINT,\n  `minutes_in_bed`   SMALLINT,\n  `main_sleep`       TINYINT(1),\n  `minutes_in_deep_sleep`  SMALLINT,\n  `minutes_in_light_sleep` SMALLINT,\n  `minutes_in_rem`   SMALLINT,\n  PRIMARY KEY (`sleep_id`),\n  INDEX (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_time) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Was A4F_56297's minutes_in_deep_sleep in additional_sleep lower than the median across all users on 2022-05-29?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "no",
+    "GeneratedSQL": "SELECT CASE WHEN (SELECT minutes_in_deep_sleep FROM additional_sleep WHERE id = 'A4F_56297' AND DATE(start_time) = '2022-05-29') < (SELECT AVG(minutes_in_deep_sleep) FROM (SELECT minutes_in_deep_sleep FROM additional_sleep WHERE DATE(start_time) = '2022-05-29') AS median_data) THEN 'Yes' ELSE 'No' END AS is_lower_than_median;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "is_lower_than_median\nNo",
+    "ModelOutput": "No",
+    "Correct": true
+  },
+  {
+    "folder": "multi_user/single/additional_sleep_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/additional_sleep_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWas A4F_28771's minutes_in_rem in additional_sleep lower than the average across all users within one week, starting from 2022-05-29?\n\nSchema (DDL):\n```sql\nCREATE TABLE `additional_sleep` (\n  `sleep_id`         BIGINT      NOT NULL,\n  `id`               VARCHAR(20) NOT NULL,\n  `start_time`       DATETIME,\n  `end_time`         DATETIME,\n  `duration_min`     SMALLINT,\n  `minutes_asleep`   SMALLINT,\n  `minutes_awake`    SMALLINT,\n  `minutes_in_bed`   SMALLINT,\n  `main_sleep`       TINYINT(1),\n  `minutes_in_deep_sleep`  SMALLINT,\n  `minutes_in_light_sleep` SMALLINT,\n  `minutes_in_rem`   SMALLINT,\n  PRIMARY KEY (`sleep_id`),\n  INDEX (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_time) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Was A4F_28771's minutes_in_rem in additional_sleep lower than the average across all users within one week, starting from 2022-05-29?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "yes",
+    "GeneratedSQL": "SELECT \n    CASE \n        WHEN (SELECT minutes_in_rem FROM additional_sleep WHERE id = 'A4F_28771' AND DATE(start_time) BETWEEN '2022-05-29' AND '2022-06-05') < \n             (SELECT AVG(minutes_in_rem) FROM additional_sleep WHERE DATE(start_time) BETWEEN '2022-05-29' AND '2022-06-05') \n        THEN 'Lower' \n        ELSE 'Not Lower' \n    END AS comparison_result;",
+    "SQLStatus": "failed",
+    "SQLError": "OperationalError args=(1242, 'Subquery returns more than 1 row') repr=OperationalError(1242, 'Subquery returns more than 1 row')",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/additional_sleep_multi",
+    "type": "NC",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/additional_sleep_multi/NC.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nWas A4F_84534's minutes_asleep in additional_sleep lower than the average across all users on 2022-05-30?\n\nSchema (DDL):\n```sql\nCREATE TABLE `additional_sleep` (\n  `sleep_id`         BIGINT      NOT NULL,\n  `id`               VARCHAR(20) NOT NULL,\n  `start_time`       DATETIME,\n  `end_time`         DATETIME,\n  `duration_min`     SMALLINT,\n  `minutes_asleep`   SMALLINT,\n  `minutes_awake`    SMALLINT,\n  `minutes_in_bed`   SMALLINT,\n  `main_sleep`       TINYINT(1),\n  `minutes_in_deep_sleep`  SMALLINT,\n  `minutes_in_light_sleep` SMALLINT,\n  `minutes_in_rem`   SMALLINT,\n  PRIMARY KEY (`sleep_id`),\n  INDEX (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_time) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Was A4F_84534's minutes_asleep in additional_sleep lower than the average across all users on 2022-05-30?\nOutput requirement: return 1 value(s); types (ordered): {yes or no}",
+    "Answer": "no",
+    "GeneratedSQL": "SELECT CASE WHEN (SELECT minutes_asleep FROM additional_sleep WHERE id = 'A4F_84534' AND DATE(start_time) = '2022-05-30') < (SELECT AVG(minutes_asleep) FROM additional_sleep WHERE DATE(start_time) = '2022-05-30') THEN 'Yes' ELSE 'No' END AS is_lower;",
+    "SQLStatus": "failed",
+    "SQLError": "OperationalError args=(1242, 'Subquery returns more than 1 row') repr=OperationalError(1242, 'Subquery returns more than 1 row')",
+    "SQLResultPreview": "",
+    "ModelOutput": "[NO_ANSWER_DUE_TO_SQL]",
+    "Correct": false
+  }
+]

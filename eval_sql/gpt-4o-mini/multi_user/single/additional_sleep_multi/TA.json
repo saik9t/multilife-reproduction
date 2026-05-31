@@ -1,0 +1,44 @@
+[
+  {
+    "folder": "multi_user/single/additional_sleep_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/additional_sleep_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nDid the average minutes_asleep in additional_sleep across all users increase, decrease, or remain the same on 2022-06-18 compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `additional_sleep` (\n  `sleep_id`         BIGINT      NOT NULL,\n  `id`               VARCHAR(20) NOT NULL,\n  `start_time`       DATETIME,\n  `end_time`         DATETIME,\n  `duration_min`     SMALLINT,\n  `minutes_asleep`   SMALLINT,\n  `minutes_awake`    SMALLINT,\n  `minutes_in_bed`   SMALLINT,\n  `main_sleep`       TINYINT(1),\n  `minutes_in_deep_sleep`  SMALLINT,\n  `minutes_in_light_sleep` SMALLINT,\n  `minutes_in_rem`   SMALLINT,\n  PRIMARY KEY (`sleep_id`),\n  INDEX (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_time) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Did the average minutes_asleep in additional_sleep across all users increase, decrease, or remain the same on 2022-06-18 compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "increase",
+    "GeneratedSQL": "SELECT \n    AVG(CASE WHEN DATE(start_time) = '2022-06-18' THEN minutes_asleep END) AS avg_minutes_asleep_2022_06_18,\n    AVG(CASE WHEN DATE(start_time) = '2022-06-17' THEN minutes_asleep END) AS avg_minutes_asleep_2022_06_17\nFROM additional_sleep\nWHERE DATE(start_time) IN ('2022-06-17', '2022-06-18');",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "avg_minutes_asleep_2022_06_18\tavg_minutes_asleep_2022_06_17\n308.3478\t330.7045",
+    "ModelOutput": "decrease",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/additional_sleep_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/additional_sleep_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nHow many consecutive days did the average minutes_awake in additional_sleep across all users decrease, starting from 2022-05-29?\n\nSchema (DDL):\n```sql\nCREATE TABLE `additional_sleep` (\n  `sleep_id`         BIGINT      NOT NULL,\n  `id`               VARCHAR(20) NOT NULL,\n  `start_time`       DATETIME,\n  `end_time`         DATETIME,\n  `duration_min`     SMALLINT,\n  `minutes_asleep`   SMALLINT,\n  `minutes_awake`    SMALLINT,\n  `minutes_in_bed`   SMALLINT,\n  `main_sleep`       TINYINT(1),\n  `minutes_in_deep_sleep`  SMALLINT,\n  `minutes_in_light_sleep` SMALLINT,\n  `minutes_in_rem`   SMALLINT,\n  PRIMARY KEY (`sleep_id`),\n  INDEX (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_time) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: How many consecutive days did the average minutes_awake in additional_sleep across all users decrease, starting from 2022-05-29?\nOutput requirement: return 1 value(s); types (ordered): {integer}",
+    "Answer": "6",
+    "GeneratedSQL": "WITH daily_avg AS (\n    SELECT DATE(start_time) AS date, AVG(minutes_awake) AS avg_minutes_awake\n    FROM additional_sleep\n    WHERE start_time >= '2022-05-29'\n    GROUP BY DATE(start_time)\n),\nconsecutive_days AS (\n    SELECT date, avg_minutes_awake,\n           @prev_avg := @curr_avg AS prev_avg,\n           @curr_avg := avg_minutes_awake,\n           @decrease := IF(@curr_avg < @prev_avg, 1, 0) AS is_decrease\n    FROM daily_avg, (SELECT @curr_avg := NULL, @prev_avg := NULL) AS vars\n    ORDER BY date\n)\nSELECT COUNT(*) AS consecutive_decrease_days\nFROM consecutive_days\nWHERE is_decrease = 1\nGROUP BY @prev_avg\nHAVING COUNT(*) = COUNT(is_decrease);",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "consecutive_decrease_days\n15",
+    "ModelOutput": "15",
+    "Correct": false
+  },
+  {
+    "folder": "multi_user/single/additional_sleep_multi",
+    "type": "TA",
+    "file": "./gen_data_processed/sql_subset/multi_user/single/additional_sleep_multi/TA.jsonl",
+    "Query_sql": "Given the following MySQL table schema, write ONE SELECT statement to compute the data you need. Use DATE(ts) for date filtering if needed. Output SQL only.\n\nQuestion:\nDid the average minutes_asleep in additional_sleep across all users increase, decrease, or remain the same on 2022-06-15 compared to the previous day?\n\nSchema (DDL):\n```sql\nCREATE TABLE `additional_sleep` (\n  `sleep_id`         BIGINT      NOT NULL,\n  `id`               VARCHAR(20) NOT NULL,\n  `start_time`       DATETIME,\n  `end_time`         DATETIME,\n  `duration_min`     SMALLINT,\n  `minutes_asleep`   SMALLINT,\n  `minutes_awake`    SMALLINT,\n  `minutes_in_bed`   SMALLINT,\n  `main_sleep`       TINYINT(1),\n  `minutes_in_deep_sleep`  SMALLINT,\n  `minutes_in_light_sleep` SMALLINT,\n  `minutes_in_rem`   SMALLINT,\n  PRIMARY KEY (`sleep_id`),\n  INDEX (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n-- Use DATE(start_time) for day filtering.\n\n```",
+    "Query_base": "You will be given the SQL result for the question. Answer the question based on the SQL result, do not include explanations. \nQuestion: Did the average minutes_asleep in additional_sleep across all users increase, decrease, or remain the same on 2022-06-15 compared to the previous day?\nOutput requirement: return 1 value(s); types (ordered): {word}",
+    "Answer": "increase",
+    "GeneratedSQL": "SELECT \n    CASE \n        WHEN AVG(CASE WHEN DATE(start_time) = '2022-06-15' THEN minutes_asleep END) > \n             AVG(CASE WHEN DATE(start_time) = '2022-06-14' THEN minutes_asleep END) THEN 'increase'\n        WHEN AVG(CASE WHEN DATE(start_time) = '2022-06-15' THEN minutes_asleep END) < \n             AVG(CASE WHEN DATE(start_time) = '2022-06-14' THEN minutes_asleep END) THEN 'decrease'\n        ELSE 'remain the same'\n    END AS sleep_trend\nFROM additional_sleep;",
+    "SQLStatus": "success",
+    "SQLError": "",
+    "SQLResultPreview": "sleep_trend\nincrease",
+    "ModelOutput": "increase",
+    "Correct": true
+  }
+]
